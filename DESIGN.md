@@ -1,11 +1,13 @@
 # Design Milestone
 
 Team Members:
-Anand Varma Chekuri
-Namit Sharma
-Pranav Kulkarni
-Sekharan Natarajan
-Vivekanand Ramakrishnan
+* Anand Varma Chekuri
+* Namit Sharma
+* Pranav Kulkarni
+* Sekharan Natarajan
+* Vivekanand Ramakrishnan
+
+----------
 
 ## Problem Statement
 
