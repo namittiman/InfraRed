@@ -74,11 +74,11 @@ The architectural implemenation of "InfraRed" can be broken down into the follow
 
 ### Additional Patterns
 
-In this case, the bot acts as a manager which accepts all the requests / commands from user(s) and initiates necessary actions at the cloud service
-Thus , there will always be only one instance of the bot which continuously does the following tasks
-1. Listens for requests from the user(s)
-2. Continuosly monitors the progress of the jobs assigned to it.
-3. Provides periodic updates about the job back to the user(s)
-4. Keeps tacks of additional statistics 
+In this case, the bot acts as a manager which accepts all the requests / commands from user(s) and initiates necessary actions at the cloud service. 
+Thus, there will always be only one instance of the bot which continuously does the following tasks :
+* Listens for requests from the user(s)
+* Continuosly monitors the progress of the jobs assigned to it.
+* Provides periodic updates about the job back to the user(s)
+* Keeps tacks of additional statistics 
 
 The bot is able to perform these tasks by spawning various daemons which in return reports information back to the bot. So an appropriate combination would be a `Singleton` plus `Master slave pattern`
