@@ -36,17 +36,21 @@ The Slack-Bot we propose for the problem at hand (**"InfraRed"**) would provide 
 
 * **Wireframe - Custom Cluster Setup**
 	
-	![](wireframe1_cluster.png) 
+	![](images/wireframe1_cluster.png) 
 
 
 * **Wireframe - Custom VM Setup**
 	
-	![ ](wireframe2_vm.png)
+	![ ](images/wireframe2_vm.png)
 	
 	
-* **Wireframe - Deafult Cluster Setup**
+* **Wireframe - Default Cluster Setup**
 	
-	![ ](wireframe3_default.png)
+	![ ](images/wireframe3_default.png)
+
+* **StoryBoard**
+	
+	![ ](images/storyboard.png)
 
 
 ## Architecture Design
@@ -73,7 +77,7 @@ The architectural implemenation of "InfraRed" can be broken down into the follow
 	Lorem Ipsum
 
 
-![](architecture_diag.png)
+![](images/architecture_diag.png)
 
 
 ### Additional Patterns
