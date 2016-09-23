@@ -14,7 +14,7 @@ Although DevOps practices have made this a lot more manageable in recent times, 
 
 ## Bot Description
 
-The Slack-Bot we propose for the problem at hand (**"InfraRed"**) would provide a natural language based interface into procuring VMs on the cloud *(akin to talking to the IT department, only simpler)* and keeping track of said resources to prevent excessive billing and to also provide timely notifications, liberating the user from his desk for the entire duration of the provisioning process, allowing valuable man hours to be better spent on more value generating work *(or for a quick game of foosball)*. 
+The Slack-Bot we propose for the problem at hand (**"InfraRed"**) would provide a natural language based interface into procuring VMs on the cloud *(akin to talking to the IT department, only simpler)* and keeping track of said resources to prevent excessive billing and to also provide timely notifications, liberating the user from his desk for the entire duration of the provisioning process, allowing valuable man hours to be better spent on more value generating work *(or for a quick game of foosball)*. This DevOps bot will assist in the following: 
 
 
 * **API Key Management & Ubiquitous Access**
