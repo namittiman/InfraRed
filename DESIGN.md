@@ -59,17 +59,19 @@ The architectural implemenation of "InfraRed" can be broken down into the follow
 
 * **Bot Implementation**
 	
-	Lorem Ipsum
+	The core logic for the Slack-Bot is implemented as a **node.js** application that establishes a socket connection to Slack and listens for direct-mentions ("@Infrared") and direct-messages. Each such event is handled asynchronously and the text message (unstructured data) sent by the user is passed along to the Intent parsing service to convert it into a structured JSON object. This structured data is used to build REST API calls for the various cloud service providers that the bot supports.
+	
+	Node.js was the platform of choice since the bot-implementation needs to be able to service a large number of requests on one side and effectively run a whole bunch of API calls to service said requests. An asynchronous framework was a clear choice and node.js was the most mature and widely used platform for this.
 
 
 * **Natural Language Processing and Intent Recognition**
 	
-	Lorem Ipsum
+	We have decided to offload the natural language processing and intent recognition part of the job to a third-party AI service providers such as **wit.ai**.
 
 
 * **Provisioning and Monitoring Service**
 	
-	Lorem Ipsum
+	The node.js based bot-implementation, upon parsing the text and filling in the required details for the resources the user has requested, contacts another subsystem of our project which is the provisioning and monitoring service. This service decouples the actual heavy-lifting associated with spinning up and provisioning the VMs, thereby allowing us to pick the programming language of choice and not be tied to node.js. This would also help us in making eventual debugging of the program much easier. This service is also responsible for frequently polling the VMs created and to send back events to the node.js component.
 	
 	
 * **Secure Token Storage**
