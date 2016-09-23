@@ -37,7 +37,8 @@ The Slack-Bot we propose for the problem at hand (**"InfraRed"**) would provide 
 
 
 ### Design Sketches
-
+	![Wireframe - Cluster Setup](wireframe1_cluster.png)
+	![Wireframe - VM Setup ](wireframe2_vm.png)
 
 
 ## Architecture Design
