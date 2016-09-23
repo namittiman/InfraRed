@@ -89,4 +89,4 @@ Thus, there will always be only one instance of the bot which continuously does 
 * Provides periodic updates about the command back to the user(s).
 * Keeps track of additional statistics. 
 
-The bot is able to perform these tasks by spawning various daemons which in return reports information back to the bot. So an appropriate combination would be a `Command` plus `Observer Design pattern`
+The bot is able to perform these tasks by spawning various daemons which in return reports information back to the bot. Command pattern is applicable to our system as users provide commands to InfraRed which is the receiver and invokes APIs to perform the action. Also, Observer Pattern is used in our system observes for any change in state of the infrastructure and accordingly notifies the client.So an appropriate combination would be a `Command` plus `Observer Design pattern`
