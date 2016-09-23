@@ -63,5 +63,9 @@ The architectural implemenation of "InfraRed" can be broken down into the follow
 	
 	Lorem Ipsum
 
+
+![](architecture_diag.png)
+
+
 ### Additional Patterns
 
