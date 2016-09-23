@@ -81,6 +81,7 @@ The architectural implemenation of "InfraRed" can be broken down into the follow
 
 ![](images/architecture_diag.png)
 
+We plan to run all the above mentioned components hosted on **AWS**. And for the bot to be able to work, we would dictate a set of initial, one-time setup instructions that include adding the users access tokens and/or the organizations access keys. Since authentication and tracking is done at a per-user level, input is expected from any slack-user for whom the initial configuration was done.
 
 ### Additional Patterns
 
