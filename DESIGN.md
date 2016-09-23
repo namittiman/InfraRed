@@ -76,7 +76,7 @@ The architectural implemenation of "InfraRed" can be broken down into the follow
 	
 * **Secure Token Storage**
 	
-	Lorem Ipsum
+	The node.js bot-implementation is responsible for maintaining user-specific state information such as most commonly used configs, access tokens, etc. To implement this, we would need a database component to map user-names to their corresponding data. We would have to implement an encyption layer on top of the database to allow for the safe storage of user provided API access keys.
 
 
 ![](images/architecture_diag.png)
