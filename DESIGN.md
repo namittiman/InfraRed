@@ -42,7 +42,26 @@ The Slack-Bot we propose for the problem at hand (**"InfraRed"**) would provide 
 
 ## Architecture Design
 
+The architectural implemenation of "InfraRed" can be broken down into the following:
 
+* **Bot Implementation**
+	
+	Lorem Ipsum
+
+
+* **Natural Language Processing and Intent Recognition**
+	
+	Lorem Ipsum
+
+
+* **Provisioning and Monitoring Service**
+	
+	Lorem Ipsum
+	
+	
+* **Secure Token Storage**
+	
+	Lorem Ipsum
 
 ### Additional Patterns
 
