@@ -23,7 +23,9 @@ The Slack-Bot we propose for the problem at hand (**"InfraRed"**) would provide 
 
 * **Provisioning**
 	
-	The core of the problem that the bot solves is that of automating the tiring process of provisioning and settin up servers. 
+	The core of the problem that the bot solves is that of automating the tiring process of spinning up VMs through a sequence of long-running API calls. Once spun-up, the VMs are automatically configured based on the users preferences *(setting up a certain dev/test environment or even settin up Hadoop/Spark on a cluster of such VMs)*. 
+	
+	We wish to further extend the functionality associated with Big-Data applications (Spark & Hadoop) by having the bot not only configure the cluster but also setup a public facing iPython Notebook or Apache Zeppelin interface, cutting down the need to SSH, making this use case accessible to even the not so technologically inclined userbase such as analysts.
 	
 * **Tracking**
 	
