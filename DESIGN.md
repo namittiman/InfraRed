@@ -32,17 +32,21 @@ The Slack-Bot we propose for the problem at hand (**"InfraRed"**) would provide 
 	Once up and running, the bot takes up the responsibilites of tracking these resources and informing the user of various events such as a reservation-timeouts *(if the user informs the bot for how long he would need them)* or if the resources are sitting idle for extended periods of time, in an effort to prevent users from loosing track of existing resources.
 	
 
-
-
-
-
 ### Design Sketches
 
-* **Wireframe - Cluster Setup** 
-![](wireframe1_cluster.png) 
+* **Wireframe - Custom Cluster Setup**
+	
+	![](wireframe1_cluster.png) 
 
-* **Wireframe - VM Setup** 
-![ ](wireframe2_vm.png)
+
+* **Wireframe - Custom VM Setup**
+	
+	![ ](wireframe2_vm.png)
+	
+	
+* **Wireframe - Deafult Cluster Setup**
+	
+	![ ](wireframe3_default.png)
 
 
 ## Architecture Design
