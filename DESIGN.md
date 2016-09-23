@@ -14,7 +14,24 @@ Although DevOps practices have made this a lot more manageable in recent times, 
 
 ## Bot Description
 
-We propose a system that liberates the user from remembering (and potentially losing or exposing publically) a bunch of API keys from various services and working the command line to execute the same set of procedures to bring a VM up or worse still a cluster of them. The tool would securely store the API tokens while authorizing users based on slack-handles, providing a natural language interface to getting the required resources (akin to talking to the IT department, only simpler) and also keeping track of said resources to prevent excessive billing and to provide timely notifications, liberating the user from his desk for the entire duration of the provisioning process, allowing valuable man hours to be better spent on more value generating work (or for a quick game of foosball). **<work in progress>**
+The Slack-Bot we propose for the problem at hand (**"InfraRed"**) would provide a natural language based interface into procuring VMs on the cloud *(akin to talking to the IT department, only simpler)* and keeping track of said resources to prevent excessive billing and to also provide timely notifications, liberating the user from his desk for the entire duration of the provisioning process, allowing valuable man hours to be better spent on more value generating work *(or for a quick game of foosball)*. 
+
+
+* **API Key Management & Ubiquitous Access**
+
+	Procuring cloud-resources often involves carefully hand-crafting REST API calls with unique access tokens. The first problem that our bot solves is of securely storing the users authorization tokens, thereby liberating him from the fear of keeping track of and even worse, exposing them publically. Since the bot is only accessible through Slack, their slack username would be enough to authenticate and run tasks on their behalf.
+
+* **Provisioning**
+	
+	The core of the problem that the bot solves is that of automating the tiring process of provisioning and settin up servers. 
+	
+* **Tracking**
+	
+	Once up and running, the bot takes up the responsibilites of tracking these resources and informing the user of various events such as a reservation-timeouts *(if the user informs the bot for how long he would need them)* or if the resources are sitting idle for extended periods of time, in an effort to prevent users from loosing track of existing resources.
+	
+
+
+
 
 
 ### Design Sketches
