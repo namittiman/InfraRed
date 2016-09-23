@@ -50,7 +50,7 @@ The Slack-Bot we propose for the problem at hand (**"InfraRed"**) would provide 
 
 * **StoryBoard**
 	
-	![ ](images/storyboard.png)
+	![ ](images/storyboard.jpg)
 
 
 ## Architecture Design
