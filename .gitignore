@@ -1,3 +1,11 @@
 aws_nodejs/config.json
 aws_nodejs/node_modules
 aws_nodejs/npm-debug.log
+
+
+
+provision_service/.idea/*
+provision_service/node_modules/*
+provision_service/bin/*
+
+
