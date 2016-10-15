@@ -12,15 +12,17 @@ var app = express();
 /*****
  * To change the DB add necessary function in db.js
  *****/
+
 var config = JSON.parse(fs.readFileSync(path.join(__dirname, "config.json")));
 var dbhelper = require("./db");
 var db = null;
+/*
 dbhelper.getMongo(require("mongodb").MongoClient,config.dburl, function (database) {
     db = database;
     app.listen(8888, function () {
         console.log("Server listening ..");
     });
-});
+});*/
 /******************************************/
 
 app.use(logger('dev'));
@@ -49,6 +51,12 @@ app.post("/", function (req, res) {
 });
 
 
+app.use('/api.infrared.com/', require('./routes/api.js'));
+
+var port = process.env.PORT || 3000;
+app.listen(port, function () {
+  console.log('InfraRed Provisioning API server is listening on Port 3000!');
+});
 
 module.exports = app;
 
