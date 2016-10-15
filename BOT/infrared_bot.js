@@ -42,6 +42,8 @@
 var Botkit = require('botkit');
 var saveKeysConvo = require("./save_keys_convo.js");
 var setupVMConvo = require("./setup_vm_convo.js");
+var requirementParser = require("./parser.js");
+
 
 var controller = Botkit.slackbot({
     debug: false,
@@ -124,6 +126,14 @@ controller.hears(['configure (.*)','save key (.*)'],['direct_message,direct_ment
 
 controller.hears(['setupvm'],['direct_message,direct_mention,mention'],function(bot,message) {
     bot.startConversation(message, setupVMConvo.askOSType);
+});
+
+// Quick Commands
+controller.hears(['.* spin (.*)','.* provision (.*)'],['direct_message,direct_mention,mention'],function(bot,message) {
+    var input = message.text;
+    var resJson = requirementParser.jsonThisString(input);
+
+    bot.reply(message, "Bro, " + JSON.stringify(resJson) + " this cool?");
 });
 
 controller.hears(['identify yourself','who are you','what is your name'],'direct_message,direct_mention,mention',function(bot, message) {

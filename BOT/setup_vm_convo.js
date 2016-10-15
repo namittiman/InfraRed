@@ -5,6 +5,7 @@ var setupVMQuestions = ['Which OS do you prefer(say: Ubuntu 14.04)?',
  'Are you sure you want me to spin VMs with foll configuration:'
  ]
 
+
 function askOSType(response, convo) {
   convo.ask(setupVMQuestions[0], function(response, convo) {
     var osType = response.text;
