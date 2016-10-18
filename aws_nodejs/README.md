@@ -19,3 +19,7 @@ You can do this by creating a file named "credentials" at ~/.aws/
 
 ## Running the code to create an instance
     node create_instance.js
+
+## Useful Links
+	http://docs.aws.amazon.com/AWSJavaScriptSDK/guide/node-examples.html
+	http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/

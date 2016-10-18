@@ -1,0 +1,13 @@
+{
+  "name": "provisioning_service",
+  "description": "Provisioning Service REST API with Node",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "4.x",
+    "body-parser": "~1.15.2"
+  },
+  "devDependencies": {
+    "mongoose": "~4.6.3"
+  }
+}
