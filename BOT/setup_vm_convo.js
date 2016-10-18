@@ -1,3 +1,41 @@
+var request = require('request');
+var fs = require("fs");
+var Promise = require('bluebird');
+var parse = require('parse-link-header');
+
+var provisioning_service_url = "http://localhost:3001";
+
+
+
+/*
+ * POST /users/:<userId>/reservations/ 
+ */
+function post_reservations(obj) {
+  var options = {
+    url: provisioning_service_url + '/users/' + obj.UserId + '/keys',
+    method: 'POST',
+    headers: {
+      "User-Agent": "EnableIssues",
+      "content-type": "application/json",
+    },
+    json: obj
+  };
+
+  console.log(options);
+
+  // Send a http request to url and specify a callback that will be called upon its return.
+  request(options, function (error, response, body) 
+  {
+    console.log(error);
+    console.log(response);
+
+    if(body) {
+      console.log(body);
+    }
+  });
+}
+
+
 var setupVMQuestions = ['Which OS do you prefer(say: Ubuntu 14.04)?',
  'How much computing(no. of vCPUs) would you need?',
  'What are your storage requirements?',
@@ -75,12 +113,27 @@ function saveVMRequestToDB(response, convo) {
     console.log('convo saveVMRequestToDB');
     var user = convo.source_message.user;
     console.log(' UserId '+ user);
-    console.log(convo.responses[setupVMQuestions[0]].text);
-    console.log(convo.responses[setupVMQuestions[1]].text);
-    console.log(convo.responses[setupVMQuestions[2]].text);
-    console.log(convo.responses[setupVMQuestions[3]].text);
+    var OS = convo.responses[setupVMQuestions[0]].text;
+    var VCPU = convo.responses[setupVMQuestions[1]].text;
+    var Storage = convo.responses[setupVMQuestions[2]].text;
+    var Count = convo.responses[setupVMQuestions[3]].text;
 
-    // POST /request/vms/
+
+    // POST /users/:<userId>/reservations/
+        var obj = {
+              "UserId": user,
+              "RequestType": "vm",
+              "OS": OS,
+              "VCPUs": VCPU,
+              "VRAM": "8",
+              "Storage": Storage,
+              "StorageType": "spindle/SSD",
+              "Count": Count
+        };
+
+
+
+    post_reservations(obj);
     convo.next();
 }
 

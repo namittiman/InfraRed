@@ -10,6 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "botkit": "^0.2.2",
-    "slackbots": "^0.5.1"
+    "slackbots": "^0.5.1",
+    "request": "^2.67.0",
+    "bluebird": "^3.2.2",
+    "parse-link-header": "^0.4.1"
   }
 }

@@ -1,3 +1,42 @@
+var request = require('request');
+var fs = require("fs");
+var Promise = require('bluebird');
+var parse = require('parse-link-header');
+
+var provisioning_service_url = "http://localhost:3001";
+
+
+
+/*
+ * POST /users/:user_id/keys 
+ */
+function post_keys(obj) {
+  var options = {
+    url: provisioning_service_url + '/users/' + obj.UserId + '/keys',
+    method: 'POST',
+    headers: {
+      "User-Agent": "EnableIssues",
+      "content-type": "application/json",
+    },
+    json: obj
+  };
+
+  console.log(options);
+
+  // Send a http request to url and specify a callback that will be called upon its return.
+  request(options, function (error, response, body) 
+  {
+    console.log(error);
+    console.log(response);
+
+    if(body) {
+      console.log(body);
+    }
+  });
+}
+
+
+
 var saveKeyQuestions = ['Please provide your Access Key ID',
  'Please provide Secret Access Key']
 
@@ -37,6 +76,18 @@ function saveKeysToDB(response, convo) {
     var secretKey = response.text;
     console.log('secretKey' + secretKey);
     // POST /user/keys 
+
+    var obj = {
+      "UserId": user,
+      "Service": Servicename,
+      "AccessKeyId": accessKeyId,
+      "SecretAccessKey": secretKey
+};
+
+
+
+    post_keys(obj);
+
     convo.say("Your Access keys are valid and have been saved.");
     convo.next();
 }
