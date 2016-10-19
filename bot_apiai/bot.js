@@ -31,6 +31,12 @@ controller.hears('(.*)',['mention', 'direct_mention', 'direct_message'], functio
 			   case 'create.cluster': actions.createCluster(bot, message, response);
 			   break;
 
+			   case 'show.reservations': actions.showReservations(bot, message, response);
+			   break;
+
+			   case 'tear.down': actions.tearDown(bot, message, response);
+			   break;
+
 			   case 'smalltalk.greetings': bot.reply(message, response.result.fulfillment.speech);
 			   break;
 			   
