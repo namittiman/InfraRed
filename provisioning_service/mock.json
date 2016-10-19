@@ -13,13 +13,7 @@
            "LaunchTime": "Mon Oct 17 2016 19:28:53 GMT-0400 (EDT)",
            "PrivateIpAddress": "172.31.1.89",
            "PublicIpAddress": "54.158.18.22"
-        } 
-      ]
-    }, 
-
-    { "ReservationId": "r-c2f6a22e",
-      "Instances": 
-      [
+        },
         { "InstanceId": "i-1b2fbb2a",
            "ImageId": "ami-1624987f",
            "State": { "Code": 16, "Name": "running" },
@@ -28,7 +22,7 @@
            "LaunchTime": "Mon Oct 17 2016 21:28:53 GMT-0400 (EDT)",
            "PrivateIpAddress": "172.31.1.90",
            "PublicIpAddress": "54.158.18.23"
-        } 
+        }
       ]
     } 
  ]

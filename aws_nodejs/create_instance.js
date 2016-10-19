@@ -36,7 +36,7 @@ ec2.describeInstances(params, function(err, data) {
   if (err)
     console.log(err, err.stack); // an error occurred
   for (i = 0; i < data.Reservations.length; i++) {
-    console.log(data.Reservations[i].Instances);           // successful response
+    console.log(data.Reservations);           // successful response
   }
   
 });

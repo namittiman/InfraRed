@@ -10,7 +10,7 @@ exports.post_reservations = function(req, res) {
     // NOTIFY BOT
     
 
-    return res.status(200);
+    return res.send(data.Reservations[0]);
 }
 exports.get_reservations = function(req, res) {
 	console.log(data);
