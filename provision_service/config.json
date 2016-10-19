@@ -1,4 +1,0 @@
-{
-  "dburl":"mongodb://localhost:27017/test",
-  "table_req":"Requests"
-}
