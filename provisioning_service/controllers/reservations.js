@@ -1,4 +1,5 @@
 var data = require("../mock.json");
+var sleep = require("sleep");
 
 exports.post_reservations = function(req, res) {
 	var userId = req.params.userId;
@@ -9,7 +10,7 @@ exports.post_reservations = function(req, res) {
     // STORE IN DB
     // NOTIFY BOT
     
-
+    sleep.sleep(5);
     return res.send(data.Reservations[0]);
 }
 
