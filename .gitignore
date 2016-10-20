@@ -7,8 +7,8 @@ BOT/node_modules/
 bot_apiai/node_modules/
 
 */.idea/*
-*/.classpath
-*/.project
-*/.iml
-*/.prefs
+*/*.classpath
+*/*.project
+*/*.iml
+*/*.prefs
 
