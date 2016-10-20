@@ -1,0 +1,12 @@
+language: java
+sudo: false
+addons:
+  sauce_connect:
+    username: "infrared"
+    access_key: "38764e51-237f-420b-9508-1d62089e4872"
+before_install:
+  - cd selenium
+script:
+  - mvn clean
+  - mvn install
+  - mvn test

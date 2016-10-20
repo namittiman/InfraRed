@@ -40,15 +40,15 @@ public class SlackTest {
     public static void setUp() throws Exception {
         //driver = new HtmlUnitDriver();
         
-    	ChromeDriverManager.getInstance().setup();
-		driver = new ChromeDriver();
-    	/*
+    	//ChromeDriverManager.getInstance().setup();
+		//driver = new ChromeDriver();
+    	
         DesiredCapabilities caps = DesiredCapabilities.chrome();
         caps.setCapability("platform", "Windows XP");
         caps.setCapability("version", "43.0");
         
         driver = new RemoteWebDriver(new URL(URL), caps);
-        */
+        
 		
 		
 		driver.get("https://ateamnoplanb.slack.com/");
