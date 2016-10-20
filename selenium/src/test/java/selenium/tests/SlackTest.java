@@ -17,7 +17,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import java.net.*;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 
 import java.util.LinkedHashMap;
@@ -29,35 +31,62 @@ public class SlackTest {
     private static WebDriver driver;
     private static final String TEAM_TITLE = "ATeamNoPlanB";
     private static final String BOT_NAME = "infrared";
-
     
+    public static final String USERNAME = "infrared";
+    public static final String ACCESS_KEY = "38764e51-237f-420b-9508-1d62089e4872";
+    public static final String URL = "https://" + USERNAME + ":" + ACCESS_KEY + "@ondemand.saucelabs.com:443/wd/hub";
+
+    @BeforeClass
     public static void setUp() throws Exception {
         //driver = new HtmlUnitDriver();
-        ChromeDriverManager.getInstance().setup();
-        driver = new ChromeDriver();
+        
+    	ChromeDriverManager.getInstance().setup();
+		driver = new ChromeDriver();
+    	/*
+        DesiredCapabilities caps = DesiredCapabilities.chrome();
+        caps.setCapability("platform", "Windows XP");
+        caps.setCapability("version", "43.0");
+        
+        driver = new RemoteWebDriver(new URL(URL), caps);
+        */
+		
+		
+		driver.get("https://ateamnoplanb.slack.com/");
+
+        // Wait until page loads and we can see a sign in button.
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signin_btn")));
+
+        // Find email and password fields.
+        WebElement email = driver.findElement(By.id("email"));
+        WebElement pw = driver.findElement(By.id("password"));
+
+        // Type in our test user login info.
+        email.sendKeys("pkulkar5@ncsu.edu");
+        pw.sendKeys("P2r8a0n3@");
+
+        // Click
+        WebElement signin = driver.findElement(By.id("signin_btn"));
+        signin.click();
+
+        // Wait until we go to general channel.
+        wait.until(ExpectedConditions.titleContains("general"));
+
+        // Switch to #bots channel and wait for it to load.
+        driver.get("https://ateamnoplanb.slack.com/messages/@" + BOT_NAME + "/");
+
     }
 
-    
+    @AfterClass
     public static void tearDown() throws Exception {
         driver.close();
         driver.quit();
     }
 
-
-    @Test
-    public void googleExists() throws Exception {
-    	setUp();
-        driver.get("http://www.google.com");
-        assertEquals("Google", driver.getTitle());
-        tearDown();
-    }
-
     @Test
     public void testSetVM() throws Exception {
     	
-    	setUp();
-    	
-        LinkedHashMap<String, String> inputs = new LinkedHashMap<String, String>();
+    	LinkedHashMap<String, String> inputs = new LinkedHashMap<String, String>();
         inputs.put("set up vm", "Which OS would you like the VM to have?");
         inputs.put("Ubuntu", "How much GB of RAM would you need?");
         inputs.put("64", "How many vCPUs would you like?");
@@ -66,32 +95,7 @@ public class SlackTest {
 
         String finalOutput = "Your Public DNS name is : " + "ec2-54-158-18-22.compute-1.amazonaws.com"
                 + "\nand Public IP : " + "54.158.18.22";
-
-
-        driver.get("https://ateamnoplanb.slack.com/");
-
-        // Wait until page loads and we can see a sign in button.
-        WebDriverWait wait = new WebDriverWait(driver, 30);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signin_btn")));
-
-        // Find email and password fields.
-        WebElement email = driver.findElement(By.id("email"));
-        WebElement pw = driver.findElement(By.id("password"));
-
-        // Type in our test user login info.
-        email.sendKeys("pkulkar5@ncsu.edu");
-        pw.sendKeys("P2r8a0n3@");
-
-        // Click
-        WebElement signin = driver.findElement(By.id("signin_btn"));
-        signin.click();
-
-        // Wait until we go to general channel.
-        wait.until(ExpectedConditions.titleContains("general"));
-
-        // Switch to #bots channel and wait for it to load.
-        driver.get("https://ateamnoplanb.slack.com/messages/@" + BOT_NAME + "/");
-
+        
         // Type something
         WebElement messageBot = driver.findElement(By.id("message-input"));
 
@@ -108,16 +112,11 @@ public class SlackTest {
         List<WebElement> message_contents = driver.findElements(By.xpath("//span[@class='message_body']"));
         System.out.println(message_contents.get(message_contents.size() - 1).getText());
         assertEquals(message_contents.get(message_contents.size() - 1).getText(), finalOutput);
-        
-        tearDown();
-        
     }
 
     @Test
     public void testSaveKeys() throws Exception {
-    	setUp();
-    	
-        LinkedHashMap<String, String> inputs = new LinkedHashMap<String, String>();
+    	LinkedHashMap<String, String> inputs = new LinkedHashMap<String, String>();
         inputs.put("save my keys", "Please provide the cloud service provider name for which you want to setup access keys.");
         inputs.put("aws", "Please provide the Access Key Id for your aws.");
         inputs.put("sdfkhjksdf", "Please provide the Secret Access Key for your aws.");
@@ -125,31 +124,6 @@ public class SlackTest {
 
         String finalOutput = "Your keys have been saved successfully!";
 
-
-        driver.get("https://ateamnoplanb.slack.com/");
-
-        // Wait until page loads and we can see a sign in button.
-        WebDriverWait wait = new WebDriverWait(driver, 30);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signin_btn")));
-
-        // Find email and password fields.
-        WebElement email = driver.findElement(By.id("email"));
-        WebElement pw = driver.findElement(By.id("password"));
-
-        // Type in our test user login info.
-        email.sendKeys("pkulkar5@ncsu.edu");
-        pw.sendKeys("P2r8a0n3@");
-
-        // Click
-        WebElement signin = driver.findElement(By.id("signin_btn"));
-        signin.click();
-
-        // Wait until we go to general channel.
-        wait.until(ExpectedConditions.titleContains("general"));
-
-        // Switch to #bots channel and wait for it to load.
-        driver.get("https://ateamnoplanb.slack.com/messages/@" + BOT_NAME + "/");
-
         // Type something
         WebElement messageBot = driver.findElement(By.id("message-input"));
 
@@ -167,15 +141,11 @@ public class SlackTest {
         System.out.println(message_contents.get(message_contents.size() - 1).getText());
         assertEquals(message_contents.get(message_contents.size() - 1).getText(), finalOutput);
         
-        tearDown();
     }
 
     @Test
     public void testSetCluster() throws Exception {
-    	
-    	setUp();
-    	
-        LinkedHashMap<String, String> inputs = new LinkedHashMap<String, String>();
+    	LinkedHashMap<String, String> inputs = new LinkedHashMap<String, String>();
         inputs.put("set up a cluster", "How many nodes do you want your Spark cluster to be?");
         inputs.put("8", "How many vCPUs per node would you like?");
         inputs.put("5", "How much RAM per node in GB would you like?");
@@ -185,31 +155,6 @@ public class SlackTest {
         String finalOutput = "Spark Cluster Created -\nZeppelin Link : " + "http://54.158.18.22:8015"
         		+ "\nAmbari Server Link : " + "http://54.158.18.23:8080";
 
-
-        driver.get("https://ateamnoplanb.slack.com/");
-
-        // Wait until page loads and we can see a sign in button.
-        WebDriverWait wait = new WebDriverWait(driver, 30);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signin_btn")));
-
-        // Find email and password fields.
-        WebElement email = driver.findElement(By.id("email"));
-        WebElement pw = driver.findElement(By.id("password"));
-
-        // Type in our test user login info.
-        email.sendKeys("pkulkar5@ncsu.edu");
-        pw.sendKeys("P2r8a0n3@");
-
-        // Click
-        WebElement signin = driver.findElement(By.id("signin_btn"));
-        signin.click();
-
-        // Wait until we go to general channel.
-        wait.until(ExpectedConditions.titleContains("general"));
-
-        // Switch to #bots channel and wait for it to load.
-        driver.get("https://ateamnoplanb.slack.com/messages/@" + BOT_NAME + "/");
-
         // Type something
         WebElement messageBot = driver.findElement(By.id("message-input"));
 
@@ -226,8 +171,6 @@ public class SlackTest {
         List<WebElement> message_contents = driver.findElements(By.xpath("//span[@class='message_body']"));
         System.out.println(message_contents.get(message_contents.size() - 1).getText());
         assertEquals(message_contents.get(message_contents.size() - 1).getText(), finalOutput);
-        
-        tearDown();
         
     }
 
