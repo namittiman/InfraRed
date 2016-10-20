@@ -182,8 +182,8 @@ public class SlackTest {
         inputs.put("64 gb", "How much storage per node in GB do you want?");
         inputs.put("100", "Okay, I am working on it.");
 
-        String finalOutput = "Spark Cluster Created - \n Zeppelin Link : " + "http://54.158.18.22:8015 " 
-        		+ "\n Ambari Server Link : " + "http://54.158.18.23:8080";
+        String finalOutput = "Spark Cluster Created -\nZeppelin Link : " + "http://54.158.18.22:8015"
+        		+ "\nAmbari Server Link : " + "http://54.158.18.23:8080";
 
 
         driver.get("https://ateamnoplanb.slack.com/");
