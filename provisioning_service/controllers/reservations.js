@@ -51,12 +51,6 @@ exports.get_reservations = function(req, res) {
             details += "\n>" + "Ambari: " + mockData.Reservations[i].cluster_info.ambari;
         }
 
-
-        // var details = mockData.Reservations[i].ReservationId + ', Instances: ';
-        // for(var j = 0; j < mockData.Reservations[i].Instances.length; j++) {
-        //     details += ' ' + mockData.Reservations[i].Instances[j].PublicDnsName;
-        // }
-
         reservationIds.push(details);
     }
     return res.send(reservationIds.join("\n\n"));

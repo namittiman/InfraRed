@@ -195,7 +195,25 @@ module.exports =
 	},
 
 	setReminderReservation: function (bot, message, response) {
-	
+		var timeStr = response.result.resolvedQuery;
+		var seconds = parseInt(timeStr.split(" ")[0]);
+		var multiplier = timeStr.split(" ")[1];
+
+		if (multiplier.includes("min"))
+			seconds *= 60;
+
+		if (multiplier.includes("hour"))
+			seconds *= 60*60;
+
+		if (multiplier.includes("day"))
+			seconds *= 60*60*24;
+
+		console.log(seconds);
+
+		setTimeout(function() {
+		    console.log('REMINDER!!!');
+		    bot.reply(message, "The days of your Resevation are numbered! _(" + timeStr + ")_ ");
+		}, seconds*1000);
 	},
 
 	extendReservation: function (bot, message, response) {
