@@ -221,7 +221,7 @@ module.exports =
 		    	showResFnPtr(bot, message, response);
 		    }
 		    else{
-		    	bot.reply(message, "Reminder: Terminating reservation! \n_(*" + res + "*)_ ");
+		    	bot.reply(message, "Reminder: Time to terminate your reservation! \n" + "`tear down reservation " + res + "`");
 		    }
 		}, seconds*1000);
 	},
