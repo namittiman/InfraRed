@@ -30,14 +30,14 @@ public class SlackTest {
     private static final String TEAM_TITLE = "ATeamNoPlanB";
     private static final String BOT_NAME = "infrared";
 
-    @BeforeClass
+    
     public static void setUp() throws Exception {
         //driver = new HtmlUnitDriver();
         ChromeDriverManager.getInstance().setup();
         driver = new ChromeDriver();
     }
 
-    @AfterClass
+    
     public static void tearDown() throws Exception {
         driver.close();
         driver.quit();
@@ -46,13 +46,17 @@ public class SlackTest {
 
     @Test
     public void googleExists() throws Exception {
+    	setUp();
         driver.get("http://www.google.com");
         assertEquals("Google", driver.getTitle());
+        tearDown();
     }
 
     @Test
-    public void testSetVM() throws InterruptedException {
-
+    public void testSetVM() throws Exception {
+    	
+    	setUp();
+    	
         LinkedHashMap<String, String> inputs = new LinkedHashMap<String, String>();
         inputs.put("set up vm", "Which OS would you like the VM to have?");
         inputs.put("Ubuntu", "How much GB of RAM would you need?");
@@ -104,11 +108,15 @@ public class SlackTest {
         List<WebElement> message_contents = driver.findElements(By.xpath("//span[@class='message_body']"));
         System.out.println(message_contents.get(message_contents.size() - 1).getText());
         assertEquals(message_contents.get(message_contents.size() - 1).getText(), finalOutput);
-
+        
+        tearDown();
+        
     }
 
     @Test
-    public void testSaveKeys() throws InterruptedException {
+    public void testSaveKeys() throws Exception {
+    	setUp();
+    	
         LinkedHashMap<String, String> inputs = new LinkedHashMap<String, String>();
         inputs.put("save my keys", "Please provide the cloud service provider name for which you want to setup access keys.");
         inputs.put("aws", "Please provide the Access Key Id for your aws.");
@@ -158,11 +166,69 @@ public class SlackTest {
         List<WebElement> message_contents = driver.findElements(By.xpath("//span[@class='message_body']"));
         System.out.println(message_contents.get(message_contents.size() - 1).getText());
         assertEquals(message_contents.get(message_contents.size() - 1).getText(), finalOutput);
-
+        
+        tearDown();
     }
 
     @Test
-    public void testS() throws InterruptedException {
+    public void testSetCluster() throws Exception {
+    	
+    	setUp();
+    	
+        LinkedHashMap<String, String> inputs = new LinkedHashMap<String, String>();
+        inputs.put("set up a cluster", "How many nodes do you want your Spark cluster to be?");
+        inputs.put("8", "How many vCPUs per node would you like?");
+        inputs.put("5", "How much RAM per node in GB would you like?");
+        inputs.put("64 gb", "How much storage per node in GB do you want?");
+        inputs.put("100", "Okay, I am working on it.");
 
+        String finalOutput = "Spark Cluster Created - \n Zeppelin Link : " + "http://54.158.18.22:8015 " 
+        		+ "\n Ambari Server Link : " + "http://54.158.18.23:8080";
+
+
+        driver.get("https://ateamnoplanb.slack.com/");
+
+        // Wait until page loads and we can see a sign in button.
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signin_btn")));
+
+        // Find email and password fields.
+        WebElement email = driver.findElement(By.id("email"));
+        WebElement pw = driver.findElement(By.id("password"));
+
+        // Type in our test user login info.
+        email.sendKeys("pkulkar5@ncsu.edu");
+        pw.sendKeys("P2r8a0n3@");
+
+        // Click
+        WebElement signin = driver.findElement(By.id("signin_btn"));
+        signin.click();
+
+        // Wait until we go to general channel.
+        wait.until(ExpectedConditions.titleContains("general"));
+
+        // Switch to #bots channel and wait for it to load.
+        driver.get("https://ateamnoplanb.slack.com/messages/@" + BOT_NAME + "/");
+
+        // Type something
+        WebElement messageBot = driver.findElement(By.id("message-input"));
+
+        for (String inp : inputs.keySet()) {
+            messageBot.sendKeys(inp);
+            messageBot.sendKeys(Keys.RETURN);
+            Thread.sleep(2000);
+            List<WebElement> message_contents = driver.findElements(By.xpath("//span[@class='message_body']"));
+            System.out.println(message_contents.get(message_contents.size() - 1).getText());
+            assertEquals(message_contents.get(message_contents.size() - 1).getText(), inputs.get(inp));
+        }
+
+        Thread.sleep(6000);
+        List<WebElement> message_contents = driver.findElements(By.xpath("//span[@class='message_body']"));
+        System.out.println(message_contents.get(message_contents.size() - 1).getText());
+        assertEquals(message_contents.get(message_contents.size() - 1).getText(), finalOutput);
+        
+        tearDown();
+        
     }
+
 }
