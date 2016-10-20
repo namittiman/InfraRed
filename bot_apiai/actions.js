@@ -151,8 +151,9 @@ module.exports =
 
 		var callback = function (error, response, body) {
 			if(body) {
+				console.log(typeof(body));
 				console.log(body);
-				bot.reply(message, "Showing your reservations:- \n " + body);
+				bot.reply(message, body);
 			} else {
 				console.log(error);
 				bot.reply(message, "Sorry, I was not able to fetch your reservations at this time.");
