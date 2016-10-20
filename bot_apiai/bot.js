@@ -13,7 +13,10 @@ controller.spawn({
 }).startRTM()
 
 controller.hears('(.*)',['mention', 'direct_mention', 'direct_message'], function(bot,message) {
-	var request = app.textRequest(message.text);
+
+	var request = app.textRequest(message.text, {
+    	sessionId: message.user
+	});
 
 	request.on('response', function(response) {
     	console.log(response);
