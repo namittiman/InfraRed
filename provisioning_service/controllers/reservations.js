@@ -36,13 +36,26 @@ exports.get_reservations = function(req, res) {
 	var userId = req.params.userId;
     var reservationIds = [];
     for(var i = 0; i < mockData.Reservations.length; i++) {
-        
-        var details = mockData.Reservations[i].ReservationId + ', Instances: ';
-        for(var j = 0; j < mockData.Reservations[i].Instances.length; j++) {
-            details += ' ' + mockData.Reservations[i].Instances[j].PublicDnsName;
+
+        var details = "" + (i+1) + ". Reservation ID: " + mockData.Reservations[i].ReservationId;
+
+        if (mockData.Reservations[i].type == "vm") {
+            for (var j = 0; j < mockData.Reservations[i].Instances.length; j++) {
+                details += "\n" + ' '.repeat(5) + mockData.Reservations[i].Instances[j].PublicIpAddress;
+            }
+        } else {
+            details += "\n" + ' '.repeat(5) + "Zeppelin: " + mockData.Reservations[i].cluster_info.zeppelin;
+            details += "\n"  + ' '.repeat(5) + "Ambari: " + mockData.Reservations[i].cluster_info.ambari;
         }
+
+
+
+        // var details = mockData.Reservations[i].ReservationId + ', Instances: ';
+        // for(var j = 0; j < mockData.Reservations[i].Instances.length; j++) {
+        //     details += ' ' + mockData.Reservations[i].Instances[j].PublicDnsName;
+        // }
 
         reservationIds.push(details);
     }
-    return res.send(reservationIds);
+    return res.send(reservationIds.join("\n\n"));
 }
