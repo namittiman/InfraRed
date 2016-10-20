@@ -3,6 +3,13 @@
   "Reservations": 
   [
     { "ReservationId": "r-c9f6a67e",
+      "request": {
+        "OS": "Ubuntu 14.04",
+        "VCPUs": 4,
+        "VRAM": 32,
+        "Storage": 400,
+        "StorageType": "SSD"
+      },
       "type":"vm",
       "cluster_info": null,
       "Instances": 
@@ -29,6 +36,13 @@
     },
 
     { "ReservationId": "r-c9f6a87e",
+      "request": {
+        "OS": "Ubuntu 14.04",
+        "VCPUs": 8,
+        "VRAM": 64,
+        "Storage": 1024,
+        "StorageType": "spindle"
+      },
       "type":"cluster",
       "cluster_info": {
         "zeppelin": "http://54.158.18.22:8015",
