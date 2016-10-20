@@ -1,4 +1,4 @@
-var data = require("../mock.json");
+var mockData = require("../mock.json");
 var sleep = require("sleep");
 
 exports.post_reservations = function(req, res) {
@@ -32,13 +32,13 @@ exports.delete_reservation = function(req, res) {
 }
 
 exports.get_reservations = function(req, res) {
-	console.log(data);
+	console.log(mockData);
 	var userId = req.params.userId;
     var reservationIds = [];
-    for(var i = 0; i < data.Reservations.length; i++) {
-        var details = data.Reservations[i].ReservationId + ', Instances: ';
-        for(var j = 0; j < data.Reservations[i].Instances.length; j++) {
-            details += ' ' + data.Reservations[i].Instances[j].PublicDnsName;
+    for(var i = 0; i < mockData.Reservations.length; i++) {
+        var details = mockData.Reservations[i].ReservationId + ', Instances: ';
+        for(var j = 0; j < mockData.Reservations[i].Instances.length; j++) {
+            details += ' ' + mockData.Reservations[i].Instances[j].PublicDnsName;
         }
 
         reservationIds.push(details);
