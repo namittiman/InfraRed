@@ -192,11 +192,11 @@ module.exports =
 
 		}
 
-	}
+	},
 
 	setReminderReservation: function (bot, message, response) {
 	
-	}
+	},
 
 	extendReservation: function (bot, message, response) {
 	

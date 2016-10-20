@@ -37,17 +37,19 @@ exports.get_reservations = function(req, res) {
     var reservationIds = [];
     for(var i = 0; i < mockData.Reservations.length; i++) {
 
-        var details = "" + (i+1) + ". Reservation ID: " + mockData.Reservations[i].ReservationId;
+        var vmConfig = mockData.Reservations[i].request;
+        var details = "" + (i+1) + ". Reservation ID: *" + mockData.Reservations[i].ReservationId + "*";
+        details += "\n> _(" + vmConfig.OS + ", " + vmConfig.VCPUs + "vCPUs, " + vmConfig.VRAM + "GB RAM, " + 
+                    vmConfig.Storage + "GB " + vmConfig.StorageType + ")_ *x" + mockData.Reservations[i].Instances.length + "*";
 
         if (mockData.Reservations[i].type == "vm") {
             for (var j = 0; j < mockData.Reservations[i].Instances.length; j++) {
-                details += "\n" + ' '.repeat(5) + mockData.Reservations[i].Instances[j].PublicIpAddress;
+                details += "\n>" + mockData.Reservations[i].Instances[j].PublicIpAddress;
             }
         } else {
-            details += "\n" + ' '.repeat(5) + "Zeppelin: " + mockData.Reservations[i].cluster_info.zeppelin;
-            details += "\n"  + ' '.repeat(5) + "Ambari: " + mockData.Reservations[i].cluster_info.ambari;
+            details += "\n>" + "Zeppelin: " + mockData.Reservations[i].cluster_info.zeppelin;
+            details += "\n>" + "Ambari: " + mockData.Reservations[i].cluster_info.ambari;
         }
-
 
 
         // var details = mockData.Reservations[i].ReservationId + ', Instances: ';
