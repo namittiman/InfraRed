@@ -195,14 +195,15 @@ module.exports =
 	},
 
 	setReminderReservation: function (bot, message, response) {
-		var timeStr = response.result.resolvedQuery;
-		var seconds = parseInt(timeStr.split(" ")[0]);
-		var multiplier = timeStr.split(" ")[1];
+
+		var res = response.result.parameters.any;
+		var seconds = response.result.parameters.duration.amount;
+		var multiplier = response.result.parameters.duration.unit;
 
 		if (multiplier.includes("min"))
 			seconds *= 60;
 
-		if (multiplier.includes("hour"))
+		if (multiplier.includes("h"))
 			seconds *= 60*60;
 
 		if (multiplier.includes("day"))
@@ -210,9 +211,18 @@ module.exports =
 
 		console.log(seconds);
 
+		var showResFnPtr = this.showReservations;
+
 		setTimeout(function() {
 		    console.log('REMINDER!!!');
-		    bot.reply(message, "The days of your Resevation are numbered! _(" + timeStr + ")_ ");
+
+		    if (res == ""){
+		    	bot.reply(message, "Reminder _(" + seconds + multiplier + ")_ : The days of one of your Resevation are numbered! \n" + "`tear down reservation <reservation_id>`");
+		    	showResFnPtr(bot, message, response);
+		    }
+		    else{
+		    	bot.reply(message, "Reminder: Time to terminate your reservation! \n" + "`tear down reservation " + res + "`");
+		    }
 		}, seconds*1000);
 	},
 
