@@ -3,6 +3,8 @@
   "Reservations": 
   [
     { "ReservationId": "r-c9f6a67e",
+      "type":"vm",
+      "cluster_info": null,
       "Instances": 
       [
         { "InstanceId": "i-0c2faa1a",
@@ -24,6 +26,57 @@
            "PublicIpAddress": "54.158.18.23"
         }
       ]
+    },
+
+    { "ReservationId": "r-c9f6a87e",
+      "type":"cluster",
+      "cluster_info": {
+        "zeppelin": "http://54.158.18.22:8015",
+        "ambari": "http://54.158.18.23:8080"
+      },
+
+      "Instances": 
+      [
+        { "InstanceId": "i-0c2faa1a",
+           "ImageId": "ami-1624987f",
+           "State": { "Code": 16, "Name": "running" },
+           "PublicDnsName": "ec2-54-158-18-22.compute-1.amazonaws.com",
+           "InstanceType": "t1.micro",
+           "LaunchTime": "Mon Oct 17 2016 19:28:53 GMT-0400 (EDT)",
+           "PrivateIpAddress": "172.31.1.89",
+           "PublicIpAddress": "54.158.18.22"
+        },
+        { "InstanceId": "i-1b2fbb3a",
+           "ImageId": "ami-1624987f",
+           "State": { "Code": 16, "Name": "running" },
+           "PublicDnsName": "ec2-54-158-18-23.compute-1.amazonaws.com",
+           "InstanceType": "t1.micro",
+           "LaunchTime": "Mon Oct 17 2016 21:28:53 GMT-0400 (EDT)",
+           "PrivateIpAddress": "172.31.1.90",
+           "PublicIpAddress": "54.158.18.23"
+        },
+        { "InstanceId": "i-1b2fbb4a",
+           "ImageId": "ami-1624987f",
+           "State": { "Code": 16, "Name": "running" },
+           "PublicDnsName": "ec2-54-158-18-23.compute-1.amazonaws.com",
+           "InstanceType": "t1.micro",
+           "LaunchTime": "Mon Oct 17 2016 21:28:53 GMT-0400 (EDT)",
+           "PrivateIpAddress": "172.31.1.90",
+           "PublicIpAddress": "54.158.18.23"
+        },    
+        { "InstanceId": "i-1b2fbb5a",
+           "ImageId": "ami-1624987f",
+           "State": { "Code": 16, "Name": "running" },
+           "PublicDnsName": "ec2-54-158-18-23.compute-1.amazonaws.com",
+           "InstanceType": "t1.micro",
+           "LaunchTime": "Mon Oct 17 2016 21:28:53 GMT-0400 (EDT)",
+           "PrivateIpAddress": "172.31.1.90",
+           "PublicIpAddress": "54.158.18.23"
+        }
+
+      ]
     } 
   ]
  }
+
+

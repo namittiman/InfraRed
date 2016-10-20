@@ -11,7 +11,11 @@ exports.post_reservations = function(req, res) {
     // NOTIFY BOT
     
     sleep.sleep(5);
-    return res.send(mockData.Reservations[0]);
+
+    if (req.body.RequestType == "vm")
+        return res.send(data.Reservations[0]);
+    else
+        return res.send(data.Reservations[1]);
 }
 
 exports.delete_reservation = function(req, res) {

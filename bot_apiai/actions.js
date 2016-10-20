@@ -129,8 +129,8 @@ module.exports =
 		var callback = function (error, response, body) {
 			if(body) {
 				console.log(body);
-				bot.reply(message, "Spark Cluster Created - \n Zeppelin Link : " + "http://" +body.Instances[0].PublicIpAddress + ":8015"
-					+ "\n Ambari Server Link : " + "http://" + body.Instances[1].PublicIpAddress + ":8080");
+				bot.reply(message, "Spark Cluster Created - \n Zeppelin Link : " + body.cluster_info.zeppelin
+					+ "\n Ambari Server Link : " + body.cluster_info.ambari);
 			} else {
 				console.log(error);
 				bot.reply(message, "Sorry, your cluster reservation was not successful!");
