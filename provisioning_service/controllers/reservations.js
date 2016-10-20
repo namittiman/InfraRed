@@ -13,9 +13,9 @@ exports.post_reservations = function(req, res) {
     sleep.sleep(5);
 
     if (req.body.RequestType == "vm")
-        return res.send(data.Reservations[0]);
+        return res.send(mockData.Reservations[0]);
     else
-        return res.send(data.Reservations[1]);
+        return res.send(mockData.Reservations[1]);
 }
 
 exports.delete_reservation = function(req, res) {
@@ -36,6 +36,7 @@ exports.get_reservations = function(req, res) {
 	var userId = req.params.userId;
     var reservationIds = [];
     for(var i = 0; i < mockData.Reservations.length; i++) {
+        
         var details = mockData.Reservations[i].ReservationId + ', Instances: ';
         for(var j = 0; j < mockData.Reservations[i].Instances.length; j++) {
             details += ' ' + mockData.Reservations[i].Instances[j].PublicDnsName;
