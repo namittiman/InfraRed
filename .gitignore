@@ -5,8 +5,7 @@ aws_nodejs/npm-debug.log
 provisioning_service/node_modules/
 BOT/node_modules/
 bot_apiai/node_modules/
-provision_service/.idea/*
-provision_service/node_modules/*
-provision_service/bin/*
+
+*/.idea/*
 
 
