@@ -37,7 +37,13 @@ controller.hears('(.*)',['mention', 'direct_mention', 'direct_message'], functio
 			   case 'show.reservations': actions.showReservations(bot, message, response);
 			   break;
 
+			   case 'set-reminder-reservation': actions.setReminderReservation(bot, message, response);
+			   break;
+
 			   case 'tear.down': actions.tearDown(bot, message, response);
+			   break;
+
+			   case 'extend-reservation': actions.extendReservation(bot, message, response);
 			   break;
 
 			   case 'smalltalk.greetings': bot.reply(message, response.result.fulfillment.speech);

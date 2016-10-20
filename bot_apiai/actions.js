@@ -191,37 +191,16 @@ module.exports =
 
 		}
 
-		/*
-		var params = {
-              "UserId": message.user,
-              "RequestType": "cluster",
-              "VCPUs": response.result.parameters.vcpus,
-              "VRAM": response.result.parameters.ram,
-              "Storage": response.result.parameters.storage,
-              "StorageType": "spindle/SSD",
-              "NodeCount": response.result.parameters.no_of_nodes
-        };
-
-		var url = provisioning_service_url + '/users/' + params.UserId + '/reservations';
-
-		var callback = function (error, response, body) {
-			if(body) {
-				console.log(body);
-				bot.reply(message, "Spark Cluster Created - \n Zeppelin Link : " + "http://" +body.Instances[0].PublicIpAddress + ":8015"
-					+ "\n Ambari Server Link : " + "http://" + body.Instances[1].PublicIpAddress + ":8080");
-			} else {
-				console.log(error);
-				bot.reply(message, "Sorry, your cluster reservation was not successful!");
-			}
-		};
-
-		console.log(url);
-		console.log(params);
-
-		post(params, url, callback);
-		*/
-
 	}
+
+	setReminderReservation: function (bot, message, response) {
+	
+	}
+
+	extendReservation: function (bot, message, response) {
+	
+	}
+
 
 
 }
