@@ -85,76 +85,83 @@ public class SlackTest {
 
     @Test
     public void testSetVM() throws Exception {
-    	
+    	//happy path
     	LinkedHashMap<String, String> inputs = new LinkedHashMap<String, String>();
         inputs.put("set up vm", "Which OS would you like the VM to have?");
         inputs.put("Ubuntu", "How much GB of RAM would you need?");
         inputs.put("64", "How many vCPUs would you like?");
         inputs.put("5", "How much GB of storage would you need?");
         inputs.put("500 gb", "Okay, I am working on it.");
-
         String finalOutput = "Your Public DNS name is : " + "ec2-54-158-18-22.compute-1.amazonaws.com"
                 + "\nand Public IP : " + "54.158.18.22";
         
-        // Type something
-        WebElement messageBot = driver.findElement(By.id("message-input"));
-
-        for (String inp : inputs.keySet()) {
-            messageBot.sendKeys(inp);
-            messageBot.sendKeys(Keys.RETURN);
-            Thread.sleep(2000);
-            List<WebElement> message_contents = driver.findElements(By.xpath("//span[@class='message_body']"));
-            System.out.println(message_contents.get(message_contents.size() - 1).getText());
-            assertEquals(message_contents.get(message_contents.size() - 1).getText(), inputs.get(inp));
-        }
-
-        Thread.sleep(6000);
-        List<WebElement> message_contents = driver.findElements(By.xpath("//span[@class='message_body']"));
-        System.out.println(message_contents.get(message_contents.size() - 1).getText());
-        assertEquals(message_contents.get(message_contents.size() - 1).getText(), finalOutput);
+        doConvo(inputs, finalOutput);
+        
+        //sad path
+    	inputs = new LinkedHashMap<String, String>();
+        inputs.put("set up vm", "Which OS would you like the VM to have?");
+        inputs.put("Ubuntu", "How much GB of RAM would you need?");
+        inputs.put("-64", "How many vCPUs would you like?");
+        inputs.put("5", "How much GB of storage would you need?");
+        inputs.put("500 gb", "Okay, I am working on it.");
+        finalOutput = "Sorry, your reservation was not successful!";
+        
+        doConvo(inputs, finalOutput);
+        
     }
-
+    
     @Test
     public void testSaveKeys() throws Exception {
+    	//happy path
     	LinkedHashMap<String, String> inputs = new LinkedHashMap<String, String>();
         inputs.put("save my keys", "Please provide the cloud service provider name for which you want to setup access keys.");
         inputs.put("aws", "Please provide the Access Key Id for your aws.");
         inputs.put("sdfkhjksdf", "Please provide the Secret Access Key for your aws.");
         inputs.put("serserfasdf", "Okay, I am working on it.");
-
         String finalOutput = "Your keys have been saved successfully!";
-
-        // Type something
-        WebElement messageBot = driver.findElement(By.id("message-input"));
-
-        for (String inp : inputs.keySet()) {
-            messageBot.sendKeys(inp);
-            messageBot.sendKeys(Keys.RETURN);
-            Thread.sleep(2000);
-            List<WebElement> message_contents = driver.findElements(By.xpath("//span[@class='message_body']"));
-            System.out.println(message_contents.get(message_contents.size() - 1).getText());
-            assertEquals(message_contents.get(message_contents.size() - 1).getText(), inputs.get(inp));
-        }
-
-        Thread.sleep(6000);
-        List<WebElement> message_contents = driver.findElements(By.xpath("//span[@class='message_body']"));
-        System.out.println(message_contents.get(message_contents.size() - 1).getText());
-        assertEquals(message_contents.get(message_contents.size() - 1).getText(), finalOutput);
         
+        doConvo(inputs, finalOutput);
+        
+        //sad path
+        inputs = new LinkedHashMap<String, String>();
+        inputs.put("save my keys", "Please provide the cloud service provider name for which you want to setup access keys.");
+        inputs.put("aws", "Please provide the Access Key Id for your aws.");
+        inputs.put("sdk", "Please provide the Secret Access Key for your aws.");
+        inputs.put("serserfasdf", "Okay, I am working on it.");
+        finalOutput = "Your keys could not be saved!";
+        
+        doConvo(inputs, finalOutput);
+
     }
 
     @Test
     public void testSetCluster() throws Exception {
+    	//happy path
     	LinkedHashMap<String, String> inputs = new LinkedHashMap<String, String>();
         inputs.put("set up a cluster", "How many nodes do you want your Spark cluster to be?");
         inputs.put("8", "How many vCPUs per node would you like?");
         inputs.put("5", "How much RAM per node in GB would you like?");
         inputs.put("64 gb", "How much storage per node in GB do you want?");
         inputs.put("100", "Okay, I am working on it.");
-
         String finalOutput = "Spark Cluster Created -\nZeppelin Link : " + "http://54.158.18.22:8015"
         		+ "\nAmbari Server Link : " + "http://54.158.18.23:8080";
+        
+        doConvo(inputs, finalOutput);
+        
+        //sad path
+        inputs = new LinkedHashMap<String, String>();
+        inputs.put("set up a cluster", "How many nodes do you want your Spark cluster to be?");
+        inputs.put("-8", "How many vCPUs per node would you like?");
+        inputs.put("5", "How much RAM per node in GB would you like?");
+        inputs.put("64 gb", "How much storage per node in GB do you want?");
+        inputs.put("100", "Okay, I am working on it.");
+        finalOutput = "Sorry, your cluster reservation was not successful!";
+        
+        doConvo(inputs, finalOutput);
 
+    }
+    
+    public static void doConvo(LinkedHashMap<String, String> inputs, String finalOutput) throws Exception {
         // Type something
         WebElement messageBot = driver.findElement(By.id("message-input"));
 
@@ -171,7 +178,6 @@ public class SlackTest {
         List<WebElement> message_contents = driver.findElements(By.xpath("//span[@class='message_body']"));
         System.out.println(message_contents.get(message_contents.size() - 1).getText());
         assertEquals(message_contents.get(message_contents.size() - 1).getText(), finalOutput);
-        
     }
 
 }

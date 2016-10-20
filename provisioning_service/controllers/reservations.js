@@ -1,6 +1,14 @@
 var mockData = require("../mock.json");
 var sleep = require("sleep");
 
+
+function validate(msg) {
+    if(Number(msg.VCPUs) < 0 || Number(msg.VRAM) < 0 || Number(msg.Storage) < 0 || Number(msg.NodeCount) < 0 || Number(msg.Count) < 0) {
+        return false;
+    }
+    return true;
+}
+
 exports.post_reservations = function(req, res) {
 	var userId = req.params.userId;
     console.log(req.body);
@@ -12,10 +20,14 @@ exports.post_reservations = function(req, res) {
     
     sleep.sleep(5);
 
+    if(!validate(req.body)) {
+        return res.send({"status": 500});
+    }
+
     if (req.body.RequestType == "vm")
-        return res.send(mockData.Reservations[0]);
+        return res.send({"status": 201, "data": mockData.Reservations[0]});
     else
-        return res.send(mockData.Reservations[1]);
+        return res.send({"status": 201, "data": mockData.Reservations[1]});
 }
 
 exports.delete_reservation = function(req, res) {

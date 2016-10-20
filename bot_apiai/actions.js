@@ -56,7 +56,7 @@ module.exports =
 		var url = provisioning_service_url + '/users/' + params.UserId + '/keys';
 
 		var callback = function (error, response, body) {
-			if(body) {
+			if(body.status == 200) {
 				console.log(body);
 				bot.reply(message, "Your keys have been saved successfully!");
 			} else {
@@ -91,10 +91,10 @@ module.exports =
 		var url = provisioning_service_url + '/users/' + params.UserId + '/reservations';
 
 		var callback = function (error, response, body) {
-			if(body) {
+			if(body.status == 201) {
 				console.log(body);
-				bot.reply(message, "Your Public DNS name is : " + body.Instances[0].PublicDnsName 
-					+ "\n and Public IP : " + body.Instances[0].PublicIpAddress);
+				bot.reply(message, "Your Public DNS name is : " + body.data.Instances[0].PublicDnsName 
+					+ "\n and Public IP : " + body.data.Instances[0].PublicIpAddress);
 			} else {
 				console.log(error);
 				bot.reply(message, "Sorry, your reservation was not successful!");
@@ -127,10 +127,10 @@ module.exports =
 		var url = provisioning_service_url + '/users/' + params.UserId + '/reservations';
 
 		var callback = function (error, response, body) {
-			if(body) {
+			if(body.status == 201) {
 				console.log(body);
-				bot.reply(message, "Spark Cluster Created - \n Zeppelin Link : " + body.cluster_info.zeppelin
-					+ "\n Ambari Server Link : " + body.cluster_info.ambari);
+				bot.reply(message, "Spark Cluster Created - \n Zeppelin Link : " + body.data.cluster_info.zeppelin
+					+ "\n Ambari Server Link : " + body.data.cluster_info.ambari);
 			} else {
 				console.log(error);
 				bot.reply(message, "Sorry, your cluster reservation was not successful!");
