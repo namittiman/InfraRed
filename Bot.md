@@ -5,15 +5,15 @@
 Based on our design, there are two main components of this project. Their responsibilities are summarized below :
 ### Bot
 1. Node.js application which handles complete interaction between the end user
-2. Makes calls to the API.AI service to gauge user intent by leveraging their powerful natural language understanding platform.
+2. Makes calls to the [API.AI](https://api.ai/) service to get user intent by leveraging their powerful natural language understanding platform
 3. Maps intent to action and makes calls to the Provisioning Service.
 
 Note: The Bot does not interact with a Database directly, everything via APIs of the Provisioning Service. Idea is to make the bot database agnostic.
 
 ###Provisioning Service
-1. Serves Bot's requests for keys setup, provisioning and  reservation information.
-2. Makes calls to cloud service provider APIs to provision VMs.
-3. Maintains a keys, reservation information per user in a database (Redis or MongoDB) and exposes APIs over it.
+1. Serves Bot's requests for keys setup and provisioning.
+2. Makes calls to cloud service provider APIs (AWS/DigitalOcean) to provision VMs and Cluster.
+3. Maintains keys and reservation information per user in a database (Redis or MongoDB) and exposes APIs over it.
 
 
 ### Use Cases
@@ -25,7 +25,7 @@ Note: The Bot does not interact with a Database directly, everything via APIs of
 2 Main Flow
 	User will mention his/her access keys to the slack bot as a direct mention [S1]. 
 	Bot validates the keys [S2]. 
-	Bot saves the keys to a datastore and sends the confirmation that the key has been saved [S3]
+	Bot saves the keys and sends the confirmation that the key has been saved [S3]
 3 Subflows
     [S1] User asks bot to setup keys in natural language and provides the access keys
     [S2] Bot tests the access keys
@@ -42,7 +42,7 @@ Note: The Bot does not interact with a Database directly, everything via APIs of
 2 Main Flow
 	User will describe his/her request for setting up a VM [S1]. 
 	Bot will validate the configured keys [S2]
-	Bot will make the request to our intermediary “provisioning service” which will add the request information to a datastore and will update it once the request is fulfilled by the cloud provider [S3]. 
+	Bot will make the request to our “provisioning service”. The provisioning service will save  reservation information in a database[S3]. 
 	Bot will provide confirmation to the user once the request is fulfilled [S4]. 
 	Bot asks the user if this config needs to be stored as a new template or update an existing template [S5].
 	Based on user's reply, the bot will take appropriate action. [S6]
@@ -68,7 +68,7 @@ Note: The Bot does not interact with a Database directly, everything via APIs of
     User must have configured his/her access keys
 2 Main Flow
 	User will describe his/her request for setting up a cluster [S1]. 
-    Bot will authenticate the token [S2] 
+    Bot will authenticate the keys [S2] 
     Bot will provision the request and add the request information to a datastore [S3]. 
     Bot will provide confirmation to the user [S4]. 
     Bot asks the user if this config needs to be stored as a new template or update an existing template [S5]. 
@@ -124,7 +124,7 @@ Note: The Bot does not interact with a Database directly, everything via APIs of
 ### Mocking Service Component
 
 
-We have setup out Provisioning service as a Node.js server with  the following endpoints.
+We have setup out Provisioning service as a Node.js server with the following endpoints.
 
 ![](images/api.png)	
 
@@ -133,8 +133,8 @@ The Bot makes calls to the Provisioning service which replies with the data from
 
 ### Bot Implementation
 
-* **Bot Platform**: Our Bot is a Node.js application. We use Botkit, to intercept and reply to messages between the User and the Node application. 
-* **Bot Integration**: To have powerful natural language understanding, we have integrated our bot with API.AI which is a platform where we can train an AI to identify user intent. We have trained the AI as per our usecases mentioned above. API.AI provides a service where the intercepted messages can be sent to and the intent identified.
+* **Bot Platform**: Our Bot is a Node.js application. We use Botkit to intercept and reply to messages between the User and the Node application. 
+* **Bot Integration**: To have powerful natural language understanding, we have integrated our bot with API.AI which is a platform where we can train an AI to identify user intent. We have trained the AI as per our usecases mentioned above. API.AI provides a service to which we can send the intercepted messages and get an intent. The intents are then mapped to actions which are initiated by calling the provisioning service endpoints.
 
 ### Selenium Testing
 
