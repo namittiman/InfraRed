@@ -277,8 +277,7 @@ Finally, you may find the [SMART](https://www.mindtools.com/pages/article/smart-
 
 ### Screencast
 
-Create a screencast of your bot performing your three use cases.
-Demonstrate your selenium tests being executed.
+[**Screencast of Bot**](https://youtu.be/wPWaUG35aUM)
 
 ## Deliverables
 
