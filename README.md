@@ -12,3 +12,6 @@ Team Members:
 * Sekharan Natarajan (smnatara)
 * Vivekanand Ramakrishnan (vramakr2)
 
+## Milestone: Bot
+
+[Bot.md](https://github.ncsu.edu/vramakr2/InfraRed/blob/master/Bot.md)
