@@ -256,19 +256,3 @@ Below is a snapshot of how tests are written. There is a setUp method which logs
 
 [**Screencast of Bot**](https://youtu.be/wPWaUG35aUM)
 
-## Deliverables
-
-Add your code, and BOT.md document describing the following materials. [Submit here](https://goo.gl/forms/VCLtPTRzFJamFggx2).
-
-* 3 Use Cases (10%)
-* Mocking (20%)
-* Bot Implementation (30%)
-* Selenium testing of each use case (20%)
-* Task Tracking -- WORKSHEET.md (15%)
-* Screencast (5%)
-
-BONUS: Integrate your selenium testing with travis ci + sauce labs (+15%) -- only attempt this if you've completed everything else.
-
-Other considerations: Each team member must make contributions on a milestone (e.g., committing code, being assigned and completing tasks). Failure to perform any work will result in no credit for a team member.
-
-DUE: THURSDAY, October 20, Midnight.
