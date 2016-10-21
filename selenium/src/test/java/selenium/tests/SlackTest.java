@@ -46,8 +46,8 @@ public class SlackTest {
 
 		driver = new RemoteWebDriver(new URL(URL), caps);
 
-		//ChromeDriverManager.getInstance().setup();
-		//driver = new ChromeDriver();
+		ChromeDriverManager.getInstance().setup();
+		driver = new ChromeDriver();
 
 		driver.get("https://ateamnoplanb.slack.com/");
 
