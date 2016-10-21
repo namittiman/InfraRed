@@ -138,26 +138,102 @@ The Bot makes calls to the Provisioning service which replies with the data from
 
 ### Selenium Testing
 
-To support testing of your bot, we will use Selenium to verify that the bot is returning the correct response based on a input message.
+To support testing of our bot, we have used Selenium to verify that the bot is returning the correct response based on an input message. We have tested happy and alternative/sad paths for each use case. In local configuration, we run mavenized tests in Eclipse and the testing happens on Chrome on the local machine. We have also added support for Sauce Labs to automate testing on other browsers and platforms. For more details on how to set up your environment and run tests, refer to [Selenium folder](https://github.ncsu.edu/vramakr2/InfraRed/tree/master/selenium)
 
-[See full example Selenium test for Slack](https://gist.github.com/chrisparnin/e3ee1a96c681f12ae11246cfe3225182)
+Below is a snapshot of how tests are written. There is a setUp method which logs into Slack and connects with the InfraRed bot. There is a test for each use case. Below is a snapshot for save keys use case. Every use case test has two test cases viz. happy path where the conversation between the user and bot leads to successful saving of api keys and sad path where the conversation between the user and bot leads to failure of saving of api keys. Similar tests have been written for other use cases like set up vm, set up cluster, tear down reservation and show reservations. More details can be found here:
+
+[SlackTest.java](https://github.ncsu.edu/vramakr2/InfraRed/blob/master/selenium/src/test/java/selenium/tests/SlackTest.java)
 
 ```java
-@Test
-public void postMessage()
-{
-	driver.get("https://csc510-fall16.slack.com/");
 
-   ...
+	@BeforeClass
+	public static void setUp() throws Exception {
+		// driver = new HtmlUnitDriver();
 
-	// Find email and password fields.
-	WebElement email = driver.findElement(By.id("email"));
-	WebElement pw = driver.findElement(By.id("password"));
+		DesiredCapabilities caps = DesiredCapabilities.chrome();
+		caps.setCapability("platform", "Windows XP");
+		caps.setCapability("version", "43.0");
 
-   ...
+		driver = new RemoteWebDriver(new URL(URL), caps);
+
+		ChromeDriverManager.getInstance().setup();
+		driver = new ChromeDriver();
+
+		driver.get("https://ateamnoplanb.slack.com/");
+
+		// Wait until page loads and we can see a sign in button.
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signin_btn")));
+
+		// Find email and password fields.
+		WebElement email = driver.findElement(By.id("email"));
+		WebElement pw = driver.findElement(By.id("password"));
+
+		// Type in our test user login info.
+		email.sendKeys("<Your email>");
+		pw.sendKeys("<password>");
+
+		// Click
+		WebElement signin = driver.findElement(By.id("signin_btn"));
+		signin.click();
+
+		// Wait until we go to general channel.
+		wait.until(ExpectedConditions.titleContains("general"));
+
+		// Switch to #bots channel and wait for it to load.
+		driver.get("https://ateamnoplanb.slack.com/messages/@" + BOT_NAME + "/");
+
+	}
+	
+	
+	public static void doConvo(LinkedHashMap<String, String> inputs, String finalOutput) throws Exception {
+		// Type something
+		WebElement messageBot = driver.findElement(By.id("message-input"));
+
+		for (String inp : inputs.keySet()) {
+			messageBot.sendKeys(inp);
+			messageBot.sendKeys(Keys.RETURN);
+			Thread.sleep(2000);
+			List<WebElement> message_contents = driver.findElements(By.xpath("//span[@class='message_body']"));
+			System.out.println(message_contents.get(message_contents.size() - 1).getText());
+			assertEquals(message_contents.get(message_contents.size() - 1).getText(), inputs.get(inp));
+		}
+
+		Thread.sleep(6000);
+		List<WebElement> message_contents = driver.findElements(By.xpath("//span[@class='message_body']"));
+		System.out.println(message_contents.get(message_contents.size() - 1).getText());
+		assertEquals(message_contents.get(message_contents.size() - 1).getText(), finalOutput);
+	}
+	
+	
+	@Test
+	public void testSaveKeys() throws Exception {
+		// happy path
+		LinkedHashMap<String, String> inputs = new LinkedHashMap<String, String>();
+		inputs.put("save my keys",
+				"Please provide the cloud service provider name for which you want to setup access keys.");
+		inputs.put("aws", "Please provide the Access Key Id for your aws.");
+		inputs.put("sdfkhjksdf", "Please provide the Secret Access Key for your aws.");
+		inputs.put("serserfasdf", "Okay, I am working on it.");
+		String finalOutput = "Your keys have been saved successfully!";
+
+		doConvo(inputs, finalOutput);
+
+		// sad path
+		inputs = new LinkedHashMap<String, String>();
+		inputs.put("save my keys",
+				"Please provide the cloud service provider name for which you want to setup access keys.");
+		inputs.put("aws", "Please provide the Access Key Id for your aws.");
+		inputs.put("sdk", "Please provide the Secret Access Key for your aws.");
+		inputs.put("serserfasdf", "Okay, I am working on it.");
+		finalOutput = "Your keys could not be saved!";
+
+		doConvo(inputs, finalOutput);
+
+	}
+
 ```
 
-Create a selenium test that demonstrates each use case. Demonstrate at least one "happy path" and one "alternative" path for each use case.
 
 ### Task Tracking
 
