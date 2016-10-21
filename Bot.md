@@ -250,7 +250,7 @@ Below is a snapshot of how tests are written. There is a setUp method which logs
 
 ### Task Tracking
 
-[Task tracking for Infrared](./WORKSHEET.md)
+[**Task tracking for Infrared**](./WORKSHEET.md)
 
 ### Screencast
 
