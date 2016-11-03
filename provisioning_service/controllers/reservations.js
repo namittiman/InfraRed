@@ -1,5 +1,7 @@
 var mockData = require("../mock.json");
 var sleep = require("sleep");
+var aws = require('../aws/aws.js');
+
 
 
 function validate(msg) {
@@ -11,23 +13,9 @@ function validate(msg) {
 
 exports.post_reservations = function(req, res) {
 	var userId = req.params.userId;
+    console.log("POST request Received : ")
     console.log(req.body);
-
-    // CALL AWS
-    // WAIT FOR READY STATE
-    // STORE IN DB
-    // NOTIFY BOT
-    
-    sleep.sleep(5);
-
-    if(!validate(req.body)) {
-        return res.send({"status": 500});
-    }
-
-    if (req.body.RequestType == "vm")
-        return res.send({"status": 201, "data": mockData.Reservations[0]});
-    else
-        return res.send({"status": 201, "data": mockData.Reservations[1]});
+    aws.handle_request(req, res);
 }
 
 exports.delete_reservation = function(req, res) {

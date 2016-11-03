@@ -12,6 +12,7 @@ function post(params, url, callback) {
 	    json: params
 	  };
 
+	  console.log("\n POST Request \n")
 	  console.log(options);
 	  // Send a http request to url and specify a callback that will be called upon its return.
 	  request(options, callback);
@@ -26,7 +27,7 @@ function deleteResource(url, callback) {
 	      "content-type": "application/json",
 	    }
 	  };
-
+	  console.log("\n DELETE Request \n")
 	  console.log(options);
 	  // Send a http request to url and specify a callback that will be called upon its return.
 	  request(options, callback);
@@ -34,6 +35,8 @@ function deleteResource(url, callback) {
 
 function get(url, callback) {
 	  // Send a http request to url and specify a callback that will be called upon its return.
+	  console.log("\n GET Request \n")
+	  console.log(url);
 	  request(url, callback);
 }
 
@@ -43,8 +46,8 @@ module.exports =
 	saveKeys: function (bot, message, response) {
 		bot.reply(message, "Okay, I am working on it.")
 		console.log("***** SAVING KEYS ********");
-		console.log(response);
-		console.log(message);
+		//console.log(response);
+		//console.log(message);
 
 		var params = {
 		      "UserId": message.user,
@@ -65,8 +68,8 @@ module.exports =
 			}
 		};
 
-		console.log(url);
-		console.log(params);
+		//console.log(url);
+		//console.log(params);
 
 		post(params, url, callback);
 	},
@@ -74,8 +77,8 @@ module.exports =
 	createVM: function (bot, message, response) {
 		bot.reply(message, "Okay, I am working on it.")
 		console.log("***** CREATING VMs ********");
-		console.log(response);
-		console.log(message);
+		//console.log(response);
+		//console.log(message);
 
         var params = {
               "UserId": message.user,
@@ -101,8 +104,8 @@ module.exports =
 			}
 		};
 
-		console.log(url);
-		console.log(params);
+		//console.log(url);
+		//console.log(params);
 
 		post(params, url, callback);
 
@@ -111,8 +114,8 @@ module.exports =
 	createCluster: function (bot, message, response) {
 		bot.reply(message, "Okay, I am working on it.")
 		console.log("***** CREATING CLUSTER ********");
-		console.log(response);
-		console.log(message);
+		//console.log(response);
+		//console.log(message);
 
 		var params = {
               "UserId": message.user,
@@ -137,8 +140,8 @@ module.exports =
 			}
 		};
 
-		console.log(url);
-		console.log(params);
+		//console.log(url);
+		//console.log(params);
 
 		post(params, url, callback);
 
@@ -160,7 +163,7 @@ module.exports =
 			}
 		};
 
-		console.log(url);
+		//console.log(url);
 		get(url, callback);
 
 	},
