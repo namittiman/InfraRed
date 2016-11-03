@@ -1,5 +1,8 @@
+require('../models/reservation');
+
 var mockData = require("../mock.json");
-var sleep = require("sleep");
+var mongoose = require('mongoose'),
+Reservation = mongoose.model('Reservation');
 
 
 function validate(msg) {
@@ -10,24 +13,50 @@ function validate(msg) {
 }
 
 exports.post_reservations = function(req, res) {
-	var userId = req.params.userId;
+	var userId = req.params.UserId;
     console.log(req.body);
-
-    // CALL AWS
-    // WAIT FOR READY STATE
-    // STORE IN DB
-    // NOTIFY BOT
-    
-    sleep.sleep(5);
-
     if(!validate(req.body)) {
         return res.send({"status": 500});
     }
-
-    if (req.body.RequestType == "vm")
-        return res.send({"status": 201, "data": mockData.Reservations[0]});
-    else
-        return res.send({"status": 201, "data": mockData.Reservations[1]});
+    else{
+        /*
+        var dict = {};
+        dict["_id"] = userId + "_" + req.body.Service;
+        dict["document"] =  req.body;
+        */
+        //req.body["_id"] = userId;
+        var dict = {};
+        dict["UserId"] = userId;
+        if (req.body.RequestType == "vm") {
+            // CALL AWS
+            // WAIT FOR READY STATE
+            dict["Reservation"] = mockData.Reservations[1];
+            Reservation.create(
+                dict, function(err, key) {
+                    if(err) {
+                        return res.send({"status": 400});
+                    }
+                    else {
+                        return res.send({"status": 200});
+                    }  
+                }    
+            );
+        } else {
+            // CALL AWS
+            // WAIT FOR READY STATE
+            dict["Reservation"] = mockData.Reservations[1];
+            Reservation.create(
+                dict, function(err, key) {
+                    if(err) {
+                        return res.send({"status": 400});
+                    }
+                    else {
+                        return res.send({"status": 200});
+                    }  
+                }    
+            );
+        }
+    }
 }
 
 exports.delete_reservation = function(req, res) {
