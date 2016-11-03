@@ -94,10 +94,13 @@ module.exports =
 		var url = provisioning_service_url + '/users/' + params.UserId + '/reservations';
 
 		var callback = function (error, response, body) {
-			if(body.status == 201) {
-				console.log(body);
-				bot.reply(message, "Your Public DNS name is : " + body.data.Instances[0].PublicDnsName 
-					+ "\n and Public IP : " + body.data.Instances[0].PublicIpAddress);
+			if(body.status == 200) {
+				console.log("POST Response Body Data \n ")
+				console.log(body.data)
+				for (var i = 0; i < body.data.Instances.length; i++) {
+					bot.reply(message, "Your Public DNS name is : " + body.data.Instances[i].PublicDnsName 
+					+ "\n and Public IP : " + body.data.Instances[i].PublicIpAddress);
+            	}
 			} else {
 				console.log(error);
 				bot.reply(message, "Sorry, your reservation was not successful!");

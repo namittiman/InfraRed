@@ -43,7 +43,7 @@ module.exports =
             ec2.waitFor('instanceRunning', params, function(err, data) {
                 if (err) {
                     console.log("Could not create instance", err);
-                    return res.send({"status": 500});;
+                    return res.send({"status": 500});
                 } else {
                     console.log(data);           // successful response
                     var reservation_json_to_store;
@@ -69,7 +69,7 @@ module.exports =
                     var reservation_json_to_send_to_client;
                     // TODO, Currently returning whatever we got from AWS to client
                     reservation_json_to_send_to_client = reservation_json_to_store;
-                    return res.send(reservation_json_to_send_to_client);
+                    return res.send({"status" : 200, "data" : reservation_json_to_send_to_client});
                 }
             });
         });
