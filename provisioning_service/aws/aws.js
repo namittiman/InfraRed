@@ -2,9 +2,12 @@ var AWS = require('aws-sdk');
 var uuid = require('node-uuid');
 AWS.config.region = 'us-east-1';
 var ec2 = new AWS.EC2();
+
 require('../models/reservation');
+require('../models/key');
 var mongoose = require('mongoose');
 var Reservation = mongoose.model('Reservation');
+var Key = mongoose.model('Key');
 
 
 module.exports = 
@@ -44,6 +47,15 @@ module.exports =
             var params = {
                 InstanceIds: instanceIds
             };
+
+            // TODO READ AWS KEYS FROM DATABASE
+            /*findOne({'UserId':req.body.UserId}, function(err, result) {
+                if (err) {
+                    console.log("Could not query database for Keys", err);
+                    return res.send({"status": 400});
+                }
+            });*/
+
             ec2.waitFor('instanceRunning', params, function(err, data) {
                 if (err) {
                     console.log("Could not create instance", err);
