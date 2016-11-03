@@ -12,6 +12,7 @@ function post(params, url, callback) {
 	    json: params
 	  };
 
+	  console.log("\n POST Request \n")
 	  console.log(options);
 	  // Send a http request to url and specify a callback that will be called upon its return.
 	  request(options, callback);
@@ -26,7 +27,7 @@ function deleteResource(url, callback) {
 	      "content-type": "application/json",
 	    }
 	  };
-
+	  console.log("\n DELETE Request \n")
 	  console.log(options);
 	  // Send a http request to url and specify a callback that will be called upon its return.
 	  request(options, callback);
@@ -34,6 +35,8 @@ function deleteResource(url, callback) {
 
 function get(url, callback) {
 	  // Send a http request to url and specify a callback that will be called upon its return.
+	  console.log("\n GET Request \n")
+	  console.log(url);
 	  request(url, callback);
 }
 
@@ -43,8 +46,8 @@ module.exports =
 	saveKeys: function (bot, message, response) {
 		bot.reply(message, "Okay, I am working on it.")
 		console.log("***** SAVING KEYS ********");
-		console.log(response);
-		console.log(message);
+		//console.log(response);
+		//console.log(message);
 
 		var params = {
 		      "UserId": message.user,
@@ -65,8 +68,8 @@ module.exports =
 			}
 		};
 
-		console.log(url);
-		console.log(params);
+		//console.log(url);
+		//console.log(params);
 
 		post(params, url, callback);
 	},
@@ -74,8 +77,8 @@ module.exports =
 	createVM: function (bot, message, response) {
 		bot.reply(message, "Okay, I am working on it.")
 		console.log("***** CREATING VMs ********");
-		console.log(response);
-		console.log(message);
+		//console.log(response);
+		//console.log(message);
 
         var params = {
               "UserId": message.user,
@@ -91,18 +94,21 @@ module.exports =
 		var url = provisioning_service_url + '/users/' + params.UserId + '/reservations';
 
 		var callback = function (error, response, body) {
-			if(body.status == 201) {
-				console.log(body);
-				bot.reply(message, "Your Public DNS name is : " + body.data.Instances[0].PublicDnsName 
-					+ "\n and Public IP : " + body.data.Instances[0].PublicIpAddress);
+			if(body.status == 200) {
+				console.log("POST Response Body Data \n ")
+				console.log(body.data)
+				for (var i = 0; i < body.data.Instances.length; i++) {
+					bot.reply(message, "Your Public DNS name is : " + body.data.Instances[i].PublicDnsName 
+					+ "\n and Public IP : " + body.data.Instances[i].PublicIpAddress);
+            	}
 			} else {
 				console.log(error);
 				bot.reply(message, "Sorry, your reservation was not successful!");
 			}
 		};
 
-		console.log(url);
-		console.log(params);
+		//console.log(url);
+		//console.log(params);
 
 		post(params, url, callback);
 
@@ -111,8 +117,8 @@ module.exports =
 	createCluster: function (bot, message, response) {
 		bot.reply(message, "Okay, I am working on it.")
 		console.log("***** CREATING CLUSTER ********");
-		console.log(response);
-		console.log(message);
+		//console.log(response);
+		//console.log(message);
 
 		var params = {
               "UserId": message.user,
@@ -137,8 +143,8 @@ module.exports =
 			}
 		};
 
-		console.log(url);
-		console.log(params);
+		//console.log(url);
+		//console.log(params);
 
 		post(params, url, callback);
 
@@ -160,7 +166,7 @@ module.exports =
 			}
 		};
 
-		console.log(url);
+		//console.log(url);
 		get(url, callback);
 
 	},

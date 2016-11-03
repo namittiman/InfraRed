@@ -1,9 +1,5 @@
-require('../models/reservation');
-
 var mockData = require("../mock.json");
-var mongoose = require('mongoose'),
-Reservation = mongoose.model('Reservation');
-
+var aws = require('../aws/aws.js');
 
 function validate(msg) {
     if(Number(msg.VCPUs) < 0 || Number(msg.VRAM) < 0 || Number(msg.Storage) < 0 || Number(msg.NodeCount) < 0 || Number(msg.Count) < 0) {
@@ -13,50 +9,10 @@ function validate(msg) {
 }
 
 exports.post_reservations = function(req, res) {
-	var userId = req.params.UserId;
+	var userId = req.params.userId;
+    console.log("POST request Received : ")
     console.log(req.body);
-    if(!validate(req.body)) {
-        return res.send({"status": 500});
-    }
-    else{
-        /*
-        var dict = {};
-        dict["_id"] = userId + "_" + req.body.Service;
-        dict["document"] =  req.body;
-        */
-        //req.body["_id"] = userId;
-        var dict = {};
-        dict["UserId"] = userId;
-        if (req.body.RequestType == "vm") {
-            // CALL AWS
-            // WAIT FOR READY STATE
-            dict["Reservation"] = mockData.Reservations[1];
-            Reservation.create(
-                dict, function(err, key) {
-                    if(err) {
-                        return res.send({"status": 400});
-                    }
-                    else {
-                        return res.send({"status": 200});
-                    }  
-                }    
-            );
-        } else {
-            // CALL AWS
-            // WAIT FOR READY STATE
-            dict["Reservation"] = mockData.Reservations[1];
-            Reservation.create(
-                dict, function(err, key) {
-                    if(err) {
-                        return res.send({"status": 400});
-                    }
-                    else {
-                        return res.send({"status": 200});
-                    }  
-                }    
-            );
-        }
-    }
+    aws.handle_request(req, res);
 }
 
 exports.delete_reservation = function(req, res) {
