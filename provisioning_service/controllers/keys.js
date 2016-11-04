@@ -10,15 +10,13 @@ exports.post_keys = function(req, res) {
     // Return success on write else failure
 
     if(!validate(req.body)) {
-        return res.send({"status": 500});
+        return res.send({"status": 400, "message": "Bad Request"});
     } else {
         Key.create(req.body, function(err, key) {
             if(err) {
-                return res.send({"status": 400});
+                return res.send({"status": 500, "message": "Internal Server Error"});
             } else {
-                console.log("Inserted into Db key")
-                console.log(key)
-                return res.send({"status": 200});
+                return res.send({"status": 201});
             }  
         });
     }

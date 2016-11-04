@@ -33,11 +33,22 @@ function deleteResource(url, callback) {
 	  request(options, callback);
 }
 
-function get(url, callback) {
+function get(params, url, callback) {
 	  // Send a http request to url and specify a callback that will be called upon its return.
 	  console.log("\n GET Request \n")
 	  console.log(url);
-	  request(url, callback);
+
+	  var options = {
+	    url: url,
+	    method: 'GET',
+	    headers: {
+	      "User-Agent": "InfraRedBot",
+	      "content-type": "application/json",
+	    },
+	    json: params
+	  };
+
+	  request(options, callback);
 }
 
 
@@ -59,10 +70,13 @@ module.exports =
 		var url = provisioning_service_url + '/users/' + params.UserId + '/keys';
 
 		var callback = function (error, response, body) {
-			if(body.status == 200) {
+			if(body.status == 201) {
 				console.log(body);
 				bot.reply(message, "Your keys have been saved successfully!");
-			} else {
+			} else if(body.status == 400) {
+				bot.reply(message, "Please check your credentials they don't seem to be right!");
+			}
+			else {
 				console.log(error);
 				bot.reply(message, "Your keys could not be saved!");
 			}
@@ -94,16 +108,16 @@ module.exports =
 		var url = provisioning_service_url + '/users/' + params.UserId + '/reservations';
 
 		var callback = function (error, response, body) {
-			if(body.status == 200) {
+			if(body.status == 201) {
 				console.log("POST Response Body Data \n ")
 				console.log(body.data)
 				for (var i = 0; i < body.data.Instances.length; i++) {
-					bot.reply(message, "Your Public DNS name is : " + body.data.Instances[i].PublicDnsName 
+					bot.reply(message, "Your Reservation Id is : " + body.data.ReservationId +  "\n Your Public DNS name is : " + body.data.Instances[i].PublicDnsName 
 					+ "\n and Public IP : " + body.data.Instances[i].PublicIpAddress);
-            	}
+            	}
 			} else {
 				console.log(error);
-				bot.reply(message, "Sorry, your reservation was not successful!");
+				bot.reply(message, body.message + ". Sorry, your reservation was not successful!");
 			}
 		};
 
@@ -139,7 +153,7 @@ module.exports =
 					+ "\n Ambari Server Link : " + body.data.cluster_info.ambari);
 			} else {
 				console.log(error);
-				bot.reply(message, "Sorry, your cluster reservation was not successful!");
+				bot.reply(message, body.message + ". Sorry, your cluster reservation was not successful!");
 			}
 		};
 
@@ -153,21 +167,23 @@ module.exports =
 	// GET /users/:<userId>/reservations/
 	showReservations: function (bot, message, response) {
 		console.log("***** SHOWING RESERVATIONS ********");
-		var url = provisioning_service_url + '/users/' + message.user + '/reservations';
+		var params = {
+		    "UserId": message.user,
+		};
+		var url = provisioning_service_url + '/users/' + params.UserId + '/reservations';
 
 		var callback = function (error, response, body) {
-			if(body) {
-				console.log(typeof(body));
+			if(body.status == 200) {
 				console.log(body);
-				bot.reply(message, body);
+				bot.reply(message, body.data);
 			} else {
 				console.log(error);
-				bot.reply(message, "Sorry, I was not able to fetch your reservations at this time.");
+				bot.reply(message, body.messsage + ". Sorry, I was not able to fetch your reservations at this time.");
 			}
 		};
 
 		//console.log(url);
-		get(url, callback);
+		get(params, url, callback);
 
 	},
 
@@ -181,12 +197,12 @@ module.exports =
 			//go ahead and delete that reservation
 			var url = provisioning_service_url + '/users/' + message.user + '/reservations/' + response.result.parameters.reservation_id;
 			var callback = function (error, response, body) {
-				if(body) {
+				if(body.status == 204) {
 					console.log(body);
 					bot.reply(message, "Successfully terminated your reservation.");
 				} else {
 					console.log(error);
-					bot.reply(message, "Sorry, I was not able to terminate your reservation.");
+					bot.reply(message, body.message + ". Sorry, I was not able to terminate your reservation.");
 				}
 			};
 
