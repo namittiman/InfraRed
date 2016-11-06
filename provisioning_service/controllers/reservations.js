@@ -15,27 +15,15 @@ exports.post_reservations = function(req, res) {
 	var userId = req.params.userId;
     console.log("POST request Received : ")
     console.log(req.body);
-    aws.handle_request(req, res);
+    // TODO: CHECK THE TYPE OF REQUEST AND CALL APPROPRIATE AWS METHOD
+    aws.create_vm(req, res);
     
 }
 
 exports.delete_reservation = function(req, res) {
     var ReservationId = req.params.ReservationId;
     console.log(ReservationId);
-
-    // CALL AWS SDK
-    // WAIT FOR TERMINATE STATE
-    // DELETE FROM DB
-    // NOTIFY BOT ABOUT STATUS
-    Reservation.remove({"Reservation.ReservationId" : ReservationId}, function(err, result) {
-        if(err) {
-            return res.send({"status": 500, "message": "Internal Server Error"});
-        } else {
-            return res.send({"status": 204});
-        }
-    });
-
-    
+    aws.terminate_vm(req, res);
 }
 
 exports.get_reservations = function(req, res) {

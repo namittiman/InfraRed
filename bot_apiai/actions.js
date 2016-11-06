@@ -18,14 +18,15 @@ function post(params, url, callback) {
 	  request(options, callback);
 }
 
-function deleteResource(url, callback) {
+function deleteResource(params, url, callback) {
 	  var options = {
 	    url: url,
 	    method: 'DELETE',
 	    headers: {
 	      "User-Agent": "InfraRedBot",
 	      "content-type": "application/json",
-	    }
+	    },
+	    json: params
 	  };
 	  console.log("\n DELETE Request \n")
 	  console.log(options);
@@ -89,7 +90,7 @@ module.exports =
 	},
 
 	createVM: function (bot, message, response) {
-		bot.reply(message, "Okay, I am working on it.")
+		bot.reply(message, "Okay, I am working on it.");
 		console.log("***** CREATING VMs ********");
 		//console.log(response);
 		//console.log(message);
@@ -102,7 +103,7 @@ module.exports =
               "VRAM": response.result.parameters.ram,
               "Storage": response.result.parameters.storage,
               "StorageType": "spindle/SSD",
-              "Count": 1
+              "VMCount": response.result.parameters.vmcount
         };
 
 		var url = provisioning_service_url + '/users/' + params.UserId + '/reservations';
@@ -111,10 +112,12 @@ module.exports =
 			if(body.status == 201) {
 				console.log("POST Response Body Data \n ")
 				console.log(body.data)
+				var details = "Your Reservation Id is : " + body.data.ReservationId + " \n Instance details:";
 				for (var i = 0; i < body.data.Instances.length; i++) {
-					bot.reply(message, "Your Reservation Id is : " + body.data.ReservationId +  "\n Your Public DNS name is : " + body.data.Instances[i].PublicDnsName 
-					+ "\n and Public IP : " + body.data.Instances[i].PublicIpAddress);
+					 details = details +  "\n Your Public DNS name is : " + body.data.Instances[i].PublicDnsName 
+					+ "\n and Public IP : " + body.data.Instances[i].PublicIpAddress;
             	}
+				bot.reply(message,  details);
 			} else {
 				console.log(error);
 				bot.reply(message, body.message + ". Sorry, your reservation was not successful!");
@@ -189,6 +192,7 @@ module.exports =
 
 	tearDown: function (bot, message, response) {
 		
+		bot.reply(message, "Okay, I am working on it.");
 		console.log("***** TEAR DOWN ********");
 		console.log(response);
 		console.log("***" + response.result.parameters.reservation_id);
@@ -196,6 +200,11 @@ module.exports =
 		if(response.result.parameters.reservation_id != "") {
 			//go ahead and delete that reservation
 			var url = provisioning_service_url + '/users/' + message.user + '/reservations/' + response.result.parameters.reservation_id;
+			var params = {
+			    "UserId": message.user,
+			    "ReservationId": response.result.parameters.reservation_id
+			};
+
 			var callback = function (error, response, body) {
 				if(body.status == 204) {
 					console.log(body);
@@ -206,7 +215,7 @@ module.exports =
 				}
 			};
 
-			deleteResource(url, callback);
+			deleteResource(params, url, callback);
 
 		} else {
 			bot.reply(message, "Please provide a reservation id. (say: `tear down reservation <reservation_id>`)");
