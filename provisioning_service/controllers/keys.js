@@ -33,17 +33,15 @@ function validate(msg , callback) {
         AWS.config.region = 'us-east-1';
         AWS.config.accessKeyId = msg.AccessKeyId;
         AWS.config.secretAccessKey = msg.SecretAccessKey;
-        console.log(AWS.config.accessKeyId);
-        console.log(AWS.config.secretAccessKey);
         var acm = new AWS.ACM();
         //callback(true);
         
         acm.listCertificates({}, function (err, data) {
-            if (err){
-                callback(false);
+            if (err.message != "The security token included in the request is invalid."){
+                callback(true);
             }
             else{
-                callback(true);
+                callback(false);
             }
 
         });
