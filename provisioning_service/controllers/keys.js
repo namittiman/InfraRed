@@ -44,7 +44,7 @@ function validate(msg , callback) {
             }
 
         });
-    }else if(msg.Service.toLowerCase() == 'do'){
-
+    } else if(msg.Service.toLowerCase() == 'do'){
+        callback(true);
     }
 }

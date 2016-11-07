@@ -120,6 +120,7 @@ module.exports =
                         if(!err)
                         {
                             console.log("DELETE done");
+                            res.send({"status": 204, "message": "Delete Done!"});
                         } else {
                             console.log("deleting res failed. status" + resp.statusCode);
                             console.log(err);
