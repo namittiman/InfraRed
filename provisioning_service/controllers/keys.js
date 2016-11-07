@@ -12,10 +12,12 @@ exports.post_keys = function(req, res) {
     if(!validate(req.body)) {
         return res.send({"status": 400, "message": "Bad Request"});
     } else {
-        Key.create(req.body, function(err, key) {
+        Key.findOneAndUpdate({"UserId" : req.body.UserId }, req.body, { upsert:true , new : true}, function(err, key) {
+            console.log(key);
             if(err) {
                 return res.send({"status": 500, "message": "Internal Server Error"});
             } else {
+                console.log("Written keys to database");
                 return res.send({"status": 201});
             }  
         });
