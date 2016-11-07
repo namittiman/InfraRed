@@ -33,8 +33,11 @@ function validate(msg , callback) {
         AWS.config.region = 'us-east-1';
         AWS.config.accessKeyId = msg.AccessKeyId;
         AWS.config.secretAccessKey = msg.SecretAccessKey;
-
+        console.log(AWS.config.accessKeyId);
+        console.log(AWS.config.secretAccessKey);
         var acm = new AWS.ACM();
+        //callback(true);
+        
         acm.listCertificates({}, function (err, data) {
             if (err){
                 callback(false);
@@ -44,6 +47,7 @@ function validate(msg , callback) {
             }
 
         });
+        
     } else if(msg.Service.toLowerCase() == 'do'){
         callback(true);
     }

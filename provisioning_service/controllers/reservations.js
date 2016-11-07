@@ -17,15 +17,15 @@ exports.post_reservations = function(req, res) {
     console.log("POST request Received : ")
     console.log(req.body);
     // TODO: CHECK THE TYPE OF REQUEST AND CALL APPROPRIATE AWS METHOD
-    //aws.create_vm(req, res);
-    docean.create_vm(req, res)
+    aws.create_vm(req, res);
+    //docean.create_vm(req, res)
 }
 
 exports.delete_reservation = function(req, res) {
     var ReservationId = req.params.ReservationId;
     console.log(ReservationId);
-    //aws.terminate_vm(req, res);
-    docean.terminate_vm(req, res);
+    aws.terminate_vm(req, res);
+    //docean.terminate_vm(req, res);
 }
 
 exports.get_reservations = function(req, res) {

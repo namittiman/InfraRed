@@ -13,6 +13,7 @@ module.exports =
     create_vm: function (req, res) {
         console.log("\nHandeling Request AWS\n");
         //FETCH KEYS AND CALL AWS SDK TO CREATE VMs
+        console.log(req.body.UserId);
         Key.findOne({ "UserId": req.body.UserId, "Service": "aws" }, function(err,result) {
 
             if(err) {
@@ -37,8 +38,8 @@ module.exports =
                 var params = {
                     ImageId: 'ami-40d28157', // Ubuntu Server 16.04 LTS (HVM), SSD Volume Type - ami-40d28157
                     InstanceType: 't2.micro',
-                    MinCount: 1, MaxCount: req.body.VMCount,
                     KeyName: 'infrared',
+                    MinCount: 1, MaxCount: req.body.VMCount
                 };
 
 
