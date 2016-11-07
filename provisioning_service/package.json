@@ -8,7 +8,8 @@
     "express": "4.x",
     "sleep": "^4.0.0",
     "aws-sdk": ">= 2.0.9",
-    "node-uuid": ">= 1.4.1"
+    "node-uuid": ">= 1.4.1",
+    "needle": "^0.7.10"
   },
   "devDependencies": {
     "mongoose": "~4.6.3"

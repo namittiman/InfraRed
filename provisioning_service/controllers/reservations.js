@@ -1,5 +1,6 @@
 var mockData = require("../mock.json");
 var aws = require('../aws/aws.js');
+var docean = require('../do/do.js');
 require('../models/reservation');
 var mongoose = require('mongoose');
 var Reservation = mongoose.model('Reservation');
@@ -17,13 +18,14 @@ exports.post_reservations = function(req, res) {
     console.log(req.body);
     // TODO: CHECK THE TYPE OF REQUEST AND CALL APPROPRIATE AWS METHOD
     aws.create_vm(req, res);
-    
+    //docean.create_vm(req, res)
 }
 
 exports.delete_reservation = function(req, res) {
     var ReservationId = req.params.ReservationId;
     console.log(ReservationId);
     aws.terminate_vm(req, res);
+    //docean.terminate_vm(req, res);
 }
 
 exports.get_reservations = function(req, res) {
@@ -58,19 +60,6 @@ exports.get_reservations = function(req, res) {
                     console.log(details);
                 }
                 
-
-
-/*
-                if (mockData.Reservations[i].type == "vm") {
-                    for (var j = 0; j < mockData.Reservations[i].Instances.length; j++) {
-                        details += "\n>" + mockData.Reservations[i].Instances[j].PublicIpAddress;
-                    }
-                } else {
-                    details += "\n>" + "Zeppelin: " + mockData.Reservations[i].cluster_info.zeppelin;
-                    details += "\n>" + "Ambari: " + mockData.Reservations[i].cluster_info.ambari;
-                }
-                */
-
                 reservationIds.push(details);
             }
             return res.send({"status": 200, "data": reservationIds.join("\n\n")});

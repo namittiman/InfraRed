@@ -83,6 +83,7 @@ module.exports =
                             console.log(req.body);
                             var r = { 
                                 "UserId" : req.body.UserId,
+                                "Cloud" : "aws",
                                 "Reservation" : reservation_json_to_store,
                                 "Request" : req.body
                             }
