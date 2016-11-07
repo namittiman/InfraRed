@@ -70,7 +70,6 @@ exports.get_reservations = function(req, res) {
                     details += "\n>" + "Ambari: " + mockData.Reservations[i].cluster_info.ambari;
                 }
                 */
-
                 reservationIds.push(details);
             }
             return res.send({"status": 200, "data": reservationIds.join("\n\n")});
