@@ -37,7 +37,8 @@ module.exports =
                 var params = {
                     ImageId: 'ami-40d28157', // Ubuntu Server 16.04 LTS (HVM), SSD Volume Type - ami-40d28157
                     InstanceType: 't2.micro',
-                    MinCount: 1, MaxCount: req.body.VMCount
+                    MinCount: 1, MaxCount: req.body.VMCount,
+                    KeyName: 'infrared',
                 };
 
 
@@ -92,13 +93,14 @@ module.exports =
                                 if(err) {
                                     console.log("Could not write to database", err);
                                     return res.send({"status": 500, "message": "Internal Server Error"});
+                                } else {
+                                    console.log("Written reservation to database");
+                                    var reservation_json_to_send_to_client;
+                                    // NOTIFY BOT ABOUT STATUS
+                                    reservation_json_to_send_to_client = reservation_json_to_store;
+                                    return res.send({"status" : 201, "data" : reservation_json_to_send_to_client});
                                 }
                             });
-
-                            var reservation_json_to_send_to_client;
-                            // NOTIFY BOT ABOUT STATUS
-                            reservation_json_to_send_to_client = reservation_json_to_store;
-                            return res.send({"status" : 201, "data" : reservation_json_to_send_to_client});
                         }
                     });
                 });
