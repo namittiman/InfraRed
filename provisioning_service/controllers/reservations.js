@@ -47,20 +47,41 @@ exports.get_reservations = function(req, res) {
 
             var k=1
             for(i in results) {
-                var details = "" + k + ". Reservation ID: *" + results[i].Reservation.ReservationId + "*";
-                k=k+1;
 
-                var vmConfig =results[i].Request;
+                if (results[i].Cloud == "aws") {
+                    var details = "" + k + ". Reservation ID: *" + results[i].Reservation.ReservationId + "*";
+                    k=k+1;
 
-                details += "\n> _(" + vmConfig.OS + ", " + vmConfig.VCPUs + "vCPUs, " + vmConfig.VRAM + "GB RAM, " + 
-                           vmConfig.Storage + "GB " + vmConfig.StorageType + ")_ *x" + results[i].Reservation.Instances.length + "*";
+                    var vmConfig =results[i].Request;
 
-                for (var j = 0; j < results[i].Reservation.Instances.length; j++) {
-                    details += "\n>" + results[i].Reservation.Instances[j].PublicIpAddress;
-                    console.log(details);
+                    details += "\n> _(" + vmConfig.OS + ", " + vmConfig.VCPUs + "vCPUs, " + vmConfig.VRAM + "GB RAM, " + 
+                               vmConfig.Storage + "GB " + vmConfig.StorageType + ")_ *x" + results[i].Reservation.Instances.length + "*";
+
+                    for (var j = 0; j < results[i].Reservation.Instances.length; j++) {
+                        details += "\n>" + results[i].Reservation.Instances[j].PublicIpAddress;
+                        console.log(details);
+                    }
+                    
+                    reservationIds.push(details);
+                } 
+                else if (results[i].Cloud == "do") {
+                    //var res = results[i].Reservation.droplet;
+                    console.log("---------------");
+                    var droplet = results[i].Reservation.droplet;
+                    console.log(results[i].Reservation.droplet);
+                    console.log("---------------");
+
+                    console.log("\n> _(" + droplet.image.distribution + droplet.image.name + 
+                                        ", " + droplet.size.vcpus  + "vCPUs, " + droplet.size.slug + " RAM, " +
+                                        droplet.size.disk + "GB SSD" + ")_ *x1*");
+
+                    for (var j = 0; j < droplet.networks.v4.length; j++) {
+                        details += "\n>" + droplet.networks.v4[0].ip_address;
+                        console.log(details);
+                    }
+
+                    reservationIds.push(details);
                 }
-                
-                reservationIds.push(details);
             }
             return res.send({"status": 200, "data": reservationIds.join("\n\n")});
             
