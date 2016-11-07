@@ -25,6 +25,9 @@ module.exports =
                     return res.send({"status": 401, "message": "Unauthorized"});
                 }  
 
+                // read api token
+                headers.Authorization = 'Bearer ' + result.AccessKeyId;
+
                 var data;
 
                 var name = "DevOps-Node";
@@ -102,6 +105,9 @@ module.exports =
                     return res.send({"status": 401, "message": "Unauthorized"});
                 }
 
+                // read api token
+                headers.Authorization = 'Bearer ' + result.AccessKeyId;
+
                 var resId = parseInt(req.params.ReservationId);
                 Reservation.findOne({"Reservation.droplet.id" : resId}, function(err, resultReservation) {
 
@@ -143,14 +149,10 @@ module.exports =
 
 
 
-// Digital Ocean config and headers
-var config = {};
-config.token = "610e1ee5b4e5eb3d6db0fbd63806ddc385443d68ff69d81b153b523fa5e3c25e";
-
 var headers =
 {
     'Content-Type':'application/json',
-    Authorization: 'Bearer ' + config.token
+    Authorization: ""
 };
 
 
