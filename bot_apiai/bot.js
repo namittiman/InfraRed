@@ -46,6 +46,12 @@ controller.hears('(.*)',['mention', 'direct_mention', 'direct_message'], functio
 			   case 'extend-reservation': actions.extendReservation(bot, message, response);
 			   break;
 
+			   case 'save.template': actions.saveTemplate(bot, message, response);
+			   break;
+
+			   case 'use.template': actions.useTemplate(bot, message, response);
+			   break;
+
 			   case 'smalltalk.greetings': bot.reply(message, response.result.fulfillment.speech);
 			   break;
 			   
