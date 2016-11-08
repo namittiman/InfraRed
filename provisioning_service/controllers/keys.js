@@ -37,14 +37,14 @@ function validate(msg , callback) {
         //callback(true);
         
         acm.listCertificates({}, function (err, data) {
-            if (err.message != "The security token included in the request is invalid."){
-                callback(true);
-            }
-            else{
-                callback(false);
-            }
+            if (err == null || (err != null && err.message != "The security token included in the request is invalid.")){
+                callback(true);
+            }
+            else{
+                callback(false);
+            }
 
-        });
+        });
         
     } else if(msg.Service.toLowerCase() == 'do'){
         callback(true);
