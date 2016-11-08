@@ -231,7 +231,69 @@ module.exports = {
 	},
 
 	extendReservation: function (bot, message, response) {
+	
+	},
 
+	saveTemplate: function (bot, message, response) {
+		bot.reply(message, "Okay, I am working on it.");
+		console.log("***** Save Template ********");
+		console.log(response);
+		console.log("***" + response.result.parameters.reservation_id);
+		console.log("***" + response.result.parameters.template_name);
+
+		if(response.result.parameters.reservation_id != "" && response.result.parameters.template_name != "") {
+			//go ahead and save the request of reservation as template
+			var url = provisioning_service_url + '/users/' + message.user + '/templates/' + response.result.parameters.template_name;
+			var params = {
+			    "UserId": message.user,
+			    "ReservationId": response.result.parameters.reservation_id,
+			    "TemplateName": response.result.parameters.template_name
+			};
+
+			var callback = function (error, response, body) {
+				if(body.status == 201) {
+					console.log("POST Response Body Data \n ");
+				
+					bot.reply(message, "Your template has been saved successfully!");
+				} else {
+					console.log(error);
+					bot.reply(message, body.message + ". Sorry, couldn't save your template!");
+				}
+			};
+
+		post(params, url, callback);
+
+		}	
+	},
+
+	useTemplate: function (bot, message, response) {
+		bot.reply(message, "Okay, I am working on it.");
+		console.log("***** Use Template ********");
+		console.log(response);
+		console.log("***" + response.result.parameters.template_name);
+
+		if(response.result.parameters.template_name != "") {
+			//go ahead and save the request of reservation as template
+			var url = provisioning_service_url + '/users/' + message.user + '/templates/' + response.result.parameters.template_name + '/reservations';
+			var params = {
+			    "UserId": message.user,
+			    "TemplateName": response.result.parameters.template_name
+			};
+
+			var callback = function (error, response, body) {
+				if(body.status == 201) {
+					console.log("POST Response Body Data \n ");
+					//TODO: Show Data as per Template type i.e Cluster / VM
+					bot.reply(message, "Reservation has been created using template!");
+				} else {
+					console.log(error);
+					bot.reply(message, body.message + ". Sorry, couldn't create reservation using template!");
+				}
+			};
+
+		post(params, url, callback);
+
+		}	
 	}
 }
 

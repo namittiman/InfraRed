@@ -2,8 +2,10 @@ var mockData = require("../mock.json");
 var aws = require('../aws/aws.js');
 var docean = require('../do/do.js');
 require('../models/reservation');
+require('../models/template');
 var mongoose = require('mongoose');
 var Reservation = mongoose.model('Reservation');
+var Template = mongoose.model('Template');
 
 function validate(msg) {
     if(Number(msg.VCPUs) < 0 || Number(msg.VRAM) < 0 || Number(msg.Storage) < 0 || Number(msg.NodeCount) < 0 || Number(msg.Count) < 0) {
@@ -13,8 +15,13 @@ function validate(msg) {
 }
 
 exports.post_reservations = function(req, res) {
+
+	//var userId = req.params.userId;
+    console.log("POST request Received : ")
+
 	var userId = req.params.userId;
     console.log("POST request Received : \n")
+
     console.log(req.body);
     // TODO: CHECK THE TYPE OF REQUEST AND CALL APPROPRIATE AWS METHOD
     if (req.body.RequestType === 'vm') {
@@ -47,7 +54,7 @@ exports.get_reservations = function(req, res) {
             console.log(results);
             if(results.length == 0) {
                 console.log("Could not find reservation for this user from database", err);
-                return res.send({"status": 200, "data": "You don't have any reservation at this moment"});
+                return res.send({"status": 400, "data": "You don't have any reservation at this moment"});
             }
 
             var k=1
