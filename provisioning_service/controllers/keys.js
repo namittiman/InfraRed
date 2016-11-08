@@ -37,7 +37,7 @@ function validate(msg , callback) {
         //callback(true);
         
         acm.listCertificates({}, function (err, data) {
-            if (err.message != "The security token included in the request is invalid."){
+            if (err == null || (err != null && err.message != "The security token included in the request is invalid.")) {
                 callback(true);
             }
             else{

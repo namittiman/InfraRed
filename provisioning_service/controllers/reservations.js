@@ -14,10 +14,15 @@ function validate(msg) {
 
 exports.post_reservations = function(req, res) {
 	var userId = req.params.userId;
-    console.log("POST request Received : ")
+    console.log("POST request Received : \n")
     console.log(req.body);
     // TODO: CHECK THE TYPE OF REQUEST AND CALL APPROPRIATE AWS METHOD
-    aws.create_vm(req, res);
+    if (req.body.RequestType === 'vm') {
+        aws.create_vm(req, res);
+    } else {
+        aws.create_cluster(req, res);
+    }
+        
     //docean.create_vm(req, res)
 }
 
