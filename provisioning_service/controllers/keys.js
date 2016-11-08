@@ -1,6 +1,6 @@
 require('../models/key');
 var mongoose = require('mongoose'),
-    Key = mongoose.model('Key');
+Key = mongoose.model('Key');
 
 exports.post_keys = function (req, res) {
     var userId = req.params.UserId;

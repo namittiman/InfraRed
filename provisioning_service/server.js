@@ -10,7 +10,6 @@ db.on('error', function () {
   throw new Error('unable to connect to database at ' + mongoUri);
 });
 
-
 var app = express();
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
@@ -19,6 +18,6 @@ app.use(bodyParser.urlencoded({
 }));
 
 require('./routes')(app);
-
-app.listen(3001);
+var server = app.listen(3001);
+server.timeout = 10000000;
 console.log('InfraRed Provisioning Service is listening on Port 3001...');

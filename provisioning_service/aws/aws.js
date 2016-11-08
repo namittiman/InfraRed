@@ -215,12 +215,12 @@ module.exports =
                             {
                                 InstanceCount: 1, /* required */
                                 InstanceRole: 'MASTER', /* required */
-                                InstanceType: 'm3.large', /* required */
+                                InstanceType: 'm3.xlarge', /* required */
                             },
                             {
                                 InstanceCount: 2, /* required */
                                 InstanceRole: 'CORE', /* required */
-                                InstanceType: 'm3.large', /* required */
+                                InstanceType: 'm3.xlarge', /* required */
                             }
                         ],
                         KeepJobFlowAliveWhenNoSteps: true,
@@ -245,6 +245,7 @@ module.exports =
                 emr.runJobFlow(params, function(err, data) {
                     if (err) {
                         console.log(err, err.stack); // an error occurred
+                        return res.send({"status": 500, "message": "Internal Server Error"});
                     } else {
                         console.log(data); // successful response
 
@@ -269,34 +270,12 @@ module.exports =
                         emr.waitFor('clusterRunning', params, function(err, data) {
                             if (err) {
                                 console.log(err, err.stack); // an error occurred
+                                return res.send({"status": 500, "message": "Internal Server Error"});
                             } else {
                                 console.log("CLUSTER RUNNING")
                                 console.log(data); // successful response
-                                console.log("CLUSTER MasterPublicDnsName")
-                                console.log(data.Cluster.MasterPublicDnsName)
 
-                                // STORE CLUSTER RESERVATION AND REQUEST IN DB
-                                console.log("STORE the following in DB :")
-                                var r = { 
-                                    "UserId" : req.body.UserId,
-                                    "Cloud" : "aws",
-                                    "Reservation" : data.Cluster,
-                                    "Request" : req.body
-                                }
-                                console.log(r);
-
-                                Reservation.create(r, function(err, key) {
-                                    if(err) {
-                                        console.log("Could not write to database", err);
-                                        return res.send({"status": 500, "message": "Internal Server Error"});
-                                    } else {
-                                        console.log("Written cluster reservation to database");
-                                        return res.send({"status" : 201, "data" : r});
-                                    }
-                                });
-
-
-                                // Cluster now Running, add rule in the security group to Access Zeppelin
+                                // ADD RULE IN THE SECURITY GROUP TO ACCESS ZEPPELIN
                                 var ec2 = new AWS.EC2();
                                 var params = {
                                   GroupName: 'ElasticMapReduce-master',
@@ -315,9 +294,32 @@ module.exports =
                                   ],
                                 };
                                 ec2.authorizeSecurityGroupIngress(params, function(err, data) {
-                                    if (err) console.log(err, err.stack); // an error can also occurs when group has that same rule
-                                    else console.log(data); // successful response
-                                    console.log("authorizeSecurityGroupIngress")
+                                    if (err) console.log(err, err.stack); // do not return here
+                                    else {
+                                        console.log("AUTHORIZESECURITYGROUPINGRESS")
+                                        console.log(data); // successful response
+                                    }
+                                });
+
+                                // STORE CLUSTER RESERVATION AND REQUEST IN DB
+                                console.log("STORE the following in DB :")
+                                var r = { 
+                                    "UserId" : req.body.UserId,
+                                    "Cloud" : "aws",
+                                    "Reservation" : data.Cluster,
+                                    "Request" : req.body
+                                }
+                                console.log(r);
+
+                                // INSERT INTO DB
+                                Reservation.create(r, function(err, key) {
+                                    if(err) {
+                                        console.log("Could not write to database", err);
+                                        return res.send({"status": 500, "message": "Internal Server Error"});
+                                    } else {
+                                        console.log("Written cluster reservation to database");
+                                        return res.send({"status" : 201, "data" : r});
+                                    }
                                 });
                             }
                         });
