@@ -44,7 +44,6 @@ function validate(msg , callback) {
             else{
                 callback(false);
             }
-
         });
         
     } else if(msg.Service.toLowerCase() == 'do'){
