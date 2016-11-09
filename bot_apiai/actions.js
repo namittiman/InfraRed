@@ -228,10 +228,11 @@ module.exports = {
 		var reservationId = response.result.parameters.reservation_id;
 		var seconds = response.result.parameters.duration.amount;
 		var multiplier = response.result.parameters.duration.unit;
+		var timeval = seconds;
 
 		if (multiplier.includes("min"))
 			seconds *= 60;
-
+		
 		if (multiplier.includes("h"))
 			seconds *= 60*60;
 
@@ -240,16 +241,17 @@ module.exports = {
 
 		console.log(seconds);
 
-		bot.reply(message, "Reminder has been set successfully for your reservation!");
+		bot.reply(message, "Reminder has been set successfully!");
 
 		var showResFnPtr = this.showReservations;
 		var showSingleResFnPtr = this.showReservation;
 
 		setTimeout(function() {
 			console.log('REMINDER!!!');
-
-			if (res == ""){
-				bot.reply(message, "Reminder _(" + (seconds/60.0) + multiplier + ")_ : The days of one of your Reservations are numbered! \n" + "`tear down reservation <reservation_id>`");
+			
+			
+			if (reservationId == ""){
+				bot.reply(message, "Reminder _(" + timeval + multiplier + ")_ : The days of one of your Reservations are numbered! \n" + "`tear down reservation <reservation_id>`");
 				showResFnPtr(bot, message, response);
 			}
 			else{
