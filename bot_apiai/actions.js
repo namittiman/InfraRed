@@ -87,7 +87,7 @@ module.exports = {
 		var params = {
 			"UserId": message.user,
 			"RequestType": "vm",
-			"OS": response.result.parameters.image_type,
+			"OS": response.result.parameters.os,
 			"VCPUs": response.result.parameters.vcpus,
 			"VRAM": response.result.parameters.ram,
 			"Storage": response.result.parameters.storage,
@@ -95,16 +95,17 @@ module.exports = {
 			"VMCount": response.result.parameters.vmcount
 		};
 
+		console.log(params);
 		var url = provisioning_service_url + '/users/' + params.UserId + '/reservations';
 
 		var callback = function (error, response, body) {
 			if(error == null && body.status == 201) {
 				console.log("POST Response Body Data \n ")
 				console.log(body.data)
-				var details = "Your Reservation Id is : " + body.data.ReservationId + " \n Instance details:";
+				var details = "Your Reservation Id is : " + body.data.ReservationId + "\n>" + " Instance details:";
 				for (var i = 0; i < body.data.Instances.length; i++) {
-					details = details +  "\n Your Public DNS name is : " + body.data.Instances[i].PublicDnsName 
-					+ "\n and Public IP : " + body.data.Instances[i].PublicIpAddress;
+					details = details +  "\n>" + " Your Public DNS name is : " + body.data.Instances[i].PublicDnsName 
+					+ "\n>" + "and Public IP : " + body.data.Instances[i].PublicIpAddress;
 				            	}
 				bot.reply(message,  details);
 			} else {
@@ -281,14 +282,8 @@ module.exports = {
 			};
 
 			var callback = function (error, response, body) {
-				if(body.status == 201) {
-					console.log("POST Response Body Data \n ");
-					//TODO: Show Data as per Template type i.e Cluster / VM
-					bot.reply(message, "Reservation has been created using template!");
-				} else {
-					console.log(error);
-					bot.reply(message, body.message + ". Sorry, couldn't create reservation using template!");
-				}
+				//body has the correct message set.
+				bot.reply(message, body.message);
 			};
 
 		post(params, url, callback);

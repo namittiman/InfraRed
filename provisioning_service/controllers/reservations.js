@@ -95,6 +95,9 @@ exports.get_reservations = function(req, res) {
                     reservationIds.push(details);
                 }
             }
+            if(reservationIds.length == 0) {
+                return res.send({"status": 200, "data": "You don't have any reservation at this moment"});
+            }
             return res.send({"status": 200, "data": reservationIds.join("\n\n")});
             
         }
