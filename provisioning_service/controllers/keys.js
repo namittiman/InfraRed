@@ -13,7 +13,7 @@ exports.post_keys = function (req, res) {
         if (!valid) {
             return res.send({"status": 400, "message": "Bad Request"});
         } else {
-            Key.findOneAndUpdate({"UserId" : req.body.UserId }, req.body, { upsert:true , new : true}, function(err, key) {
+            Key.findOneAndUpdate({"UserId" : req.body.UserId, "Service": req.body.Service }, req.body, { upsert:true , new : true}, function(err, key) {
                 console.log(key);
                 if(err) {
                     return res.send({"status": 500, "message": "Internal Server Error"});
@@ -46,7 +46,8 @@ function validate(msg , callback) {
             }
         });
         
-    } else if(msg.Service.toLowerCase() == 'do'){
+    } else if(msg.Service.toLowerCase() == 'digital ocean') {
+        console.log("Digital ocean validated....");
         callback(true);
     }
 }

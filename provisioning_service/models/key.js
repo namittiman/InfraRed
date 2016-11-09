@@ -6,6 +6,8 @@ var KeySchema = new Schema({
   AccessKeyId: String,
   SecretAccessKey: String,
   Service: String,
+  Token: String,
+  KeyPair: String
 });
 
 mongoose.model('Key', KeySchema);

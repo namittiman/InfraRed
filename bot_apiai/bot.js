@@ -25,7 +25,10 @@ controller.hears('(.*)',['mention', 'direct_mention', 'direct_message'], functio
     	} else {
     		switch (response.result.action)
 			{
-			   case 'save.keys': actions.saveKeys(bot, message, response);
+			   case 'save.aws.keys': actions.saveAWSKeys(bot, message, response);
+			   break;
+
+			   case 'save.digitalocean.keys': actions.saveDigitalOceanKeys(bot, message, response);
 			   break;
 			   
 			   case 'create.vm': actions.createVM(bot, message, response);

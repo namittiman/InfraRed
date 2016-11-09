@@ -13,7 +13,7 @@ module.exports =
     create_vm: function (req, res) {
         console.log("\nHandeling Request DO\n");
         //FETCH KEYS AND CALL AWS SDK TO CREATE VMs
-        Key.findOne({ "UserId": req.body.UserId, "Service": "do" }, function(err,result) {
+        Key.findOne({ "UserId": req.body.UserId, "Service": "digital ocean" }, function(err,result) {
 
             if(err) {
                 console.log("Could not fetch keys from database", err);
@@ -26,14 +26,14 @@ module.exports =
                 }  
 
                 // read api token
-                headers.Authorization = 'Bearer ' + result.AccessKeyId;
+                headers.Authorization = 'Bearer ' + result.Token;
 
                 var data;
-
+                var ssh_key = result.KeyPair;
                 var name = "DevOps-Node";
                 var region = "nyc2";
                 var image = "centos-6-5-x64";
-                client.createDroplet(name, region, image, function(err, resp, body)
+                client.createDroplet(name, region, image, ssh_key, function(err, resp, body)
                 {
                     if(!err && resp.statusCode == 202)
                     {
@@ -93,7 +93,7 @@ module.exports =
         console.log(req.params.UserId);
         console.log(req.params.ReservationId);
 
-        Key.findOne({ "UserId": req.params.UserId, "Service": "do" }, function(err,result) {
+        Key.findOne({ "UserId": req.params.UserId, "Service": "digital ocean" }, function(err,result) {
 
             if(err) {
                 console.log("Could not fetch keys from database", err);
@@ -106,7 +106,7 @@ module.exports =
                 }
 
                 // read api token
-                headers.Authorization = 'Bearer ' + result.AccessKeyId;
+                headers.Authorization = 'Bearer ' + result.Token;
 
                 var resId = parseInt(req.params.ReservationId);
                 Reservation.findOne({"Reservation.droplet.id" : resId}, function(err, resultReservation) {
@@ -171,7 +171,7 @@ var client =
     },
 
 
-    createDroplet: function (dropletName, region, imageName, onResponse)
+    createDroplet: function (dropletName, region, imageName, ssh_key, onResponse)
     {
         var data = 
         {
@@ -180,7 +180,7 @@ var client =
             "size":"512mb",
             "image":imageName,
             // Id to ssh_key already associated with account.
-            "ssh_keys":[3407276],
+            "ssh_keys":[ssh_key],
             //"ssh_keys":null,
             "backups":false,
             "ipv6":false,

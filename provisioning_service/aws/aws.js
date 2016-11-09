@@ -39,7 +39,7 @@ module.exports =
                 var params = {
                     ImageId: 'ami-40d28157', // Ubuntu Server 16.04 LTS (HVM), SSD Volume Type - ami-40d28157
                     InstanceType: 't2.micro',
-                    KeyName: 'infrared',
+                    KeyName: result.KeyPair,
                     MinCount: 1, MaxCount: req.body.VMCount
                 };
 
@@ -210,7 +210,7 @@ module.exports =
 
                 var params = {
                     Instances: { /* required */
-                        Ec2KeyName: 'infrared',
+                        Ec2KeyName: result.KeyPair,
                         InstanceGroups: [
                             {
                                 InstanceCount: 1, /* required */

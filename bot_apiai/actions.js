@@ -80,6 +80,71 @@ module.exports = {
 		post(params, url, callback);
 	},
 
+
+	saveAWSKeys: function (bot, message, response) {
+		bot.reply(message, "Okay, I am working on it.")
+		console.log("***** SAVING AWS KEYS ********");
+
+		var params = {
+			"UserId": message.user,
+			"Service": response.result.parameters.aws,
+			"AccessKeyId": response.result.parameters.access_key_id,
+			"SecretAccessKey": response.result.parameters.secret_access_key,
+			"KeyPair": response.result.parameters.keypair
+		};
+
+		var url = provisioning_service_url + '/users/' + params.UserId + '/keys';
+
+		var callback = function (error, response, body) {
+			if(body.status == 201) {
+				console.log(body);
+				bot.reply(message, "Your keys have been saved successfully!");
+			} else if(body.status == 400) {
+				bot.reply(message, "Please check your credentials they don't seem to be right!");
+			}
+			else {
+				console.log(error);
+				bot.reply(message, "Your keys could not be saved!");
+			}
+		};
+
+		post(params, url, callback);
+	},
+
+	
+
+	saveDigitalOceanKeys: function (bot, message, response) {
+		bot.reply(message, "Okay, I am working on it.")
+		console.log("***** SAVING Digital Ocean KEYS ********");
+
+		var params = {
+			"UserId": message.user,
+			"Service": response.result.parameters.digital_ocean,
+			"Token": response.result.parameters.token,
+			"KeyPair": response.result.parameters.keypair
+		};
+
+		var url = provisioning_service_url + '/users/' + params.UserId + '/keys';
+
+		var callback = function (error, response, body) {
+			if(body.status == 201) {
+				console.log("Callback received!....");
+				console.log(body);
+				bot.reply(message, "Your keys have been saved successfully!");
+			} else if(body.status == 400) {
+				bot.reply(message, "Please check your credentials they don't seem to be right!");
+			}
+			else {
+				console.log(error);
+				bot.reply(message, "Your keys could not be saved!");
+			}
+		};
+
+		post(params, url, callback);
+	},
+
+
+
 	createVM: function (bot, message, response) {
 		bot.reply(message, "Okay, I am working on it.");
 		console.log("***** CREATING VMs ********");
