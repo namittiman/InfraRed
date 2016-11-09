@@ -167,6 +167,30 @@ module.exports = {
 		get(params, url, callback);
 	},
 
+	showReservation: function (bot, message, response) {
+		console.log("***** SHOWING  A RESERVATION ********");
+		var params = {
+			"UserId": message.user,
+			"ReservationId": response.result.parameters.reservation_id
+		};
+
+		console.log(response.result.parameters.reservation_id);
+
+		var url = provisioning_service_url + '/users/' + params.UserId + '/reservations/'  + response.result.parameters.reservation_id;
+
+		var callback = function (error, response, body) {
+			if(body.status == 200) {
+				console.log(body);
+				bot.reply(message, body.data);
+			} else {
+				console.log(error);
+				bot.reply(message, body.messsage + ". Sorry, I was not able to fetch your reservation at this time.");
+			}
+		};
+
+		get(params, url, callback);
+	},
+
 	tearDown: function (bot, message, response) {
 		bot.reply(message, "Okay, I am working on it.");
 		console.log("***** TEAR DOWN ********");
@@ -201,7 +225,7 @@ module.exports = {
 	},
 
 	setReminderReservation: function (bot, message, response) {
-		var res = response.result.parameters.any;
+		var reservationId = response.result.parameters.reservation_id;
 		var seconds = response.result.parameters.duration.amount;
 		var multiplier = response.result.parameters.duration.unit;
 
@@ -216,17 +240,21 @@ module.exports = {
 
 		console.log(seconds);
 
+		bot.reply(message, "Reminder has been set successfully for your reservation!");
+
 		var showResFnPtr = this.showReservations;
+		var showSingleResFnPtr = this.showReservation;
 
 		setTimeout(function() {
 			console.log('REMINDER!!!');
 
 			if (res == ""){
-				bot.reply(message, "Reminder _(" + seconds + multiplier + ")_ : The days of one of your Resevation are numbered! \n" + "`tear down reservation <reservation_id>`");
+				bot.reply(message, "Reminder _(" + (seconds/60.0) + multiplier + ")_ : The days of one of your Reservations are numbered! \n" + "`tear down reservation <reservation_id>`");
 				showResFnPtr(bot, message, response);
 			}
 			else{
-				bot.reply(message, "Reminder: Time to terminate your reservation! \n" + "`tear down reservation " + res + "`");
+				bot.reply(message, "Reminder: Time to terminate your reservation " + reservationId +  "! \n" + "`tear down reservation " + reservationId + "`");
+				showSingleResFnPtr(bot, message, response);
 			}
 		}, seconds*1000);
 	},

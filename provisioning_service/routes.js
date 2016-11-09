@@ -7,6 +7,7 @@ module.exports = function(app){
     app.post('/users/:UserId/reservations', reservations.post_reservations);
     app.delete('/users/:UserId/reservations/:ReservationId', reservations.delete_reservation);
     app.get('/users/:UserId/reservations', reservations.get_reservations);
+    app.get('/users/:UserId/reservations/:ReservationId', reservations.get_reservation);
     app.post('/users/:UserId/templates/:TemplateId', templates.post_templates);
     app.post('/users/:UserId/templates/:TemplateId/reservations', templates.post_reservations);
     app.post('/test', test.test);

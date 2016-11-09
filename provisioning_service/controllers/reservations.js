@@ -104,3 +104,68 @@ exports.get_reservations = function(req, res) {
     });
     
 }
+
+exports.get_reservation = function(req, res) {
+    //console.log(mockData);
+    var userId = req.params.UserId;
+    var ReservationId = req.params.ReservationId;
+
+
+    var reservationIds = [];
+    
+    Reservation.findOne({"Reservation.ReservationId" : ReservationId}, function(err, results) {
+        if(err) {
+            return res.send({"status": 500, "message": "Internal Server Error"});
+        } else {
+
+            console.log(results);
+            if(results == null) {
+                console.log("Could not find reservation for this user from database", err);
+                return res.send({"status": 400, "data": "You don't have any reservation with this Id at this moment"});
+            }
+
+            var details = null;
+
+                if (results.Cloud == "aws") {
+                    details = "Reservation ID: *" + results.Reservation.ReservationId + "*";
+        
+
+                    var vmConfig =results.Request;
+
+                    details += "\n> _(" + vmConfig.OS + ", " + vmConfig.VCPUs + "vCPUs, " + vmConfig.VRAM + "GB RAM, " + 
+                               vmConfig.Storage + "GB " + vmConfig.StorageType + ")_ *x" + results.Reservation.Instances.length + "*";
+
+                    for (var j = 0; j < results.Reservation.Instances.length; j++) {
+                        details += "\n>" + results.Reservation.Instances[j].PublicIpAddress;
+                        console.log(details);
+                    }
+                    
+                } 
+                else if (results.Cloud == "do") {
+                    //var res = results.Reservation.droplet;
+                    console.log("---------------");
+                    var droplet = results.Reservation.droplet;
+                    console.log(results.Reservation.droplet);
+                    console.log("---------------");
+
+                    console.log("\n> _(" + droplet.image.distribution + droplet.image.name + 
+                                        ", " + droplet.size.vcpus  + "vCPUs, " + droplet.size.slug + " RAM, " +
+                                        droplet.size.disk + "GB SSD" + ")_ *x1*");
+
+                    for (var j = 0; j < droplet.networks.v4.length; j++) {
+                        details += "\n>" + droplet.networks.v4[0].ip_address;
+                        console.log(details);
+                    }
+
+            
+                }
+    
+            if(details == null) {
+                return res.send({"status": 200, "data": "You don't have any reservation with this Id at this moment"});
+            }
+            return res.send({"status": 200, "data": details});
+            
+        }
+    });
+    
+}
