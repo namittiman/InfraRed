@@ -10,8 +10,10 @@ var Key = mongoose.model('Key');
 
 module.exports = 
 {
-    create_vm: function (req, res) {
+    create_vm: function (instanceType, req, res) {
+
         console.log("\nAWS CREATE VM REQUEST\n");
+        console.log(instanceType);
         //FETCH KEYS AND CALL AWS SDK TO CREATE VMs
         console.log("USERID : ");
         console.log(req.body.UserId);
@@ -38,7 +40,7 @@ module.exports =
 
                 var params = {
                     ImageId: 'ami-40d28157', // Ubuntu Server 16.04 LTS (HVM), SSD Volume Type - ami-40d28157
-                    InstanceType: 't2.micro',
+                    InstanceType: instanceType,
                     KeyName: result.KeyPair,
                     MinCount: 1, MaxCount: req.body.VMCount
                 };
