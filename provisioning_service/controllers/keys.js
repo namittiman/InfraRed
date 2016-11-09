@@ -47,7 +47,22 @@ function validate(msg , callback) {
         });
         
     } else if(msg.Service.toLowerCase() == 'digital ocean') {
-        console.log("Digital ocean validated....");
-        callback(true);
+        var needle = require("needle");
+
+        var headers = {
+            'Content-Type':'application/json',
+            Authorization: 'Bearer ' + msg.Token
+        };
+        console.log(headers);
+        needle.get("https://api.digitalocean.com/v2/account", {headers:headers}, function(err, resp, body){
+
+            if (body.account) {
+                console.log("Digital ocean validated....");
+                callback(true);
+            } else {
+                console.log("Digital ocean validation Failed!....");
+                callback(false);
+            }
+        });
     }
 }

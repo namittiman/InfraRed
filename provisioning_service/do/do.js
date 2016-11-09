@@ -33,7 +33,8 @@ module.exports =
                 var name = "DevOps-Node";
                 var region = "nyc2";
                 var image = "centos-6-5-x64";
-                client.createDroplet(name, region, image, ssh_key, function(err, resp, body)
+                var type = "512mb";
+                client.createDroplet(name, type, region, image, ssh_key, function(err, resp, body)
                 {
                     if(!err && resp.statusCode == 202)
                     {
@@ -171,13 +172,13 @@ var client =
     },
 
 
-    createDroplet: function (dropletName, region, imageName, ssh_key, onResponse)
+    createDroplet: function (dropletName, type, region, imageName, ssh_key, onResponse)
     {
         var data = 
         {
             "name": dropletName,
             "region":region,
-            "size":"512mb",
+            "size":type,
             "image":imageName,
             // Id to ssh_key already associated with account.
             "ssh_keys":[ssh_key],
