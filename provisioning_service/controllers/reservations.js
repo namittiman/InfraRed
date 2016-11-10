@@ -91,7 +91,7 @@ exports.post_reservations = function (req, res) {
             if (best_config.Service == 'aws') {
                 aws.create_vm(best_config.Config.InstanceType , req, res);
             } else if (best_config.Service == 'digital ocean') {
-                //docean.create_vm(req, res);
+                docean.create_vm(best_config.Config.InstanceType, req, res);
             } else {
                 console.log("None of the service providers could match the request");
             }

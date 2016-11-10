@@ -1,63 +1,63 @@
 {
   "digital ocean": [
     {
-      "InstanceType": 1,
+      "InstanceType": "512mb",
       "Cost": 0.007,
       "VRAM": 0.5,
       "VCPUs": 1,
       "Storage": 20
     },
     {
-      "InstanceType": 2,
+      "InstanceType": "1gb",
       "Cost": 0.015,
       "VRAM": 1,
       "VCPUs": 1,
       "Storage": 30
     },
     {
-      "InstanceType": 3,
+      "InstanceType": "2gb",
       "Cost": 0.03,
       "VRAM": 2,
       "VCPUs": 2,
       "Storage": 40
     },
     {
-      "InstanceType": 4,
+      "InstanceType": "4gb",
       "Cost": 0.06,
       "VRAM": 4,
       "VCPUs": 2,
       "Storage": 60
     },
     {
-      "InstanceType": 5,
+      "InstanceType": "8gb",
       "Cost": 0.119,
       "VRAM": 8,
       "VCPUs": 4,
       "Storage": 80
     },
     {
-      "InstanceType": 6,
+      "InstanceType": "16gb",
       "Cost": 0.238,
       "VRAM": 16,
       "VCPUs": 8,
       "Storage": 160
     },
     {
-      "InstanceType": 7,
+      "InstanceType": "32gb",
       "Cost": 0.476,
       "VRAM": 32,
       "VCPUs": 12,
       "Storage": 320
     },
     {
-      "InstanceType": 8,
+      "InstanceType": "48gb",
       "Cost": 0.714,
       "VRAM": 48,
       "VCPUs": 16,
       "Storage": 480
     },
     {
-      "InstanceType": 9,
+      "InstanceType": "64gb",
       "Cost": 0.952,
       "VRAM": 64,
       "VCPUs": 20,

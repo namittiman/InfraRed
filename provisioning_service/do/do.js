@@ -10,7 +10,7 @@ var Key = mongoose.model('Key');
 
 module.exports = 
 {
-    create_vm: function (req, res) {
+    create_vm: function (type, req, res) {
         console.log("\nHandeling Request DO\n");
         //FETCH KEYS AND CALL AWS SDK TO CREATE VMs
         Key.findOne({ "UserId": req.body.UserId, "Service": "digital ocean" }, function(err,result) {
@@ -29,11 +29,11 @@ module.exports =
                 headers.Authorization = 'Bearer ' + result.Token;
 
                 var data;
-                var ssh_key = result.KeyPair;
+                var ssh_key = parseInt(result.KeyPair);
                 var name = "DevOps-Node";
-                var region = "nyc2";
+                var region = "nyc3";
                 var image = "centos-6-5-x64";
-                var type = "512mb";
+
                 client.createDroplet(name, type, region, image, ssh_key, function(err, resp, body)
                 {
                     if(!err && resp.statusCode == 202)
@@ -178,7 +178,7 @@ var client =
         {
             "name": dropletName,
             "region":region,
-            "size":type,
+            "size": type,
             "image":imageName,
             // Id to ssh_key already associated with account.
             "ssh_keys":[ssh_key],
