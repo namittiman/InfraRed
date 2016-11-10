@@ -226,9 +226,8 @@ module.exports = {
 				console.log(body.data)
 				var details = "VM/s Ready! \nYour Reservation Id is : " + body.data.ReservationId + "\n>" + " Instance details:";
 				for (var i = 0; i < body.data.Instances.length; i++) {
-					details = details +  "\n>" + " Your Public DNS name is : " + body.data.Instances[i].PublicDnsName 
-					+ "\n>" + "and Public IP : " + body.data.Instances[i].PublicIpAddress;
-				            	}
+					details = details +  "\n>" + " Your Public DNS name is : " + body.data.Instances[i].PublicDnsName;
+				    }
 				bot.reply(message,  details);
 			} else {
 				console.log(error);
