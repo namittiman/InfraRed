@@ -55,49 +55,10 @@ exports.post_reservations = function(req, res) {
                 return res.send(body);
             }
             
-            /*
-            if(result.Request.RequestType === "vm") {
-                callback = function (error, response, body) {
-                    if(error == null && body.status == 201) {
-                        var details = "Your Reservation Id is : " + body.data.ReservationId + "\n>" + " Instance details:";
-                        for (var i = 0; i < body.data.Instances.length; i++) {
-                            details = details +  "\n>" + " Your Public DNS name is : " + body.data.Instances[i].PublicDnsName 
-                            + "\n>" + "and Public IP : " + body.data.Instances[i].PublicIpAddress;
-                                        }
-                        res.send({"status": 201, "message": details});
-                    } else {
-                        console.log(error);
-                        res.send({"status": 500, "message": "Internal Server Error"});
-                    }
-                };
-            } else {
-                callback = function (error, response, body) {
-                    if(error == null && body.status == 201) {
-                        console.log(body.data);
-                        var details = "Spark Cluster Created - \n Zeppelin Link : " + body.data.Reservation.MasterPublicDnsName + ":8890";
-                        res.send({"status": 201, "message": details});
-                    } else {
-                        console.log(error);
-                        res.send({"status": 500, "message": "Internal Server Error"});
-                    }
-                };
-            }
-            */
-
-            
-
             post(params, url, callback);
-
-
-
-
-
         }
     });
 
-
-    
- 
 }
 
 exports.post_templates = function(req, res) {
@@ -140,6 +101,25 @@ exports.post_templates = function(req, res) {
         }
     });
 
+}
 
+
+exports.get_templates = function(req, res) {
+    var userId = req.params.UserId;
+    console.log("Fetching templates of: " + userId);
+
+    Template.find({"UserId": userId}, function(err, result) {
+        if(err) {
+            return res.send({"status": 500, "message": "Internal Server Error"});
+        } else {
+            console.log(result);
+            if(result == null) {
+                console.log("Could not find any template for this user.", err);
+                return res.send({"status": 400, "message": "You don't have any templates saved"});
+            }
+
+            return res.send({"status": 200, "data": result}); //result is a list of templates
+        }
+    });
 
 }

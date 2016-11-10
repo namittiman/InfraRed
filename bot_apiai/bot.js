@@ -55,6 +55,9 @@ controller.hears('(.*)',['mention', 'direct_mention', 'direct_message'], functio
 			   case 'use.template': actions.useTemplate(bot, message, response);
 			   break;
 
+			   case 'show.templates': actions.showTemplates(bot, message, response);
+			   break;
+
 			   case 'smalltalk.greetings': bot.reply(message, response.result.fulfillment.speech);
 			   break;
 			   

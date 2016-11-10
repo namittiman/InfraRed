@@ -467,7 +467,48 @@ module.exports = {
 			post(params, url, callback);
 
 		}	
+	},
+
+
+	showTemplates: function (bot, message, response) {
+		console.log("***** SHOWING TEMPLATES ********");
+		var params = {
+			"UserId": message.user,
+		};
+		var url = provisioning_service_url + '/users/' + params.UserId + '/templates';
+
+		templatesDetails = []
+
+		var callback = function (error, response, body) {
+			if(error == null && body.status == 200) {
+				console.log("showing templatessssssss");
+				console.log(body.data);
+				templates = body.data;
+				for(var i = 0; i < templates.length; i++) {
+
+					var details = "" + (i+1) + ". Template Name: *" + templates[i].Name + "*";
+	                var requestMap = templates[i].Request;
+	                for(var key in requestMap) {
+	                	if(key === "UserId") {
+	                		continue;
+	                	}
+	                	details += "\n>" + key + ": " + requestMap[key];
+	                }
+	                
+	                console.log(details);
+	                templatesDetails.push(details);
+				}
+
+				bot.reply(message, templatesDetails.join("\n\n"));
+			} else {
+				console.log(error);
+				bot.reply(message, body.message);
+			}
+		};
+
+		get(params, url, callback);
 	}
+
 }
 
 

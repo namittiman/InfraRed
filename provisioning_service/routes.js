@@ -10,5 +10,6 @@ module.exports = function(app){
     app.get('/users/:UserId/reservations/:ReservationId', reservations.get_reservation);
     app.post('/users/:UserId/templates/:TemplateId', templates.post_templates);
     app.post('/users/:UserId/templates/:TemplateId/reservations', templates.post_reservations);
+    app.get('/users/:UserId/templates', templates.get_templates);
     app.post('/test', test.test);
 }
