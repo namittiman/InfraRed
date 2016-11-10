@@ -45,6 +45,7 @@ module.exports =
                         function getIPCallback(error, response)
                         {
                             data = response.body;
+                            data["ReservationId"] = "" + data.droplet.id;
                             if( (data.droplet.networks.v4.length > 0)  && (data.droplet.status == "active") )
                             {
                                 console.log(data.droplet.networks.v4[0].ip_address);
@@ -58,7 +59,7 @@ module.exports =
                                     "UserId" : req.body.UserId,
                                     "Cloud" : "digital ocean",
                                     "Reservation" : data,
-                                    "Request" : req.body
+                                    "Request" : req.body,
                                 }
 
                                 Reservation.create(r, function(err, key) {
