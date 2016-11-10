@@ -111,81 +111,6 @@ module.exports =
         });  
     },
 
-    terminate_vm: function (req, res) {
-        // FETCH KEYS AND CALL AWS SDK
-        console.log("\nAWS TERMINATE REQUEST\n");
-        console.log("USERID : ");
-        console.log(req.params.UserId);
-        console.log("RESERVATIONID : ");
-        console.log(req.params.ReservationId);
-        Key.findOne({ "UserId": req.params.UserId, "Service": "aws" }, function(err,result) {
-            if(err) {
-                console.log("Could not fetch keys from database", err);
-                return res.send({"status": 500, "message": "Internal Server Error"});
-            } else {
-                if(result == null) {
-                    console.log("Could not fetch keys from database", err);
-                    return res.send({"status": 401, "message": "Unauthorized"});
-                }
-
-                Reservation.findOne({"Reservation.ReservationId" : req.params.ReservationId}, function(err, resultReservation) {
-                    AWS.config.accessKeyId = result.AccessKeyId;
-                    AWS.config.secretAccessKey = result.SecretAccessKey;
-                    var ec2 = new AWS.EC2();
-
-                    if(err) {
-                        console.log("Could not fetch Reservation from database", err);
-                        return res.send({"status": 500, "message": "Internal Server Error"});
-                    } else {
-                        if(resultReservation == null) {
-                            console.log("Could not fetch Reservation Id from database", err);
-                            return res.send({"status": 401, "message": "Unauthorized"});
-                        }
-                    }
-
-                    console.log('Reservation from DB');
-                    //console.log(resultReservation.Reservation.Instances);
-                    var instances = [];
-                    for(var i = 0; i < resultReservation.Reservation.Instances.length; i++) {
-                        instanceId = resultReservation.Reservation.Instances[i].InstanceId;
-                        instances.push(instanceId);
-                    }
-
-                    var params = { InstanceIds: instances };
-
-                    ec2.terminateInstances(params, function(err, data) {
-                        if(err) {
-                            console.error(err.toString());
-                        } else {
-                            for(var i in data.TerminatingInstances) {
-                                var instance = data.TerminatingInstances[i];
-                                console.log('TERMINATING:\t' + instance.InstanceId);
-                            } 
-                        }
-                    });
-
-                    // WAIT FOR TERMINATE STATE
-                    ec2.waitFor('instanceTerminated', params, function(err, data) {
-                        if (err) {
-                            console.log("Could not terminate instances", err);
-                            return res.send({"status": 503, "message": "Service Unavailable"});
-                        } else {
-
-                            // DELETE FROM DB
-                            // NOTIFY BOT ABOUT STATUS
-                            Reservation.remove({"Reservation.ReservationId" : req.params.ReservationId}, function(err, result) {
-                                if(err) {
-                                    return res.send({"status": 500, "message": "Internal Server Error"});
-                                } else {
-                                    return res.send({"status": 204});
-                                }
-                            });
-                        }
-                    });
-                });
-            }
-        });
-    },
 
     create_cluster: function (req, res) {
         console.log("\nAWS CREATE CLUSTER REQUEST\n");
@@ -325,6 +250,108 @@ module.exports =
                                     }
                                 });
                             }
+                        });
+                    }
+                });
+            }
+        });
+    }, 
+
+
+    terminate_reservation: function (req, res) {
+        // Terminates both cluster and vm given the reservation ID
+        console.log("\nAWS TERMINATE CLUSTER/VM REQUEST\n");
+        console.log("USERID : ");
+        console.log(req.params.UserId);
+        console.log("RESERVATIONID : ");
+        console.log(req.params.ReservationId);
+        Key.findOne({ "UserId": req.params.UserId, "Service": "aws" }, function(err, result) {
+            if(err) {
+                console.log("Could not fetch keys from database", err);
+                return res.send({"status": 500, "message": "Internal Server Error"});
+            } else {
+                if (result == null) {
+                    console.log("Could not fetch keys from database", err);
+                    return res.send({"status": 401, "message": "Unauthorized"});
+                }
+
+                Reservation.findOne({"Reservation.ReservationId" : req.params.ReservationId}, function(err, resultReservation) {
+                    if(err) {
+                        console.log("Could not fetch Reservation from database", err);
+                        return res.send({"status": 500, "message": "Internal Server Error"});
+                    } else {
+                        if(resultReservation == null) {
+                            console.log("Could not fetch Reservation Id from database", err);
+                            return res.send({"status": 401, "message": "Unauthorized"});
+                        }
+                        console.log("RESULT RESERVATION FETCHED FROM DB")
+                        console.log(JSON.stringify(resultReservation))
+                    }
+
+                    if (resultReservation.Request.RequestType === "vm") {
+                        // Terminate VM
+                        AWS.config.accessKeyId = result.AccessKeyId;
+                        AWS.config.secretAccessKey = result.SecretAccessKey;
+                        var ec2 = new AWS.EC2();
+                        var instances = [];
+                        for(var i = 0; i < resultReservation.Reservation.Instances.length; i++) {
+                            instanceId = resultReservation.Reservation.Instances[i].InstanceId;
+                            instances.push(instanceId);
+                        }
+                        var params = { InstanceIds: instances };
+                        ec2.terminateInstances(params, function(err, data) {
+                            if(err) {
+                                console.error(err.toString());
+                                return res.send({"status": 404, "message": "Resource not found"});
+                            } else {
+                                for(var i in data.TerminatingInstances) {
+                                    var instance = data.TerminatingInstances[i];
+                                    console.log('TERMINATING:\t' + instance.InstanceId);
+                                } 
+                            }
+                        });
+                        // WAIT FOR TERMINATE STATE
+                        ec2.waitFor('instanceTerminated', params, function(err, data) {
+                            if (err) {
+                                console.log("Could not terminate instances", err);
+                                return res.send({"status": 503, "message": "Service Unavailable"});
+                            } else {
+                                // DELETE FROM DB
+                                Reservation.remove({"Reservation.ReservationId" : req.params.ReservationId}, function(err, result) {
+                                    if(err) {
+                                        return res.send({"status": 500, "message": "Internal Server Error"});
+                                    } else {
+                                        return res.send({"status": 204});
+                                    }
+                                });
+                            }
+                        });
+                    } else {
+                        // Terminate Cluster
+                        AWS.config.accessKeyId = result.AccessKeyId;
+                        AWS.config.secretAccessKey = result.SecretAccessKey;
+                        var emr = new AWS.EMR();
+                        var params = {
+                            JobFlowIds: [
+                                resultReservation.Reservation.ReservationId,
+                            ]
+                        };
+                        emr.terminateJobFlows(params, function(err, data) {
+                            if (err) {
+                                console.log(err, err.stack); // an error occurred
+                                return res.send({"status": 404, "message": "Resource not found"});
+                            }
+                            else {
+                                console.log(data);
+                                console.log("REMOVING CLUSTER RESERVATION FROM DB");
+                                Reservation.remove({"Reservation.ReservationId" : req.params.ReservationId}, function(err, result) {
+                                    if(err) {
+                                        return res.send({"status": 500, "message": "Internal Server Error"});
+                                    } else {
+                                        return res.send({"status": 204});
+                                    }
+                                });
+                            } 
                         });
                     }
                 });
