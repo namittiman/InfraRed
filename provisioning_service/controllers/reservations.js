@@ -91,16 +91,14 @@ exports.post_reservations = function (req, res) {
             if (best_config.Service == 'aws') {
                 aws.create_vm(best_config.Config.InstanceType , req, res);
             } else if (best_config.Service == 'digital ocean') {
-                //docean.create_vm(req, res);
+                docean.create_vm(req, res);
             } else {
                 console.log("None of the service providers could match the request");
             }
         });
-    }else if(req.body.RequestType == 'cluster'){
-        //aws.create_cluster(req, res);
+    } else if(req.body.RequestType == 'cluster'){
+        aws.create_cluster(req, res);
     }
-        
-    //docean.create_vm(req, res)
 }
 
 exports.delete_reservation = function(req, res) {
@@ -111,131 +109,36 @@ exports.delete_reservation = function(req, res) {
 }
 
 exports.get_reservations = function(req, res) {
-	//console.log(mockData);
-	var userId = req.params.UserId;
-
-    var reservationIds = [];
-    
+	var userId = req.params.UserId;    
     Reservation.find({"UserId" : userId}, function(err, results) {
         if(err) {
             return res.send({"status": 500, "message": "Internal Server Error"});
         } else {
-
+            console.log("GET RESERVATIONS RESULTS")
             console.log(results);
             if(results.length == 0) {
                 console.log("Could not find reservation for this user from database", err);
-                return res.send({"status": 400, "data": "You don't have any reservation at this moment"});
+                return res.send({"status": 400, "message": "You don't have any reservation at this moment"});
             }
-
-            var k=1
-            for(i in results) {
-
-                if (results[i].Cloud == "aws") {
-                    var details = "" + k + ". Reservation ID: *" + results[i].Reservation.ReservationId + "*";
-                    k=k+1;
-
-                    var vmConfig =results[i].Request;
-
-                    details += "\n> _(" + vmConfig.OS + ", " + vmConfig.VCPUs + "vCPUs, " + vmConfig.VRAM + "GB RAM, " + 
-                               vmConfig.Storage + "GB " + vmConfig.StorageType + ")_ *x" + results[i].Reservation.Instances.length + "*";
-
-                    for (var j = 0; j < results[i].Reservation.Instances.length; j++) {
-                        details += "\n>" + results[i].Reservation.Instances[j].PublicIpAddress;
-                        console.log(details);
-                    }
-                    
-                    reservationIds.push(details);
-                } 
-                else if (results[i].Cloud == "digital ocean") {
-                    //var res = results[i].Reservation.droplet;
-                    console.log("---------------");
-                    var droplet = results[i].Reservation.droplet;
-                    console.log(results[i].Reservation.droplet);
-                    console.log("---------------");
-
-                    console.log("\n> _(" + droplet.image.distribution + droplet.image.name + 
-                                        ", " + droplet.size.vcpus  + "vCPUs, " + droplet.size.slug + " RAM, " +
-                                        droplet.size.disk + "GB SSD" + ")_ *x1*");
-
-                    for (var j = 0; j < droplet.networks.v4.length; j++) {
-                        details += "\n>" + droplet.networks.v4[0].ip_address;
-                        console.log(details);
-                    }
-
-                    reservationIds.push(details);
-                }
-            }
-            if(reservationIds.length == 0) {
-                return res.send({"status": 200, "data": "You don't have any reservation at this moment"});
-            }
-            return res.send({"status": 200, "data": reservationIds.join("\n\n")});
-            
+            return res.send({"status": 200, "data": results});
         }
     });
-    
 }
 
 exports.get_reservation = function(req, res) {
-    //console.log(mockData);
     var userId = req.params.UserId;
     var ReservationId = req.params.ReservationId;
-
-
-    var reservationIds = [];
-    
     Reservation.findOne({"Reservation.ReservationId" : ReservationId}, function(err, results) {
         if(err) {
             return res.send({"status": 500, "message": "Internal Server Error"});
         } else {
-
+            console.log("GET RESERVATION RESULT")
             console.log(results);
             if(results == null) {
                 console.log("Could not find reservation for this user from database", err);
-                return res.send({"status": 400, "data": "You don't have any reservation with this Id at this moment"});
+                return res.send({"status": 400, "message": "You don't have any reservation with this Id at this moment"});
             }
-
-            var details = null;
-
-                if (results.Cloud == "aws") {
-                    details = "Reservation ID: *" + results.Reservation.ReservationId + "*";
-        
-
-                    var vmConfig =results.Request;
-
-                    details += "\n> _(" + vmConfig.OS + ", " + vmConfig.VCPUs + "vCPUs, " + vmConfig.VRAM + "GB RAM, " + 
-                               vmConfig.Storage + "GB " + vmConfig.StorageType + ")_ *x" + results.Reservation.Instances.length + "*";
-
-                    for (var j = 0; j < results.Reservation.Instances.length; j++) {
-                        details += "\n>" + results.Reservation.Instances[j].PublicIpAddress;
-                        console.log(details);
-                    }
-                    
-                } 
-                else if (results.Cloud == "digital ocean") {
-                    //var res = results.Reservation.droplet;
-                    console.log("---------------");
-                    var droplet = results.Reservation.droplet;
-                    console.log(results.Reservation.droplet);
-                    console.log("---------------");
-
-                    console.log("\n> _(" + droplet.image.distribution + droplet.image.name + 
-                                        ", " + droplet.size.vcpus  + "vCPUs, " + droplet.size.slug + " RAM, " +
-                                        droplet.size.disk + "GB SSD" + ")_ *x1*");
-
-                    for (var j = 0; j < droplet.networks.v4.length; j++) {
-                        details += "\n>" + droplet.networks.v4[0].ip_address;
-                        console.log(details);
-                    }
-
-            
-                }
-    
-            if(details == null) {
-                return res.send({"status": 200, "data": "You don't have any reservation with this Id at this moment"});
-            }
-            return res.send({"status": 200, "data": details});
-            
+            return res.send({"status": 200, "data": results});
         }
-    });
-    
+    }); 
 }

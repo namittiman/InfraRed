@@ -49,8 +49,69 @@ function get(params, url, callback) {
 	request(options, callback);
 }
 
+function format(results) {
+    var reservationIds = [];
+
+    var k = 1
+    for (i in results) {
+        if (results[i].Cloud == "aws") {
+            if (results[i].Request.RequestType == "vm") {
+
+                var details = "" + k + ". Reservation ID: *" + results[i].Reservation.ReservationId + "*";
+                k = k + 1;
+                var vmConfig = results[i].Request;
+                details += "\n> _(" + vmConfig.OS + ", " + vmConfig.VCPUs + "vCPUs, " + vmConfig.VRAM + "GB RAM, " + 
+                           vmConfig.Storage + "GB " + vmConfig.StorageType + ")_ *x" + results[i].Reservation.Instances.length + "*";
+
+                for (var j = 0; j < results[i].Reservation.Instances.length; j++) {
+                    details += "\n>" + results[i].Reservation.Instances[j].PublicIpAddress;
+                    console.log(details);
+                }
+                
+                reservationIds.push(details);
+            } else if (results[i].Request.RequestType == "cluster" ) {
+                console.log("CLUSTER**")
+                console.log(results[i].Reservation)
+
+                var details = "" + k + ". Cluster Reservation ID: *" + results[i].Reservation.Id + "*" + ", Cluster Name: *" + results[i].Reservation.Name + "*";
+                k = k + 1;
+
+                var vmConfig = results[i].Request;
+                details += "\n> _(" + vmConfig.VCPUs + "vCPUs, " + vmConfig.VRAM + "GB RAM, " + 
+                           vmConfig.Storage + "GB " + vmConfig.StorageType + ")_ *x" + vmConfig.NodeCount + "*";
+                details += "\n>Zeppelin Link : " + results[i].Reservation.MasterPublicDnsName + ":8890"
+                
+                reservationIds.push(details);
+            }
+        } 
+        else if (results[i].Cloud == "digital ocean") {
+            //var res = results[i].Reservation.droplet;
+            console.log("---------------");
+            var droplet = results[i].Reservation.droplet;
+            console.log(results[i].Reservation.droplet);
+            console.log("---------------");
+
+            console.log("\n> _(" + droplet.image.distribution + droplet.image.name + 
+                                ", " + droplet.size.vcpus  + "vCPUs, " + droplet.size.slug + " RAM, " +
+                                droplet.size.disk + "GB SSD" + ")_ *x1*");
+
+            for (var j = 0; j < droplet.networks.v4.length; j++) {
+                details += "\n>" + droplet.networks.v4[0].ip_address;
+                console.log(details);
+            }
+
+            reservationIds.push(details);
+        } 
+    }
+    if(reservationIds.length == 0) {
+        return "You don't have any reservation at this moment";
+    }
+    return reservationIds.join("\n\n");
+}
+
 
 module.exports = {
+
 	saveKeys: function (bot, message, response) {
 		bot.reply(message, "Okay, I am working on it.")
 		console.log("***** SAVING KEYS ********");
@@ -111,8 +172,6 @@ module.exports = {
 		post(params, url, callback);
 	},
 
-	
-
 	saveDigitalOceanKeys: function (bot, message, response) {
 		bot.reply(message, "Okay, I am working on it.")
 		console.log("***** SAVING Digital Ocean KEYS ********");
@@ -143,8 +202,6 @@ module.exports = {
 		post(params, url, callback);
 	},
 
-
-
 	createVM: function (bot, message, response) {
 		bot.reply(message, "Okay, I am working on it.");
 		console.log("***** CREATING VMs ********");
@@ -167,7 +224,7 @@ module.exports = {
 			if(error == null && body.status == 201) {
 				console.log("POST Response Body Data \n ")
 				console.log(body.data)
-				var details = "Your Reservation Id is : " + body.data.ReservationId + "\n>" + " Instance details:";
+				var details = "VM/s Ready! \nYour Reservation Id is : " + body.data.ReservationId + "\n>" + " Instance details:";
 				for (var i = 0; i < body.data.Instances.length; i++) {
 					details = details +  "\n>" + " Your Public DNS name is : " + body.data.Instances[i].PublicDnsName 
 					+ "\n>" + "and Public IP : " + body.data.Instances[i].PublicIpAddress;
@@ -201,7 +258,7 @@ module.exports = {
 		var callback = function (error, response, body) {
 			if(error == null && body.status == 201) {
 				console.log(body.data);
-				bot.reply(message, "Spark Cluster Created - \n Zeppelin Link : " + body.data.Reservation.MasterPublicDnsName + ":8890");
+				bot.reply(message, "Spark Cluster Created! \n Zeppelin Link : " + body.data.Reservation.MasterPublicDnsName + ":8890");
 			} else {
 				console.log(error);
 				bot.reply(message, "Sorry, your cluster reservation was not successful!");
@@ -220,20 +277,24 @@ module.exports = {
 		var url = provisioning_service_url + '/users/' + params.UserId + '/reservations';
 
 		var callback = function (error, response, body) {
-			if(body.status == 200) {
+			if(error == null && body.status == 200) {
 				console.log(body);
-				bot.reply(message, body.data);
+				var formatted_results = format(body.data);
+				console.log("FORMATTED RESULTS")
+				console.log(formatted_results)
+				bot.reply(message, formatted_results);
 			} else {
 				console.log(error);
-				bot.reply(message, body.messsage + ". Sorry, I was not able to fetch your reservations at this time.");
+				bot.reply(message, "Sorry, I was not able to fetch your reservations at this time.");
 			}
 		};
 
 		get(params, url, callback);
 	},
 
+	// GET /users/:<userId>/reservations/:<reservation-id>
 	showReservation: function (bot, message, response) {
-		console.log("***** SHOWING  A RESERVATION ********");
+		console.log("***** SHOWING A SINGLE RESERVATION ********");
 		var params = {
 			"UserId": message.user,
 			"ReservationId": response.result.parameters.reservation_id
@@ -244,12 +305,15 @@ module.exports = {
 		var url = provisioning_service_url + '/users/' + params.UserId + '/reservations/'  + response.result.parameters.reservation_id;
 
 		var callback = function (error, response, body) {
-			if(body.status == 200) {
+			if(error == null && body.status == 200) {
 				console.log(body);
-				bot.reply(message, body.data);
+				var formatted_results = format([body.data]);
+				console.log("FORMATTED RESULT")
+				console.log(formatted_results)
+				bot.reply(message, formatted_results);
 			} else {
 				console.log(error);
-				bot.reply(message, body.messsage + ". Sorry, I was not able to fetch your reservation at this time.");
+				bot.reply(message, "Sorry, I was not able to fetch your reservation at this time.");
 			}
 		};
 
@@ -294,18 +358,17 @@ module.exports = {
 		var seconds = response.result.parameters.duration.amount;
 		var multiplier = response.result.parameters.duration.unit;
 		var timeval = seconds;
-
-		if (multiplier.includes("min"))
+		
+		if (multiplier === "min")
 			seconds *= 60;
 		
-		if (multiplier.includes("h"))
+		if (multiplier === "h")
 			seconds *= 60*60;
 
-		if (multiplier.includes("day"))
+		if (multiplier === "day")
 			seconds *= 60*60*24;
 
 		console.log(seconds);
-
 		bot.reply(message, "Reminder has been set successfully!");
 
 		var showResFnPtr = this.showReservations;
@@ -313,13 +376,11 @@ module.exports = {
 
 		setTimeout(function() {
 			console.log('REMINDER!!!');
-			
-			
-			if (reservationId == ""){
+			if (reservationId == "") {
 				bot.reply(message, "Reminder _(" + timeval + multiplier + ")_ : The days of one of your Reservations are numbered! \n" + "`tear down reservation <reservation_id>`");
 				showResFnPtr(bot, message, response);
 			}
-			else{
+			else {
 				bot.reply(message, "Reminder: Time to terminate your reservation " + reservationId +  "! \n" + "`tear down reservation " + reservationId + "`");
 				showSingleResFnPtr(bot, message, response);
 			}
@@ -376,12 +437,34 @@ module.exports = {
 			    "TemplateName": response.result.parameters.template_name
 			};
 
+			/*
 			var callback = function (error, response, body) {
 				//body has the correct message set.
 				bot.reply(message, body.message);
 			};
+			*/
 
-		post(params, url, callback);
+
+			var callback = function(error, response, body) {
+				if(error == null && body.status == 201) {
+					if(body.Request.RequestType == "vm") {
+						var details = "VM/s Ready! \n Your Reservation Id is : " + body.data.ReservationId + "\n>" + " Instance details:";
+                        for (var i = 0; i < body.data.Instances.length; i++) {
+                            details = details +  "\n>" + " Your Public DNS name is : " + body.data.Instances[i].PublicDnsName 
+                            + "\n>" + "and Public IP : " + body.data.Instances[i].PublicIpAddress;
+                        }
+
+                        bot.reply(message, details);
+					} else {
+						var details = "Spark Cluster Created! \n Zeppelin Link : " + body.data.Reservation.MasterPublicDnsName + ":8890";
+						bot.reply(message, details);
+					}
+				} else {
+					bot.reply(message, "Sorry, your reservation was not successful!");
+				}
+			}
+
+			post(params, url, callback);
 
 		}	
 	}

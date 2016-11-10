@@ -304,6 +304,7 @@ module.exports =
                                 });
 
                                 // STORE CLUSTER RESERVATION AND REQUEST IN DB
+                                data.Cluster["ReservationId"] = data.Cluster.Id;
                                 console.log("STORE the following in DB :")
                                 var r = { 
                                     "UserId" : req.body.UserId,

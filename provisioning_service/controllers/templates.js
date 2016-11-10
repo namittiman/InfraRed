@@ -7,8 +7,6 @@ var mongoose = require('mongoose');
 var Reservation = mongoose.model('Reservation');
 var Template = mongoose.model('Template');
 
-
-
 function post(params, url, callback) {
     var options = {
         url: url,
@@ -25,10 +23,8 @@ function post(params, url, callback) {
     request(options, callback);
 }
 
-
-
 exports.post_reservations = function(req, res) {
-	var userId = req.params.UserId;
+    var userId = req.params.UserId;
     var templateId = req.params.TemplateId;
     console.log("POST reservations request Received : ");
     console.log(userId + " " + templateId);
@@ -53,7 +49,13 @@ exports.post_reservations = function(req, res) {
             var url = provisioning_service_url + '/users/' + params.UserId + '/reservations';
 
             var callback;
+
+            callback = function(error, response, body) {
+                body["Request"] = result.Request;
+                return res.send(body);
+            }
             
+            /*
             if(result.Request.RequestType === "vm") {
                 callback = function (error, response, body) {
                     if(error == null && body.status == 201) {
@@ -80,7 +82,7 @@ exports.post_reservations = function(req, res) {
                     }
                 };
             }
-
+            */
 
             
 
