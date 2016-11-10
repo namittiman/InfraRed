@@ -104,7 +104,7 @@ exports.post_reservations = function (req, res) {
 exports.delete_reservation = function(req, res) {
     var ReservationId = req.params.ReservationId;
     console.log(ReservationId);
-    aws.terminate_vm(req, res);
+    aws.terminate_reservation(req, res);
     //docean.terminate_vm(req, res);
 }
 

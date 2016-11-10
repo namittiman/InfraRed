@@ -73,7 +73,7 @@ function format(results) {
                 console.log("CLUSTER**")
                 console.log(results[i].Reservation)
 
-                var details = "" + k + ". Cluster Reservation ID: *" + results[i].Reservation.Id + "*" + ", Cluster Name: *" + results[i].Reservation.Name + "*";
+                var details = "" + k + ". Cluster Reservation ID: *" + results[i].Reservation.Id + "*";
                 k = k + 1;
 
                 var vmConfig = results[i].Request;
@@ -126,10 +126,10 @@ module.exports = {
 		var url = provisioning_service_url + '/users/' + params.UserId + '/keys';
 
 		var callback = function (error, response, body) {
-			if(body.status == 201) {
+			if(error == null && body.status == 201) {
 				console.log(body);
 				bot.reply(message, "Your keys have been saved successfully!");
-			} else if(body.status == 400) {
+			} else if(error == null && body.status == 400) {
 				bot.reply(message, "Please check your credentials they don't seem to be right!");
 			}
 			else {
@@ -157,10 +157,10 @@ module.exports = {
 		var url = provisioning_service_url + '/users/' + params.UserId + '/keys';
 
 		var callback = function (error, response, body) {
-			if(body.status == 201) {
+			if(error == null && body.status == 201) {
 				console.log(body);
 				bot.reply(message, "Your keys have been saved successfully!");
-			} else if(body.status == 400) {
+			} else if(error == null && body.status == 400) {
 				bot.reply(message, "Please check your credentials they don't seem to be right!");
 			}
 			else {
@@ -186,11 +186,11 @@ module.exports = {
 		var url = provisioning_service_url + '/users/' + params.UserId + '/keys';
 
 		var callback = function (error, response, body) {
-			if(body.status == 201) {
+			if(error == null && body.status == 201) {
 				console.log("Callback received!....");
 				console.log(body);
 				bot.reply(message, "Your keys have been saved successfully!");
-			} else if(body.status == 400) {
+			} else if(error == null && body.status == 400) {
 				bot.reply(message, "Please check your credentials they don't seem to be right!");
 			}
 			else {
@@ -258,7 +258,7 @@ module.exports = {
 		var callback = function (error, response, body) {
 			if(error == null && body.status == 201) {
 				console.log(body.data);
-				bot.reply(message, "Spark Cluster Created! \n Zeppelin Link : " + body.data.Reservation.MasterPublicDnsName + ":8890");
+				bot.reply(message, "Spark Cluster Created! \nYour Reservation Id is : " + body.data.Reservation.ReservationId + "\n>Zeppelin Link : " + body.data.Reservation.MasterPublicDnsName + ":8890");
 			} else {
 				console.log(error);
 				bot.reply(message, "Sorry, your cluster reservation was not successful!");
@@ -335,7 +335,7 @@ module.exports = {
 			};
 
 			var callback = function (error, response, body) {
-				if(body.status == 204) {
+				if(error == null && body.status == 204) {
 					console.log(body);
 					bot.reply(message, "Successfully terminated your reservation.");
 				} else {
@@ -408,7 +408,7 @@ module.exports = {
 			};
 
 			var callback = function (error, response, body) {
-				if(body.status == 201) {
+				if(error == null && body.status == 201) {
 					console.log("POST Response Body Data \n ");
 				
 					bot.reply(message, "Your template has been saved successfully!");
