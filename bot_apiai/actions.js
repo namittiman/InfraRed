@@ -91,9 +91,11 @@ function format(results) {
             console.log(results[i].Reservation.droplet);
             console.log("---------------");
 
-            console.log("\n> _(" + droplet.image.distribution + droplet.image.name + 
+            var details = "" + k + ". Reservation ID: *" + droplet.id + "*";
+            k = k+1
+            details += "\n> _(" + droplet.image.distribution + droplet.image.name + 
                                 ", " + droplet.size.vcpus  + "vCPUs, " + droplet.size.slug + " RAM, " +
-                                droplet.size.disk + "GB SSD" + ")_ *x1*");
+                                droplet.size.disk + "GB SSD" + ")_ *x1*";
 
             for (var j = 0; j < droplet.networks.v4.length; j++) {
                 details += "\n>" + droplet.networks.v4[0].ip_address;
@@ -224,11 +226,19 @@ module.exports = {
 			if(error == null && body.status == 201) {
 				console.log("POST Response Body Data \n ")
 				console.log(body.data)
-				var details = "VM/s Ready! \nYour Reservation Id is : " + body.data.ReservationId + "\n>" + " Instance details:";
-				for (var i = 0; i < body.data.Instances.length; i++) {
-					details = details +  "\n>" + " Your Public DNS name is : " + body.data.Instances[i].PublicDnsName;
-				    }
-				bot.reply(message,  details);
+
+				if (body.data.droplet) {
+					var details = "VM/s Ready! \nYour Digital Ocean Reservation Id is : " + body.data.droplet.id + "\n>" + " Instance details:";
+					details = details +  "\n>" + " Your IP is : " + body.data.droplet.networks.v4[0].ip_address;
+					bot.reply(message,  details);
+				} else {
+					var details = "VM/s Ready! \nYour AWS Reservation Id is : " + body.data.ReservationId + "\n>" + " Instance details:";
+					for (var i = 0; i < body.data.Instances.length; i++) {
+						details = details +  "\n>" + " Your Public DNS name is : " + body.data.Instances[i].PublicDnsName;
+					    }
+					bot.reply(message,  details);
+				}
+
 			} else {
 				console.log(error);
 				bot.reply(message, body.message + ". Sorry, your reservation was not successful!");
@@ -447,13 +457,19 @@ module.exports = {
 			var callback = function(error, response, body) {
 				if(error == null && body.status == 201) {
 					if(body.Request.RequestType == "vm") {
-						var details = "VM/s Ready! \n Your Reservation Id is : " + body.data.ReservationId + "\n>" + " Instance details:";
-                        for (var i = 0; i < body.data.Instances.length; i++) {
-                            details = details +  "\n>" + " Your Public DNS name is : " + body.data.Instances[i].PublicDnsName 
-                            + "\n>" + "and Public IP : " + body.data.Instances[i].PublicIpAddress;
-                        }
 
-                        bot.reply(message, details);
+						if (body.data.droplet) {
+							var details = "VM/s Ready! \nYour Digital Ocean Reservation Id is : " + body.data.droplet.id + "\n>" + " Instance details:";
+							details = details +  "\n>" + " Your IP is : " + body.data.droplet.networks.v4[0].ip_address;
+							bot.reply(message,  details);
+						} else {
+							var details = "VM/s Ready! \nYour AWS Reservation Id is : " + body.data.ReservationId + "\n>" + " Instance details:";
+							for (var i = 0; i < body.data.Instances.length; i++) {
+								details = details +  "\n>" + " Your Public DNS name is : " + body.data.Instances[i].PublicDnsName;
+							    }
+							bot.reply(message,  details);
+						}
+
 					} else {
 						var details = "Spark Cluster Created! \n Zeppelin Link : " + body.data.Reservation.MasterPublicDnsName + ":8890";
 						bot.reply(message, details);

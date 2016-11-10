@@ -32,7 +32,7 @@ module.exports =
                 var ssh_key = parseInt(result.KeyPair);
                 var name = "DevOps-Node";
                 var region = "nyc3";
-                var image = "centos-6-5-x64";
+                var image = req.body.OS.includes("buntu") ? "ubuntu-16-04-x64" : "centos-6-5-x64"
 
                 client.createDroplet(name, type, region, image, ssh_key, function(err, resp, body)
                 {
@@ -56,7 +56,7 @@ module.exports =
                                 console.log(req.body);
                                 var r = { 
                                     "UserId" : req.body.UserId,
-                                    "Cloud" : "do",
+                                    "Cloud" : "digital ocean",
                                     "Reservation" : data,
                                     "Request" : req.body
                                 }
@@ -126,13 +126,16 @@ module.exports =
                     client.deleteDroplet(resId, function(err, resp, body) {
                         if(!err)
                         {
-                            console.log("DELETE done");
-                            res.send({"status": 204, "message": "Delete Done!"});
+                            Reservation.remove({"Reservation.droplet.id" : resId}, function(err, result) {
+                                if(err) {
+                                    return res.send({"status": 500, "message": "Internal Server Error"});
+                                } else {
+                                    return res.send({"status": 204, "message": "Successfully deleted your reservation"});
+                                }
+                            });
                         } else {
                             console.log("deleting res failed. status" + resp.statusCode);
-                            console.log(err);
-                            console.log(resp);
-                            console.log(body);
+                            return res.send({"status": 500, "message": "Internal Server Error"});
                         }
 
                     });
