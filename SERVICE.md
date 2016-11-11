@@ -39,12 +39,12 @@ In the previous milestone in Bot.md, we described 5 use cases and had implemente
 #### Use Case : Save Templates
 **Endpoint :** POST /users/:UserId/templates/:TemplateId
 
-**Description :** The end user of the bot can save existing reservations as a template and use them in the future to relaunch them.The user may do this via the following conversation:
+**Description :** The end user of the bot can save existing reservations as a template and use them in the future to relaunch them. The user may do this via the following conversation:
 
 * save reservation <reservation_id> as template sandbox_vm
 * save reservation <reservation_id> as template sandbox_cluster
 
-**Action :** The specifiedreservation request is saved as a template in a MongoDB collection called templates.
+**Action :** The specified reservation request is saved as a template in a MongoDB collection called templates.
 
 #### Use Case : Create Reservation Using templates
 **Endpoint :** POST /users/:UserId/templates/:TemplateId/reservations
@@ -63,6 +63,7 @@ In the previous milestone in Bot.md, we described 5 use cases and had implemente
 
 ### Submission
 [Screen Cast](https://www.youtube.com/watch?v=92oT-W1Pqxo)
+** Note: They keys that were displayed in the video have been deleted after the demo. Hence no one can misuse them **
 
 ### Task Tracking
 The task and issues related to this milestone can be found under `Week 5` and `Week 6` in [WORKSHEET.md](WORKSHEET.md)
