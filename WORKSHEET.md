@@ -53,6 +53,8 @@
 
 ### Week 6 :checkered_flag:
 
+| Deliverable   | Item/Status   |  Issues/Tasks
+| ------------- | ------------  |  ------------
 | Service implementation use case 2: Set up VM ( on [Digital Ocean](https://www.digitalocean.com/) )  | Completed :white_check_mark: | [TC1](https://trello.com/c/r7VDWNBB/22-service-implementation-use-case-2-set-up-vm), [#13](https://github.ncsu.edu/vramakr2/InfraRed/issues/13)
 | Service implementation use case 4: Terminate Reservation | Completed :white_check_mark: | [TC1](https://trello.com/c/npibXM3e/24-service-implementation-use-case-4-terminate-reservation), [#14](https://github.ncsu.edu/vramakr2/InfraRed/issues/14)
 | Service implementation use case 5: Save template   | Completed :white_check_mark: | [TC1](https://trello.com/c/C6DEs84f/25-service-implementation-use-case-5-save-template), [#21](https://github.ncsu.edu/vramakr2/InfraRed/issues/21), [24](https://github.ncsu.edu/vramakr2/InfraRed/issues/24)
@@ -60,6 +62,8 @@
 
 ### Week 7 :hourglass:
 
+| Deliverable   | Item/Status   |  Issues/Tasks
+| ------------- | ------------  |  ------------
 | Service implementation use case 2.1 and 3.1: Pricing component  | Completed :white_check_mark: | [TC1](https://trello.com/c/uOUlhG1x/27-service-implementation-use-case-2-1-and-3-1-pricing-component), [#23](https://github.ncsu.edu/vramakr2/InfraRed/issues/23)
 | Unify format of AWS and DO JSON responses | Completed :white_check_mark: | [#26](https://github.ncsu.edu/vramakr2/InfraRed/issues/2)
 | <pre>Improvements</pre> Add formatting when printing out to slack | :soon: | [#20](https://github.ncsu.edu/vramakr2/InfraRed/issues/20)
