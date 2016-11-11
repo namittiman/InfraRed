@@ -14,27 +14,27 @@ In the previous milestone in Bot.md, we described 5 use cases and had implemente
 ####Use Case : Configure Access Keys
 **Endpoint :** POST /users/:UserId/keys
 
-**Action :** Tests if provided credentials for the cloud provider are valid and subsequently saves the keys for the service with the unique UserId into a MongoDB collection called keys.
+**Action :** Tests if provided credentials for the cloud provider are valid and subsequently saves the keys for the service with the unique UserId into a MongoDB collection called keys. This would be a one time setup and would be used for all VM and cluster creation requests. 
 
 ####Use Case : Set up VMs
 **Endpoint :** POST /users/:UserId/reservations
 
-**Action :** Queries for the keys saved in the database, using which, makes an appropriate call to AWS or Digital Ocean to actually provision the VM/s. Waits for the state of the VM/s to be "READY" before returning success along with the IP address/s. The reservation information is also saved in the database along with a unique reservation ID.
+**Action :** After receiving the configuraton request, the pricing engine queries the keys saved in the database for the user, and chooses the closest matching instance type and decides the cheaper cloud provider amongst AWS or Digital Ocean to provision the VM/s. It Waits for the state of the VM/s to be "READY" before returning success along with the Reservation Id and IP address/s. The reservation information is also saved in the database along with a unique reservation ID.
 
 ####Use Case : Set up a cluster
 **Endpoint :** POST /users/:user_Id/reservations
 
-**Action :** Queries for the keys saved in the database, using which, makes an appropriate call to AWS to actually provision the Cluster (AWS EMR Cluster). Waits for the state of the Cluster to be "READY" before returning success along with the master's DNS name of the cluster. The cluster reservation information is also saved in the database along with a unique cluster reservation ID in a MongoDB collection reservations.
+**Action :** Queries for the keys saved in the database for the user, using which, makes an appropriate call to AWS to actually provision the Cluster (AWS EMR Cluster).The cluster is preconfigured with other services such as Apache Spark, Ganglia, Zepellin etc. It Waits for the state of the Cluster to be "READY" before returning success along with the Reservation Id, Master's DNS name of the cluster and the link to the Zepellin Notebook. The cluster reservation information is also saved in the database along with a unique cluster reservation ID in a MongoDB collection reservations.
 
 ####Use Case : Show Current Reservations
 **Endpoint :** GET /users/:UserId/reservations
 
-**Action :** Queries the database for current reservations for that user and returns all of them back to the caller.
+**Action :** Queries the database for current reservations of that user and returns the reservation Id along with their corresponding Request parameters.
 
 ####Use Case : User initiated tear down (Delete Reservation)
 **Endpoint :** DELETE /users/:UserId/reservations/:ReservationId
 
-**Action :** Deletes VM/s or cluster with the given ReservationId  from the database and makes calls to the cloud service to actually terminate the reservation and release resources.
+**Action :** Checks if the Reservation Id is valid and makes calls to the cloud service APIs to actually terminate the reservation and release resources. It then deletes VM/s or cluster reservation based on the given ReservationId  from the database
 
 #### Use Case : Save Templates
 **Endpoint :** POST /users/:UserId/templates/:TemplateId
