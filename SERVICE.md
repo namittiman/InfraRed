@@ -41,8 +41,8 @@ In the previous milestone in Bot.md, we described 5 use cases and had implemente
 
 **Description :** The end user of the bot can save existing reservations as a template and use them in the future to relaunch them.The user may do this via the following conversation:
 
-save reservation <reservation_id> as template sandbox_vm
-save reservation <reservation_id> as template sandbox_cluster
+* save reservation <reservation_id> as template sandbox_vm
+* save reservation <reservation_id> as template sandbox_cluster
 
 **Action :** The specifiedreservation request is saved as a template in a MongoDB collection called templates.
 
@@ -51,8 +51,8 @@ save reservation <reservation_id> as template sandbox_cluster
 
 **Description :** The end user can relaunch the reservations using templates using the following conversation:
 
-create reservation using my template sandbox_vm
-create reservation using my template sandbox_cluster
+* create reservation using my template sandbox_vm
+* create reservation using my template sandbox_cluster
 
 **Action :** Calls the POST /users/:user_Id/reservations API to launch VM/s or Cluster using the template name queried from the database.
 
