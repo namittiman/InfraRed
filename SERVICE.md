@@ -1,12 +1,12 @@
 # Milestone: SERVICE
 
-In the previous milestone in Bot.md, we described 5 use cases and had implemented interaction with our bot by using mock data and services. In this milestone, we have implemented the internal logic required to *actually* perform the services/tasks via the bot. We have not only covered all the use cases mentioned previously, but added a few more. In this file we describe a little bit about how the service was implemented.
+In the previous milestone in Bot.md, we described 5 use cases and had implemented interaction of the provisioning service with our bot using mock data and services. In this milestone, we have implemented the internal logic required to *actually* perform the services/tasks via the bot. We have not only covered all the use cases mentioned previously, but added a few more. In this file we describe a little bit about how the service was implemented.
 
 ###Provisioning Service Summary
 1. Serves Bot's requests for initial keys setup for cloud service provider (AWS/DigitalOcean)
-2. Accepts provisioning requests from the bot to provision VMs and Cluster.The pricing engines decides the cheapest Cloud provider based on user request and makes calls to the chosen cloud service provider APIs (AWS/DigitalOcean)
+2. Accepts provisioning requests from the bot to provision VMs and Cluster.The pricing engine decides the cheapest Cloud provider based on the configuration request and makes calls to the chosen cloud service provider APIs (AWS/DigitalOcean)
 3. Accepts requests to show active reservations, tear down current reservation (VMs or Cluster).
-4. Accepts requests to save a configuration request as a template and create future reservations using these saved templates
+4. Accepts requests to save a configuration request as a template and supports creation of future reservations using these saved templates
 4. Maintains keys, reservation and template information per user in a database (MongoDB) and exposes APIs over it.
 
 
@@ -14,7 +14,7 @@ In the previous milestone in Bot.md, we described 5 use cases and had implemente
 ####Use Case : Configure Access Keys
 **Endpoint :** POST /users/:UserId/keys
 
-**Action :** Tests if Cloud provided credentials are valid and then saves with the unique UserId into a MongoDB collection called keys.
+**Action :** Tests if provided credentials for the cloud provider are valid and subsequently saves the keys for the service with the unique UserId into a MongoDB collection called keys.
 
 ####Use Case : Set up VMs
 **Endpoint :** POST /users/:UserId/reservations
@@ -64,5 +64,6 @@ create reservation using my template sandbox_cluster
 
 
 ### Submission
+[Screen Cast](https://www.youtube.com/watch?v=92oT-W1Pqxo)
 
-TODO  - Add screencast link
+[Timesheet]
