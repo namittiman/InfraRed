@@ -39,13 +39,12 @@ In the previous milestone in Bot.md, we described 5 use cases and had implemente
 #### Use Case : Save Templates
 **Endpoint :** POST /users/:UserId/templates/:TemplateId
 
-**Description :** The end user of the bot can save existing reservations as a template and use them to relaunch them.
-The user may do this via the following conversation:
+**Description :** The end user of the bot can save existing reservations as a template and use them in the future to relaunch them.The user may do this via the following conversation:
 
 save reservation <reservation_id> as template sandbox_vm
 save reservation <reservation_id> as template sandbox_cluster
 
-**Action :** The specified earlier reservation request is saved as a template in a MongoDB collection called templates.
+**Action :** The specifiedreservation request is saved as a template in a MongoDB collection called templates.
 
 #### Use Case : Create Reservation Using templates
 **Endpoint :** POST /users/:UserId/templates/:TemplateId/reservations
@@ -55,13 +54,12 @@ save reservation <reservation_id> as template sandbox_cluster
 create reservation using my template sandbox_vm
 create reservation using my template sandbox_cluster
 
-**Action :** Calls the POST /users/:user_Id/reservations API to launch VM/s or Cluster using the template queried from the database.
+**Action :** Calls the POST /users/:user_Id/reservations API to launch VM/s or Cluster using the template name queried from the database.
 
 #### Use Case : Show Templates
 **Endpoint :** GET /users/:UserId/templates
 
-**Action :** Queries the database and returns all existing templates
-
+**Action :** Queries the database and returns all existing templates with their names and request parameters saved. 
 
 ### Submission
 [Screen Cast](https://www.youtube.com/watch?v=92oT-W1Pqxo)
