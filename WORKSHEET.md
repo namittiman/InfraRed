@@ -39,9 +39,15 @@
 | Write selenium scripts  | Completed :white_check_mark:           |  [TC1](https://trello.com/c/iRmzdTiZ/16-write-selenium-tests-to-run-locally), [#5](https://github.ncsu.edu/vramakr2/InfraRed/issues/5)
 | Integrate Sauce labs + Travis CI  | Completed :white_check_mark:       |[TC1](https://trello.com/c/yK801suK/18-automate-tests-to-run-on-selenium-and-sauce-labs), [TC2](https://trello.com/c/KamGNm3V/17-support-sauce-labs-for-selenium-testing), [#6](https://github.ncsu.edu/vramakr2/InfraRed/issues/6)
 
-### Week 5 :hourglass:
+### Week 5 :checkered_flag:
 
 
 | Deliverable   | Item/Status   |  Issues/Tasks
 | ------------- | ------------  |  ------------
-| Add a https service to get the requests from bots   | In Progress         | [TC1](https://trello.com/c/wrEhyHTY/14-add-a-https-service-to-get-the-requests-from-bots)
+| Add a https service to get the requests from bots   | Completed :white_check_mark:          | [TC1](https://trello.com/c/wrEhyHTY/14-add-a-https-service-to-get-the-requests-from-bots)
+| Setup Mongo DB with [Mongoose](http://mongoosejs.com/) |  Completed :white_check_mark: | [TC1](https://trello.com/c/87Puo7wV/28-setup-mongodb-at-the-provisioning-server)
+| Service implementation use case 1: Save access keys | Completed :white_check_mark: | [TC1](https://trello.com/c/AfSG0mMf/21-service-implementation-use-case-1-save-access-keys),[#12](https://github.ncsu.edu/vramakr2/InfraRed/issues/12), [#17](https://github.ncsu.edu/vramakr2/InfraRed/issues/17)
+| Service implementation use case 2: Set up VM ( on [AWS](https://aws.amazon.com/) )  | Completed :white_check_mark: | [TC1](https://trello.com/c/r7VDWNBB/22-service-implementation-use-case-2-set-up-vm), [#13](https://github.ncsu.edu/vramakr2/InfraRed/issues/13)
+| Service implementation use case 3: Set up cluster (on [AWS](https://aws.amazon.com/))  | Completed :white_check_mark: | [TC1](https://trello.com/c/tsYRassv/23-service-implementation-use-case-3-set-up-cluster), [#15](https://github.ncsu.edu/vramakr2/InfraRed/issues/15)
+
+### Week 6 :hourglass:
