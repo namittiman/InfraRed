@@ -15,3 +15,7 @@ Team Members:
 ## Milestone: Bot
 
 [Bot.md](https://github.ncsu.edu/vramakr2/InfraRed/blob/master/Bot.md)
+
+## Milestone: Service
+
+[SERVICE.md](https://github.ncsu.edu/vramakr2/InfraRed/blob/master/SERVICE.md)
