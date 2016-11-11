@@ -65,3 +65,4 @@ create reservation using my template sandbox_cluster
 [Screen Cast](https://www.youtube.com/watch?v=92oT-W1Pqxo)
 
 [Timesheet]
+The task and issues related to this milestone can be found under `Week 5` and `Week 6` in [WORKSHEET.md](WORKSHEET.md)
