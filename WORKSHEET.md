@@ -66,5 +66,5 @@
 | ------------- | ------------  |  ------------
 | Service implementation use case 2.1 and 3.1: Pricing component  | Completed :white_check_mark: | [TC1](https://trello.com/c/uOUlhG1x/27-service-implementation-use-case-2-1-and-3-1-pricing-component), [#23](https://github.ncsu.edu/vramakr2/InfraRed/issues/23)
 | Unify format of AWS and DO JSON responses | Completed :white_check_mark: | [#26](https://github.ncsu.edu/vramakr2/InfraRed/issues/2)
-| <pre>Improvements</pre> Add formatting when printing out to slack | :soon: | [#20](https://github.ncsu.edu/vramakr2/InfraRed/issues/20)
-| <pre>Improvements</pre> Add option to exit in the middle of conversation | :soon: | [#19](https://github.ncsu.edu/vramakr2/InfraRed/issues/19)
+| `Improvements` Add formatting when printing out to slack | :soon: | [#20](https://github.ncsu.edu/vramakr2/InfraRed/issues/20)
+| `Improvements` Add option to exit in the middle of conversation | :soon: | [#19](https://github.ncsu.edu/vramakr2/InfraRed/issues/19)
