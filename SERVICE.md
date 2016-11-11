@@ -4,8 +4,9 @@ In the previous milestone in Bot.md, we described 5 use cases and had implemente
 
 ###Provisioning Service Summary
 1. Serves Bot's requests for initial keys setup for cloud service provider (AWS/DigitalOcean)
-2. Accepts provisioning requests for the bot to provision VMs and Cluster and makes calls to cloud service provider APIs (AWS/DigitalOcean)
-3. Accepts requests to show current reservations, tear down down current reservation (VMs or Cluster).
+2. Accepts provisioning requests from the bot to provision VMs and Cluster.The pricing engines decides the cheapest Cloud provider based on user request and makes calls to the chosen cloud service provider APIs (AWS/DigitalOcean)
+3. Accepts requests to show active reservations, tear down current reservation (VMs or Cluster).
+4. Accepts requests to save a configuration request as a template and create future reservations using these saved templates
 4. Maintains keys, reservation and template information per user in a database (MongoDB) and exposes APIs over it.
 
 
@@ -13,7 +14,7 @@ In the previous milestone in Bot.md, we described 5 use cases and had implemente
 ####Use Case : Configure Access Keys
 **Endpoint :** POST /users/:UserId/keys
 
-**Action :** Saves Access Keys with the unique UserId into a MongoDB collection called keys.
+**Action :** Tests if Cloud provided credentials are valid and then saves with the unique UserId into a MongoDB collection called keys.
 
 ####Use Case : Set up VMs
 **Endpoint :** POST /users/:UserId/reservations
