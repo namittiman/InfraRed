@@ -12,12 +12,17 @@ controller.spawn({
     token: process.env.ALTCODETOKEN,
 }).startRTM()
 
+/** Stores the latest session id associated with the user **/
+var sessionMap = {}
 
-var session = getRandomSessionId();
 controller.hears('(.*)', ['mention', 'direct_mention', 'direct_message'], function (bot, message) {
 
+    if (sessionMap[message.user] == undefined) {
+        sessionMap[message.user] = getRandomSessionId(message.user);
+    }
+
     var request = app.textRequest(message.text, {
-        sessionId: session
+        sessionId: sessionMap[message.user]
     });
 
     request.on('response', function (response) {
@@ -76,7 +81,7 @@ controller.hears('(.*)', ['mention', 'direct_mention', 'direct_message'], functi
 
                 case 'action.exit':
                     bot.reply(message, response.result.fulfillment.speech);
-                    session = getRandomSessionId();
+                    sessionMap[message.user] = getRandomSessionId(message.user);
                     break;
 
                 default:
@@ -94,6 +99,6 @@ controller.hears('(.*)', ['mention', 'direct_mention', 'direct_message'], functi
 });
 
 
-function getRandomSessionId(){
-    return Math.random().toString(36).substring(7);
+function getRandomSessionId(user) {
+    return user + Math.random().toString(36).substring(7);
 }
