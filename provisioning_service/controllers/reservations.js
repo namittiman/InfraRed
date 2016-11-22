@@ -79,7 +79,7 @@ exports.post_reservations = function (req, res) {
     var userId = req.params.userId;
     console.log("POST request Received : ")
 
-	var userId = req.params.userId;
+    var userId = req.params.userId;
     console.log("POST request Received : \n")
 
     console.log(req.body);
@@ -88,38 +88,44 @@ exports.post_reservations = function (req, res) {
         getBestConfig(req, function (best_config) {
             console.log("##### BEST CONFIG #####");
             console.log(best_config);
-            if (best_config.Service == 'aws') {
-                aws.create_vm(best_config.Config.InstanceType , req, res);
-            } else if (best_config.Service == 'digital ocean') {
-                docean.create_vm(best_config.Config.InstanceType, req, res);
-            } else {
-                console.log("None of the service providers could match the request");
+            if (best_config["Service"] == undefined) {
+                res.statusCode = 404
+                return res.send({"status": 404, "data": "Configuration unavailable"});
+            }
+            else {
+                if (best_config.Service == 'aws') {
+                    aws.create_vm(best_config.Config.InstanceType, req, res);
+                } else if (best_config.Service == 'digital ocean') {
+                    docean.create_vm(best_config.Config.InstanceType, req, res);
+                } else {
+                    console.log("None of the service providers could match the request");
+                }
             }
         });
-    } else if(req.body.RequestType == 'cluster'){
+    } else if (req.body.RequestType == 'cluster') {
         aws.create_cluster(req, res);
     }
 }
 
-exports.delete_reservation = function(req, res) {
+exports.delete_reservation = function (req, res) {
     var ReservationId = req.params.ReservationId;
     console.log(ReservationId);
-    if(ReservationId.match(/[a-z]/i)) {
+    if (ReservationId.match(/[a-z]/i)) {
         aws.terminate_reservation(req, res);
     } else {
         docean.terminate_vm(req, res);
     }
 }
 
-exports.get_reservations = function(req, res) {
-	var userId = req.params.UserId;    
-    Reservation.find({"UserId" : userId}, function(err, results) {
-        if(err) {
+exports.get_reservations = function (req, res) {
+    var userId = req.params.UserId;
+    Reservation.find({"UserId": userId}, function (err, results) {
+        if (err) {
             return res.send({"status": 500, "message": "Internal Server Error"});
         } else {
             console.log("GET RESERVATIONS RESULTS")
             console.log(results);
-            if(results.length == 0) {
+            if (results.length == 0) {
                 console.log("Could not find reservation for this user from database", err);
                 return res.send({"status": 400, "message": "You don't have any reservation at this moment"});
             }
@@ -128,20 +134,23 @@ exports.get_reservations = function(req, res) {
     });
 }
 
-exports.get_reservation = function(req, res) {
+exports.get_reservation = function (req, res) {
     var userId = req.params.UserId;
     var ReservationId = req.params.ReservationId;
-    Reservation.findOne({"Reservation.ReservationId" : ReservationId}, function(err, results) {
-        if(err) {
+    Reservation.findOne({"Reservation.ReservationId": ReservationId}, function (err, results) {
+        if (err) {
             return res.send({"status": 500, "message": "Internal Server Error"});
         } else {
             console.log("GET RESERVATION RESULT")
             console.log(results);
-            if(results == null) {
+            if (results == null) {
                 console.log("Could not find reservation for this user from database", err);
-                return res.send({"status": 400, "message": "You don't have any reservation with this Id at this moment"});
+                return res.send({
+                    "status": 400,
+                    "message": "You don't have any reservation with this Id at this moment"
+                });
             }
             return res.send({"status": 200, "data": results});
         }
-    }); 
+    });
 }
