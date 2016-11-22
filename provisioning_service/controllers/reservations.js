@@ -16,6 +16,7 @@ function getBestConfig(req, callback) {
 
     Key.find({"UserId": req.body.UserId}, function (err, result) {
         if (err) {
+
         } else {
 
             var priority = ["VCPUs", "VRAM"]
@@ -90,7 +91,7 @@ exports.post_reservations = function (req, res) {
             console.log(best_config);
             if (best_config["Service"] == undefined) {
                 res.statusCode = 404
-                return res.send({"status": 404, "data": "Configuration unavailable"});
+                return res.send({"status": 404, "message": "Configuration unavailable"});
             }
             else {
                 if (best_config.Service == 'aws') {
