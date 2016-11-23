@@ -1,5 +1,5 @@
 var request = require('request');
-var provisioning_service_url = "http://localhost:3001";
+var provisioning_service_url = "http://provision:3001";
 
 function post(params, url, callback) {
 	var options = {
