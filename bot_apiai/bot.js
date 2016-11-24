@@ -3,6 +3,8 @@ var apiai = require('apiai');
 var app = apiai(process.env.APIAITOKEN);
 var actions = require('./actions.js');
 
+var commandsHelpText = "Below is a list of commands I support:\n 1. `save <service name> keys` : Saves your service credentials like access keys and keypair\n 2. `create vm` : creates one or more VMs\n 3. `start cluster` : creates a Spark cluster\n 4. `show reservations` : shows all your current reservations\n 5. `set reminder` : allows you to set a reminder about your reservations\n 6. `save reservation <reservation id> as template <template name>` : saves the configuration of the specified reservation as a template\n 7. `create reservation using template <template name>` : creates reservation using the specified template\n 8. `show templates` : shows all your saved templates\n 9. `terminate reservation` : terminates your reservation\n 10. `exit` : exit the conversation\n"
+
 var controller = Botkit.slackbot({
     debug: false
 });
@@ -82,6 +84,10 @@ controller.hears('(.*)', ['mention', 'direct_mention', 'direct_message'], functi
                 case 'action.exit':
                     bot.reply(message, response.result.fulfillment.speech);
                     sessionMap[message.user] = getRandomSessionId(message.user);
+                    break;
+
+                case 'commands.help':
+                    bot.reply(message, commandsHelpText);
                     break;
 
                 default:
