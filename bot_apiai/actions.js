@@ -474,8 +474,9 @@ module.exports = {
 						var details = "Spark Cluster Created! \n Zeppelin Link : " + body.data.Reservation.MasterPublicDnsName + ":8890";
 						bot.reply(message, details);
 					}
-				} else {
-					bot.reply(message, "Sorry, your reservation was not successful!");
+				} 
+				else {
+					bot.reply(message, body.message);
 				}
 			}
 
