@@ -294,7 +294,8 @@ module.exports = {
 				bot.reply(message, formatted_results);
 			} else {
 				console.log(error);
-				bot.reply(message, "Sorry, I was not able to fetch your reservations at this time.");
+				bot.reply(message,body.message);
+				//bot.reply(message, "Sorry, I was not able to fetch your reservations at this time.");
 			}
 		};
 
