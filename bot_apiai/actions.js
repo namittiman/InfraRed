@@ -270,7 +270,7 @@ module.exports = {
 				bot.reply(message, "Spark Cluster Created! \nYour Reservation Id is : " + body.data.Reservation.ReservationId + "\n>Zeppelin Link : " + body.data.Reservation.MasterPublicDnsName + ":8890");
 			} else {
 				console.log(error);
-				bot.reply(message, "Sorry, your cluster reservation was not successful!");
+				bot.reply(message, body.message + " Sorry, your cluster reservation was not successful!");
 			}
 		};
 

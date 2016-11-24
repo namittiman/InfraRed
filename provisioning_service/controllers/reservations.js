@@ -16,8 +16,14 @@ function getBestConfig(req, callback) {
 
     Key.find({"UserId": req.body.UserId}, function (err, result) {
         if (err) {
+            console.log(err);
+        } 
 
-        } else {
+        if (result.length == 0){
+            var best_config = {"Service":"None"};
+            callback(best_config);
+        } 
+        else {
 
             var priority = ["VCPUs", "VRAM"]
             console.log(result);
@@ -93,6 +99,10 @@ exports.post_reservations = function (req, res) {
                 res.statusCode = 404
                 return res.send({"status": 404, "message": "Configuration unavailable"});
             }
+            else if (best_config["Service"] == "None") {
+                res.statusCode = 404
+                return res.send({"status": 404, "message": "Please set up your keys with a service provider before creating any reservation."});
+            }
             else {
                 if (best_config.Service == 'aws') {
                     aws.create_vm(best_config.Config.InstanceType, req, res);
