@@ -1,18 +1,31 @@
 # Milestone: Deployment
 
-*Build docker images using compose:*
-	
-	docker-compose build
-	
-	
-*Run MongoDB container:*
+Docker Setup (Ubuntu 16.04)
 
-	docker run -p 27017:27017 mongo
-
-*Run Bot Container:*
-
-	docker run -it infrared_bot /bin/bash
+	apt-get update
+	apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+	apt-add-repository 'deb https://apt.dockerproject.org/repo ubuntu-xenial main'
+	apt-get update
+	apt-cache policy docker-engine
+	apt-get install -y docker-engine
+	systemctl status docker
 	
-*Run Provisioning Service:*
+	
+Install Docker-Compose:
 
-	docker run -p 3001:3001 -it infrared_prov /bin/bash
+	apt-get install python-pip
+	pip install docker-compose
+	
+---
+
+#### Deployment Instructions
+
+*	Edit docker-compose.yml
+	* add APIAITOKEN and ALTCODETOKEN without ""
+*	Deployment
+
+		docker-compose build
+		docker-compose run
+* Tear-down
+
+		docker-compose down
