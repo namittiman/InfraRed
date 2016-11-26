@@ -323,7 +323,7 @@ module.exports = {
 				bot.reply(message, formatted_results);
 			} else {
 				console.log(error);
-				bot.reply(message, "Sorry, I was not able to fetch your reservation at this time.");
+				bot.reply(message, body.message);
 			}
 		};
 
