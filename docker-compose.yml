@@ -5,8 +5,8 @@ services:
     links:
       - "prov:provision"
     environment:
-      - APIAITOKEN=<KEY_HERE>
-      - ALTCODETOKEN=<KEY_HERE>
+      - APIAITOKEN=${ALTCODETOKEN}
+      - ALTCODETOKEN=${ALTCODETOKEN}
     depends_on:
       - "prov"
 
