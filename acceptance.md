@@ -3,7 +3,7 @@
 
 ### Pre-requisites
 
-You need to have keys set up on AWS/ Digital Ocean. You also need to generate keypair on AWS or ssh key on Digital Ocean. You will need the key pair name.
+You need to have keys set up on AWS/ Digital Ocean. You also need to generate keypair on AWS [AWS - Getting Started](https://aws.amazon.com/documentation/) or ssh key on Digital Ocean [Digital Ocean - Getting Started](https://www.digitalocean.com/help/). You will need the key pair name. In case you want to set up a Spark cluster, you need to activate your AWS account for Amazon EMR. For more information on how to do that, please visit [Amazon EMR - Getting Started](http://docs.aws.amazon.com/ElasticMapReduce/latest/DeveloperGuide/emr-get-started.html)
 
 
 ### Get acquainted with InfraRed, the bot
