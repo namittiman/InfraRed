@@ -69,7 +69,7 @@
 | `Improvements` Add formatting when printing out to slack | Completed :white_check_mark: | [#20](https://github.ncsu.edu/vramakr2/InfraRed/issues/20)
 | `Improvements` Add option to exit in the middle of conversation | Completed :white_check_mark: | [TC1](https://trello.com/c/ziEsgZzB/34-add-exit-conversation-feature),[#19](https://github.ncsu.edu/vramakr2/InfraRed/issues/19)
 | Add error message for sad path | Completed :white_check_mark: | [TC1](https://trello.com/c/sJBehD7F/35-add-error-messages-for-sad-paths),[#29](https://github.ncsu.edu/vramakr2/InfraRed/issues/29), [#36](https://github.ncsu.edu/vramakr2/InfraRed/issues/36),[#38](https://github.ncsu.edu/vramakr2/InfraRed/issues/38), [#40](https://github.ncsu.edu/vramakr2/InfraRed/issues/40)
-| Add HTTP response codes to make debugging easier |  Completed :white_check_make:| [TC1](https://trello.com/c/uKmk6nRD/41-add-http-response-code-to-make-debugging-more-easier-optional), [#35](https://github.ncsu.edu/vramakr2/InfraRed/issues/35)
+| Add HTTP response codes to make debugging easier |  Completed :white_check_mark:| [TC1](https://trello.com/c/uKmk6nRD/41-add-http-response-code-to-make-debugging-more-easier-optional), [#35](https://github.ncsu.edu/vramakr2/InfraRed/issues/35)
 
 ### Week 8 :checkered_flag:
 | Deliverable   | Item/Status   |  Issues/Tasks
