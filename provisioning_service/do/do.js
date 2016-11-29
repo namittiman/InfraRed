@@ -8,7 +8,7 @@ var Reservation = mongoose.model('Reservation');
 var Key = mongoose.model('Key');
 
 
-module.exports = 
+module.exports =
 {
     create_vm: function (type, req, res) {
         console.log("\nHandeling Request DO\n");
@@ -17,13 +17,15 @@ module.exports =
 
             if(err) {
                 console.log("Could not fetch keys from database", err);
+                res.statusCode = 500
                 return res.send({"status": 500, "message": "Internal Server Error"});
             } else {
 
                 if(result == null) {
                     console.log("Could not fetch keys from database", err);
+                    res.statusCode = 401
                     return res.send({"status": 401, "message": "Unauthorized"});
-                }  
+                }
 
                 // read api token
                 headers.Authorization = 'Bearer ' + result.Token;
@@ -55,7 +57,7 @@ module.exports =
                                 console.log("STORE the following in DB :");
                                 console.log();
                                 console.log(req.body);
-                                var r = { 
+                                var r = {
                                     "UserId" : req.body.UserId,
                                     "Cloud" : "digital ocean",
                                     "Reservation" : data,
@@ -65,9 +67,11 @@ module.exports =
                                 Reservation.create(r, function(err, key) {
                                     if(err) {
                                         console.log("Could not write to database", err);
+                                        res.statusCode = 500
                                         return res.send({"status": 500, "message": "Internal Server Error"});
                                     }
                                     // NOTIFY BOT ABOUT STATUS
+                                    res.statusCode = 201
                                     return res.send({"status" : 201, "data" : data});
                                 });
 
@@ -84,13 +88,13 @@ module.exports =
                     }
                 });
             }
-        });  
-        
+        });
+
     },
 
     terminate_vm: function (req, res) {
         // FETCH KEYS AND CALL AWS SDK
-    
+
         console.log("\nTerminating Request DO\n");
         console.log(req.params.UserId);
         console.log(req.params.ReservationId);
@@ -99,11 +103,13 @@ module.exports =
 
             if(err) {
                 console.log("Could not fetch keys from database", err);
+                res.statusCode = 500
                 return res.send({"status": 500, "message": "Internal Server Error"});
             } else {
 
                 if(result == null) {
                     console.log("Could not fetch keys from database", err);
+                    res.statusCode = 401
                     return res.send({"status": 401, "message": "Unauthorized"});
                 }
 
@@ -115,11 +121,13 @@ module.exports =
 
                     if(err) {
                         console.log("Could not fetch Reservation from database", err);
+                        res.statusCode = 500
                         return res.send({"status": 500, "message": "Internal Server Error"});
                     }
 
                     if(resultReservation == null) {
                         console.log("Could not fetch Reservation Id from database", err);
+                        res.statusCode = 401
                         return res.send({"status": 401, "message": "Unauthorized"});
                     }
 
@@ -129,13 +137,16 @@ module.exports =
                         {
                             Reservation.remove({"Reservation.droplet.id" : resId}, function(err, result) {
                                 if(err) {
+                                    res.statusCode = 500
                                     return res.send({"status": 500, "message": "Internal Server Error"});
                                 } else {
+                                    res.statusCode = 204
                                     return res.send({"status": 204, "message": "Successfully deleted your reservation"});
                                 }
                             });
                         } else {
                             console.log("deleting res failed. status" + resp.statusCode);
+                            res.statusCode = 500
                             return res.send({"status": 500, "message": "Internal Server Error"});
                         }
 
@@ -143,9 +154,9 @@ module.exports =
 
 
                 });
-                
+
             }
-        }); 
+        });
 
     }
 
@@ -178,7 +189,7 @@ var client =
 
     createDroplet: function (dropletName, type, region, imageName, ssh_key, onResponse)
     {
-        var data = 
+        var data =
         {
             "name": dropletName,
             "region":region,

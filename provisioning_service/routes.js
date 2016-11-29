@@ -4,6 +4,7 @@ module.exports = function(app){
     var templates = require('./controllers/templates');
     var test = require('./controllers/test');
     app.post('/users/:UserId/keys', keys.post_keys);
+    app.get('/users/:UserId/keys',keys.get_keys);
     app.post('/users/:UserId/reservations', reservations.post_reservations);
     app.delete('/users/:UserId/reservations/:ReservationId', reservations.delete_reservation);
     app.get('/users/:UserId/reservations', reservations.get_reservations);

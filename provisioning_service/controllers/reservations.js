@@ -132,14 +132,17 @@ exports.get_reservations = function (req, res) {
     var userId = req.params.UserId;
     Reservation.find({"UserId": userId}, function (err, results) {
         if (err) {
+            res.statusCode = 500
             return res.send({"status": 500, "message": "Internal Server Error"});
         } else {
             console.log("GET RESERVATIONS RESULTS")
             console.log(results);
             if (results.length == 0) {
                 console.log("Could not find reservation for this user from database", err);
+                res.statusCode = 400
                 return res.send({"status": 400, "message": "You don't have any reservation at this moment"});
             }
+            res.statusCode = 200
             return res.send({"status": 200, "data": results});
         }
     });
@@ -150,17 +153,20 @@ exports.get_reservation = function (req, res) {
     var ReservationId = req.params.ReservationId;
     Reservation.findOne({"Reservation.ReservationId": ReservationId}, function (err, results) {
         if (err) {
+            res.statusCode = 500
             return res.send({"status": 500, "message": "Internal Server Error"});
         } else {
             console.log("GET RESERVATION RESULT")
             console.log(results);
             if (results == null) {
                 console.log("Could not find reservation for this user from database", err);
+                res.statusCode = 400
                 return res.send({
                     "status": 400,
                     "message": "You don't have any reservation with this Id at this moment"
                 });
             }
+            res.statusCode = 200
             return res.send({"status": 200, "data": results});
         }
     });

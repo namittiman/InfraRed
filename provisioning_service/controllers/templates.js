@@ -33,11 +33,13 @@ exports.post_reservations = function(req, res) {
 
     Template.findOne({"UserId": userId, "Name": templateId}, function(err, result) {
         if(err) {
+            res.statusCode = 500
             return res.send({"status": 500, "message": "Internal Server Error"});
         } else {
             
             if(result == null) {
                 console.log("Could not find the specified template for this user from database", err);
+                res.statusCode = 400
                 return res.send({"status": 400, "message": "The template id you provided is not present in the database"});
             }
 
@@ -73,12 +75,14 @@ exports.post_templates = function(req, res) {
 
     Reservation.findOne({"Reservation.ReservationId": reservationId}, function(err, result) {
         if(err) {
+            res.statusCode = 500
             return res.send({"status": 500, "message": "Internal Server Error"});
         } else {
 
             console.log(result);
             if(result == null) {
                 console.log("Could not find reservation for this user from database", err);
+                res.statusCode = 400
                 return res.send({"status": 400, "message": "The reservation id you provided is not present"});
             }
 
@@ -91,9 +95,11 @@ exports.post_templates = function(req, res) {
             Template.findOneAndUpdate({"UserId" : userId, "Name": templateId }, templateObj, { upsert:true , new : true}, function(err, template) {
                 console.log(template);
                 if(err) {
+                    res.statusCode = 500
                     return res.send({"status": 500, "message": "Internal Server Error"});
                 } else {
                     console.log("Written template to database");
+                    res.statusCode = 201
                     return res.send({"status": 201});
                 }
             });
