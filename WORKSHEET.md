@@ -60,11 +60,23 @@
 | Service implementation use case 5: Save template   | Completed :white_check_mark: | [TC1](https://trello.com/c/C6DEs84f/25-service-implementation-use-case-5-save-template), [#21](https://github.ncsu.edu/vramakr2/InfraRed/issues/21), [24](https://github.ncsu.edu/vramakr2/InfraRed/issues/24)
 | Service implementation use case 3: Create a reservation using template)  | Completed :white_check_mark: | [TC1](https://trello.com/c/yOBc2RHV/26-service-implementation-use-case-6-create-a-reservation-using-template), [#22](https://github.ncsu.edu/vramakr2/InfraRed/issues/22)
 
-### Week 7 :hourglass:
+### Week 7 :checkered_flag:
 
 | Deliverable   | Item/Status   |  Issues/Tasks
 | ------------- | ------------  |  ------------
 | Service implementation use case 2.1 and 3.1: Pricing component  | Completed :white_check_mark: | [TC1](https://trello.com/c/uOUlhG1x/27-service-implementation-use-case-2-1-and-3-1-pricing-component), [#23](https://github.ncsu.edu/vramakr2/InfraRed/issues/23)
 | Unify format of AWS and DO JSON responses | Completed :white_check_mark: | [#26](https://github.ncsu.edu/vramakr2/InfraRed/issues/2)
-| `Improvements` Add formatting when printing out to slack | :soon: | [#20](https://github.ncsu.edu/vramakr2/InfraRed/issues/20)
-| `Improvements` Add option to exit in the middle of conversation | :soon: | [#19](https://github.ncsu.edu/vramakr2/InfraRed/issues/19)
+| `Improvements` Add formatting when printing out to slack | Completed :white_check_mark: | [#20](https://github.ncsu.edu/vramakr2/InfraRed/issues/20)
+| `Improvements` Add option to exit in the middle of conversation | Completed :white_check_mark: | [TC1](https://trello.com/c/ziEsgZzB/34-add-exit-conversation-feature),[#19](https://github.ncsu.edu/vramakr2/InfraRed/issues/19)
+| Add error message for sad path | Completed :white_check_mark: | [TC1](https://trello.com/c/sJBehD7F/35-add-error-messages-for-sad-paths),[#29](https://github.ncsu.edu/vramakr2/InfraRed/issues/29), [#36](https://github.ncsu.edu/vramakr2/InfraRed/issues/36),[#38](https://github.ncsu.edu/vramakr2/InfraRed/issues/38), [#40](https://github.ncsu.edu/vramakr2/InfraRed/issues/40)
+| Add HTTP response codes to make debugging easier |  Completed :white_check_make:| [TC1](https://trello.com/c/uKmk6nRD/41-add-http-response-code-to-make-debugging-more-easier-optional), [#35](https://github.ncsu.edu/vramakr2/InfraRed/issues/35)
+
+### Week 8 :checkered_flag:
+| Deliverable   | Item/Status   |  Issues/Tasks
+| ------------- | ------------  |  ------------
+| Brainstorm on deployment strategy | Completed :white_check_mark: | [TC1](https://trello.com/c/A0uNcX6u/31-brainstorm-on-deployment-strategy)
+| Deployment configuration using docker | Completed :white_check_mark: | [TC1](https://trello.com/c/7rgASta6/32-deployment-configuration-using-docker), [#31](https://github.ncsu.edu/vramakr2/InfraRed/issues/31)
+| Fix bugs in deployment scripts  | Completed :white_check_mark: | [TC1](https://trello.com/c/UsjrPx5W/38-fix-docker-compose-install-error-and-vm-create-failure), [TC2](https://trello.com/c/Rb7ikQtM/40-retry-provisioning-server-mongo-connection)
+| Add help command | Completed :white_check_mark: | [TC1](https://trello.com/c/V0hLmulM/37-add-help-command), [#27](https://github.ncsu.edu/vramakr2/InfraRed/issues/27)
+| Create Acceptance document, deploy screen cast | Completed :white_check_mark: | [TC1](https://trello.com/c/TNsMYCpY/33-screen-cast), [#TC2](https://trello.com/c/2XhFHEEs/39-create-acceptance-test-document)
+| Demo the project and go home. | :soon:| 
