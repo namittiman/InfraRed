@@ -1,4 +1,4 @@
-# InfraRed
+# ![avatar](images/infra_avatar.png) InfraRed
 
 DevOps Slack-Bot that helps you manage and provision cloud infrastructure.
 
