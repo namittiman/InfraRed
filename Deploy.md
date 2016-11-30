@@ -27,6 +27,13 @@ These environment variables contain API tokens that are propogated to the Host-V
 
 
 ---
+#### Task Tracking
+The task and issues related to this milestone can be found under `Week 7` and `Week 8` in [WORKSHEET.md](WORKSHEET.md)
+
+
+#### Acceptance Tests
+Acceptance tests can be found here [ACCEPTANCE.md](acceptance.md)
+
 
 #### Screencast
 [https://www.youtube.com/watch?v=bj01AvrSfgI](https://www.youtube.com/watch?v=bj01AvrSfgI)
