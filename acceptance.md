@@ -3,7 +3,7 @@
 
 ### Pre-requisites
 
-You need to have keys set up on AWS/ Digital Ocean. You also need to generate keypair on AWS [AWS - Getting Started](https://aws.amazon.com/documentation/) or ssh key on Digital Ocean [Digital Ocean - Getting Started](https://www.digitalocean.com/help/). You will need the key pair name. In case you want to set up a Spark cluster, you need to activate your AWS account for Amazon EMR. For more information on how to do that, please visit [Amazon EMR - Getting Started](http://docs.aws.amazon.com/ElasticMapReduce/latest/DeveloperGuide/emr-get-started.html)
+You need to generate credentials for your AWS/ Digital Ocean. You also need to generate keypair on AWS [AWS - Getting Started](https://aws.amazon.com/documentation/) or ssh key on Digital Ocean [Digital Ocean - Getting Started](https://www.digitalocean.com/help/). You will need the key pair name. In case you want to set up a Spark cluster, you need to activate your AWS account for Amazon EMR. For more information on how to do that, please visit [Amazon EMR - Getting Started](http://docs.aws.amazon.com/ElasticMapReduce/latest/DeveloperGuide/emr-get-started.html)
 
 
 ### Get acquainted with InfraRed, the bot
@@ -35,7 +35,7 @@ Saving Digital Ocean keys - happy path where you provide right credentials. Vali
 
 ![](images/1_save_keys_do_happy.png)
 
-Saving Keys - sad path where incorrect keys fail authentication
+Saving Keys - sad path where incorrect keys are provided and fail authentication
 
 ![](images/1_save_keys_aws_sad.png)
 
@@ -43,7 +43,7 @@ Saving Keys - sad path where incorrect keys fail authentication
 
 ### Create VM
 
-To create a vm, you simply need to tell the bot - `create vm`. You will be asked a set of questions that are configuration values for your vm. The service is smart enough to pick the closest matching config with lowest price. Your vm will be created either on aws on digital ocean if you have both keys set up else it will be created on the only provider for which your keys are saved.
+To create a vm, you simply need to tell the bot - `create vm`. You will be asked a set of questions that are configuration values for your vm. The bot is able to respond to long-tailed requests too. The provisioning service is smart enough to pick the closest matching config with the lowest price. Your vm will be created either on aws on digital ocean if you have both keys set up else it will be created on the only provider for which your keys are saved.
 
 This config results in creation of vm on AWS
 
@@ -67,14 +67,14 @@ To view all your active reservations, you simply need to tell the bot - `show re
 
 ### Set reminder
 
-To set a reminder about your reservations, you simply need to tell the bot - `set reminder`. This will remind you about your reservations after specified time. You can then terminate after the reminder.
+To set a reminder about your reservations, you simply need to tell the bot - `set reminder`. This will remind you about your reservations after the specified time. You can then terminate after the reminder. You can also set a reminder for each of your reservations - `set reminder <reservation id>`
 
 ![](images/5_set_reminder.png)
 
 
 ### Save template
 
-This is a very handy way to spin up your vm/cluster. You can save your common configs as templates in the bot and tell the bot to spin up using your template name. You can take one of your existing reservations and tell the bot to save it as a template: `save reservation <reservation id> as template <template name>`
+This is a very handy way to spin up your vm/cluster without having to type in your requests. You can save your common configs as templates in the bot and tell the bot to spin up using your template name. You can take one of your existing reservations and tell the bot to save it as a template: `save reservation <reservation id> as template <template name>`
 
 ![](images/6_save_template.png)
 
@@ -99,18 +99,13 @@ You can tear down a reservation using a reservation id or ask the bot to remind 
 
 ![](images/9_terminate_reservation.png)
 
-After terminating, if you do `show reservations`, you will see reduced number of reservations
+After terminating, if you do `show reservations`, you will see that reservation no longer shows up
 
 ![](images/4_show_reservations_after_step_9.png)
 
 
 ### Create cluster
 
-You can create a spark cluster by saying `start cluster` or `spin up a spark cluster`. Cluster creation takes about 8 mins and once ready, you will get a Zeppelin link where you can write and run Apache Spark code.
+You can create a cluster configured with Apache Spark, Zepellin notebook by saying `start cluster` or `spin up a spark cluster`. Cluster creation takes about 8 mins and once ready, you will get a Zeppelin link where you can write and run Apache Spark code.
 
 ![](images/3_create_cluster.png)
-
-
-
-
-
